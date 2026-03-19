@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(cmd /c \"python --version && echo PYTHON_OK\" 2>&1)",
+      "Bash(cmd /c \"mkdir C:\\\\Users\\\\atank\\\\news-song-briefing\\\\stages C:\\\\Users\\\\atank\\\\news-song-briefing\\\\templates C:\\\\Users\\\\atank\\\\news-song-briefing\\\\output 2>nul && echo DONE\")",
+      "Bash(New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\atank\\\\news-song-briefing\\\\stages\" | Out-Null; New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\atank\\\\news-song-briefing\\\\templates\" | Out-Null; New-Item -ItemType Directory -Force -Path \"C:\\\\Users\\\\atank\\\\news-song-briefing\\\\output\" | Out-Null; Write-Host \"DONE\")",
+      "Bash(type nul:*)",
+      "Bash(python3:*)",
+      "WebFetch(domain:solana.com)",
+      "WebFetch(domain:l2fees.info)",
+      "WebFetch(domain:blog.cheqd.io)",
+      "WebFetch(domain:docs.polygon.technology)",
+      "WebFetch(domain:docs.arbitrum.io)",
+      "WebFetch(domain:docs.selfid.network)",
+      "WebFetch(domain:identity.foundation)",
+      "WebFetch(domain:www.spruceid.com)",
+      "WebFetch(domain:polygon.technology)",
+      "WebFetch(domain:docs.alchemy.com)",
+      "WebFetch(domain:near.org)",
+      "WebFetch(domain:docs.cheqd.io)",
+      "WebFetch(domain:www.alchemy.com)",
+      "WebFetch(domain:cheqd.io)",
+      "WebFetch(domain:docs.solana.com)",
+      "Skill(update-config)",
+      "Bash(ollama run:*)"
+    ]
+  }
+}

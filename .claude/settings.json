@@ -1,0 +1,26 @@
+{
+  "voiceEnabled": true,
+  "permissions": {
+    "allow": [
+      "Bash(docker:*)",
+      "Bash(docker-compose:*)",
+      "Bash(docker compose:*)",
+      "WebFetch(http://localhost:*)",
+      "WebFetch(http://127.0.0.1:*)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // empty' | grep -qi 'settings' && echo '{\"systemMessage\": \"PERMISSION CHANGE DETECTED: You MUST invoke the CISO agent to review this before proceeding. No permission change is cleared without CISO sign-off.\"}' || true",
+            "timeout": 5
+          }
+        ]
+      }
+    ]
+  }
+}
