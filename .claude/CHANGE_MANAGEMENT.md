@@ -2,6 +2,8 @@
 **Version:** 1.0 | **Owner:** CAE-Audit | **Approved By:** CEO
 **COSO Components:** Control Activities · Information & Communication · Monitoring Activities
 
+> **Navigation:** `INDEX.md` — fast lookup | `CLAUDE.md` — master register (routing, org chart, operating rules) | `CHANGELOG.md` — the audit trail you write to after every change | `AUDIT_FINDINGS.md` — findings that drive changes through this policy
+
 ---
 
 ## PURPOSE
@@ -129,6 +131,31 @@ Every change must produce an entry in `CHANGELOG.md` in this exact format:
 
 ---
 
+## STRUCTURAL VS MINOR CHANGE DEFINITION
+
+This distinction determines whether CEO approval is required. The Lead Orchestrator cannot self-classify — use this list.
+
+**STRUCTURAL (requires CEO approval):**
+- Adding, removing, or renaming a department
+- Adding, removing, or renaming a C-suite agent (COO, CISO, CTO, CPO, CFO, GC, CRO, CAE, CDO, CPlatO, CAIO, CCO, CSO, CIRO, CPrO, CIO)
+- Changing the authority boundary of any agent (what they can/cannot approve)
+- Modifying compliance frameworks in CLAUDE.md (adding/removing COSO, SOC 2, NIST, SOX, COBIT, CIS)
+- Changing routing logic for any Tier 2 or Tier 3 domain
+- Modifying the Risk Tier definitions (0-3)
+- Modifying the Three-File Rule or propagation requirements
+- Adding or removing governance councils (AI & Automation Council, GRC Council)
+- Deprecating any agent with 5+ subordinates in their chain
+
+**MINOR (Lead Orchestrator may execute automatically):**
+- Updating an existing agent's prompt content, frameworks, or output format
+- Adding or removing tools from a non-C-suite agent (subject to CISO review for sensitive tools)
+- Updating CLAUDE.md version history or changelog entries
+- Correcting a reporting chain typo or naming inconsistency
+- Adding a new IC-level or Director-level agent within an existing department
+- Updating cross-department service sections in research agents
+
+---
+
 ## SENSITIVE TOOL CLASSIFICATION
 
 Tools that require CISO review before granting to any agent:
@@ -144,8 +171,46 @@ Tools that require CISO review before granting to any agent:
 
 ---
 
+## TIER 2 / TIER 3 APPROVAL RECORD FORMAT
+
+Any Tier 2 or Tier 3 action requires a documented CEO approval **before execution proceeds**. Log the approval as a CHANGELOG entry of type APPROVAL-RECORD using this format:
+
+```markdown
+## [YYYY-MM-DD] | APPROVAL-RECORD | [Action Being Approved]
+
+**Approved By:** CEO
+**Risk Tier:** [2 | 3]
+**Action:** [what was approved — be specific]
+**Scope:** [what is included and explicitly what is excluded]
+**Conditions:** [any conditions or constraints the CEO attached]
+**Expires:** [date after which this approval no longer covers the action, or NONE]
+**Logged Before Execution:** YES
+```
+
+This entry must appear in CHANGELOG.md before the approved action is taken. No retroactive approval records.
+
+---
+
+## VERSIONING SCHEME
+
+All AI OS documents and the master CLAUDE.md use **Semantic Versioning: MAJOR.MINOR.PATCH**
+
+| Digit | Increment When | Reset Rule |
+|-------|---------------|------------|
+| **MAJOR** | Transformational rebuild — whole OS redesign, replacement of the governance model | Resets MINOR and PATCH to 0 |
+| **MINOR** | Structural change — new department, new C-suite agent, new governance body, major policy overhaul | Resets PATCH to 0 |
+| **PATCH** | Fix or remediation — audit findings closed, reporting chain corrected, typo fix, propagation completed | Never resets other digits |
+
+**Examples:**
+- New department added → MINOR bump (e.g., 1.6.1 → 1.7.0)
+- Audit findings remediated → PATCH bump (e.g., 1.6.0 → 1.6.1)
+- OS completely rebuilt from scratch → MAJOR bump (e.g., 1.7.0 → 2.0.0)
+
+---
+
 ## POLICY VERSION HISTORY
 
 | Version | Date | Change |
 |---------|------|--------|
-| 1.0 | 2026-03-19 | Initial change management policy. COSO-mapped. Full propagation rules, changelog format, SoD matrix, and sensitive tool classification. |
+| 1.0.0 | 2026-03-19 | Initial change management policy. COSO-mapped. Full propagation rules, changelog format, SoD matrix, and sensitive tool classification. |
+| 1.1.0 | 2026-03-19 | Adopted Semantic Versioning (MAJOR.MINOR.PATCH). Added versioning scheme section. |

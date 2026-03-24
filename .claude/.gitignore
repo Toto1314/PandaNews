@@ -1,0 +1,37 @@
+# Credentials & secrets
+.credentials.json
+*.key
+*.pem
+
+# Runtime logs & usage data
+*.jsonl
+audit_history.jsonl
+history.jsonl
+stats-cache.json
+mcp-needs-auth-cache.json
+ollama_usage.jsonl
+token_budget.json
+
+# Caches & temp
+__pycache__/
+*.pyc
+cache/
+paste-cache/
+debug/
+shell-snapshots/
+file-history/
+usage-data/
+backups/
+
+# Sessions & state
+sessions/
+todos/
+plans/
+statsig/
+telemetry/
+
+# ChromaDB binary store
+vector_db/
+
+# Claude internal
+.claude.json

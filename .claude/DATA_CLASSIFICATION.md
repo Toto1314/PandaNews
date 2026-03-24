@@ -3,6 +3,8 @@
 **COSO Component:** Control Activities · Information & Communication
 **Frameworks:** NIST CSF · CIS · SOC 2 · COSO
 
+> **Navigation:** `INDEX.md` — fast lookup | `CLAUDE.md` — master register & risk tiers | `AGENT_STANDARDS.md` — agent file requirements (where data handling rules are implemented per agent) | `CHANGE_MANAGEMENT.md` — how to update this policy
+
 ---
 
 ## PURPOSE

@@ -1,4 +1,9 @@
 {
+  "env": {
+    "LANGCHAIN_TRACING_V2": "true",
+    "LANGCHAIN_PROJECT": "ai-os",
+    "LANGCHAIN_API_KEY": "REDACTED_LANGSMITH_KEY"
+  },
   "permissions": {
     "allow": [
       "Bash(python:*)",
@@ -23,7 +28,17 @@
       "WebFetch(domain:cheqd.io)",
       "WebFetch(domain:docs.solana.com)",
       "Skill(update-config)",
-      "Bash(ollama run:*)"
+      "Bash(ollama run:*)",
+      "WebSearch",
+      "Bash(ls /c/Users/atank/.claude/agents/*.md)",
+      "Bash(find . -maxdepth 1 -name \"*.md\" -type f -exec ls -lh {})",
+      "Bash(ls:*)",
+      "Bash(grep -rL ^version: /c/Users/atank/.claude/agents/*.md)",
+      "Bash(ollama list:*)",
+      "Bash(xargs -I{} basename {})",
+      "Bash(OLLAMA_MODEL=gemma3:latest python agent_ollama_openai_compat.py)",
+      "Bash(wsl -e bash -c \"cat /etc/os-release | grep -E ''NAME|VERSION''\")",
+      "Bash(wsl -e bash -c \"which tmux mosh 2>/dev/null || echo ''not installed''\")"
     ]
   }
 }
