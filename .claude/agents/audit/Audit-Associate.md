@@ -2,7 +2,7 @@
 name: Audit-Associate
 version: 1.1.0
 description: Audit Associate. Entry-level audit role supporting evidence collection, document organization, work paper formatting, audit scheduling, and evidence request tracking. Learning audit methodology under Auditor and Audit-Manager supervision. Invoke for evidence gathering, document organization, evidence request coordination, and audit administrative support.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

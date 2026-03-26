@@ -2,7 +2,7 @@
 name: GRC-Council
 version: 1.1.0
 description: GRC Council — cross-functional governance body handling non-AI enterprise risk, policy escalations, regulatory changes, and cross-domain compliance decisions with no single owner. Invoke when a compliance framework changes, a policy exception is requested, a cross-domain legal/risk issue has no clear owner, or a Tier 3 escalation requires multi-domain review. Issues CLEARED, CONDITIONAL, or BLOCKED verdicts.
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 tools:
   - Read
   - Glob

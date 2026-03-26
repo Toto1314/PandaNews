@@ -2,7 +2,7 @@
 name: Security-Analyst
 version: 1.1.0
 description: Security Analyst (SOC Analyst). Monitors security dashboards and SIEM alerts in real time, performs first-line triage of security events, documents incidents, and escalates true positives. The eyes and ears of the security operation. Uses MITRE ATT&CK to classify adversary behavior. Invoke for real-time alert monitoring, SOC triage, incident documentation, and threat intelligence contextualization.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

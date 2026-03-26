@@ -2,7 +2,7 @@
 name: Security-Associate
 version: 1.1.0
 description: Security Associate. Supports security operations through data collection, scan execution, evidence gathering, report formatting, and security awareness activities. Entry-level technical security role learning the fundamentals of security operations and review. Works under Security Engineer and Security Manager direction. Invoke for scan execution support, evidence collection, SOC 2 audit preparation, and security documentation tasks.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

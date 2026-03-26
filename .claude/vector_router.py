@@ -31,12 +31,25 @@ from pathlib import Path
 from typing import Optional
 
 import chromadb
-from chromadb.utils.embedding_functions import DefaultEmbeddingFunction
+from chromadb.utils.embedding_functions import OllamaEmbeddingFunction, DefaultEmbeddingFunction
 
 # ── Paths ─────────────────────────────────────────────────────────────────────
 AGENTS_DIR = Path.home() / ".claude" / "agents"
 DB_DIR = Path.home() / ".claude" / "vector_db"
 COLLECTION_NAME = "ai_os_agents"
+OLLAMA_URL = "http://localhost:11434"
+EMBED_MODEL = "nomic-embed-text"
+
+
+def _get_ef():
+    """Return OllamaEmbeddingFunction, falling back to default if Ollama unavailable."""
+    try:
+        ef = OllamaEmbeddingFunction(url=OLLAMA_URL, model_name=EMBED_MODEL)
+        # Quick probe — will raise if Ollama is down or model not installed
+        ef(["ping"])
+        return ef
+    except Exception:
+        return DefaultEmbeddingFunction()
 
 # ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -102,7 +115,7 @@ def build_index(verbose: bool = True) -> int:
     ChromaDB collection. Returns the number of agents indexed.
     """
     client = _get_client()
-    ef = DefaultEmbeddingFunction()
+    ef = _get_ef()
 
     # Wipe and recreate the collection for a clean rebuild
     try:
@@ -182,7 +195,7 @@ def query_agents(
         }
     """
     client = _get_client()
-    ef = DefaultEmbeddingFunction()
+    ef = _get_ef()
 
     try:
         collection = client.get_collection(COLLECTION_NAME, embedding_function=ef)

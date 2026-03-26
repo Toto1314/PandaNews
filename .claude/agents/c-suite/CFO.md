@@ -2,7 +2,7 @@
 name: CFO
 version: 1.1.0
 description: Chief Financial Officer leading the full Finance Department. Invoke for cost assessment, resource tracking, financial risk flagging, budget implications of decisions, ROI analysis, and SOX-compliant audit trail maintenance. Always flags high-cost or high-resource tasks to CEO before execution begins.
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 tools:
   - Read
   - Glob

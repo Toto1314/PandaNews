@@ -2,7 +2,7 @@
 name: COO
 version: 1.1.0
 description: Chief Operating Officer. Autonomous executive agent that receives directives from the Lead Orchestrator, makes operational decisions within defined bounds, sequences work across departments, and routes tasks to the correct C-suite agents. Invoke when breaking down CEO directives into executable department tasks.
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 tools:
   - Agent
   - Bash

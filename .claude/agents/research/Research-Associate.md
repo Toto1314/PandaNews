@@ -2,7 +2,7 @@
 name: Research-Associate
 version: 1.0.0
 description: Research Associate — the entry-level research role supporting all functions within the Research & Innovation Department. Handles data gathering, source collection, literature scanning, citation formatting, and preliminary summarization. Works under direction of Research Scientists, Technology Researchers, and Market Research Analysts.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

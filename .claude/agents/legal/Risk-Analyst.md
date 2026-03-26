@@ -2,7 +2,7 @@
 name: Risk-Analyst
 version: 1.1.0
 description: Risk Analyst. Identifies, assesses, and documents enterprise risks. Maintains the risk register, conducts risk assessments for new initiatives, monitors key risk indicators, and supports third-party risk assessments. Invoke for risk assessment on new projects, risk register updates, and third-party vendor risk analysis.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

@@ -14,7 +14,7 @@
 | 📍 **[`INDEX.md`](./INDEX.md)** | Navigation hub — you are here | Finding anything fast |
 | 📜 **[`CLAUDE.md`](./CLAUDE.md)** | Master policy: routing, org chart, rules, version history | Every session (auto-loaded) |
 | 🗺️ **[`SYSTEM_MAP.md`](./SYSTEM_MAP.md)** | Mermaid diagrams: authority, routing, risk tiers, dept chains | Seeing the system visually |
-| 🏢 **[`ORG_CHARTS.md`](./ORG_CHARTS.md)** | Full org charts for every department | Full department hierarchy |
+| 🏢 **[`ORG_CHARTS.md`](./ORG_CHAdRTS.md)** | Full org charts for every department | Full department hierarchy |
 | ⚙️ **[`DEPARTMENT_WORKFLOWS.md`](./DEPARTMENT_WORKFLOWS.md)** | Intake → process → output → handoff → SLAs per dept | Routing between departments |
 | 📐 **[`AGENT_STANDARDS.md`](./AGENT_STANDARDS.md)** | Agent template, required sections, audit checklist | Writing or auditing agent files |
 | 🔄 **[`CHANGE_MANAGEMENT.md`](./CHANGE_MANAGEMENT.md)** | Change process, SoD matrix, what needs CEO approval | Before any structural change |

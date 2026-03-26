@@ -2,7 +2,7 @@
 name: Growth-Analyst
 version: 1.1.0
 description: Growth Analyst. Analyzes marketing and sales funnel data, identifies growth opportunities, runs A/B tests on marketing campaigns, measures campaign ROI, tracks SEO performance, and produces growth insights for VP-Marketing. Invoke for funnel analysis, campaign performance analytics, A/B test measurement, and growth loop identification.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

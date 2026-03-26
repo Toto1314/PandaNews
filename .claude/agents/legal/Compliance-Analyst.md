@@ -2,7 +2,7 @@
 name: Compliance-Analyst
 version: 1.1.0
 description: Compliance Analyst. Collects and organizes compliance evidence, tests controls against documented criteria, formats compliance reports, tracks audit findings, and supports the compliance team with documentation and administrative compliance tasks. Invoke for evidence collection, control testing support, and compliance documentation.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

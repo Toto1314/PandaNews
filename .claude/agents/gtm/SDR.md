@@ -2,7 +2,7 @@
 name: SDR
 version: 1.1.0
 description: Sales Development Representative (SDR). Generates qualified pipeline through inbound lead follow-up, outbound prospecting, cold email and phone outreach, and booking discovery meetings for Account Executives. Responsible for top-of-funnel pipeline creation. Invoke for inbound lead qualification, outbound sequence writing, prospecting research, ICP research, and discovery meeting booking.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

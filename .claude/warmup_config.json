@@ -1,0 +1,9 @@
+{
+  "models": [
+    "gemma3:1b",
+    "llama3.2:3b"
+  ],
+  "ping_prompt": "hi",
+  "timeout": 60,
+  "silent": true
+}

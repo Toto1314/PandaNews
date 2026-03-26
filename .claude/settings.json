@@ -2,7 +2,10 @@
   "voiceEnabled": true,
   "env": {
     "LANGCHAIN_API_KEY": "REDACTED_LANGSMITH_KEY",
-    "LANGCHAIN_TRACING_V2": "true"
+    "LANGCHAIN_TRACING_V2": "true",
+    "OLLAMA_HOST": "http://localhost:11434",
+    "TELEGRAM_BOT_TOKEN": "8765486364:AAG7Fy1D5UQne5gOevc7yIK6_1rbUHHPyHY",
+    "TELEGRAM_CHAT_ID": "7687017155"
   },
   "permissions": {
     "allow": [

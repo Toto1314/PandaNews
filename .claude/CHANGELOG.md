@@ -4,6 +4,43 @@
 
 ---
 
+## 2026-03-25 | DEPT-CREATE | Gaming Department — Dir-Gaming + 3 specialists (v1.10.0)
+
+**Changed By:** Lead Orchestrator (CEO-directed)
+**Approved By:** CEO
+**Risk Tier:** 1
+**COSO Component:** Control Environment · Control Activities
+
+**Summary:** Created the Gaming Intelligence Department with 4 agents. Expanded kiriko_bot.py with 2 new gaming intents for full 2-way Telegram gaming support.
+
+**New Agents:**
+- `agents/gaming/Dir-Gaming.md` v1.0.0 — Department head. Routes patch/coaching/research. Manages games.json config. Integrates with gaming-update skill.
+- `agents/gaming/Patch-Analyst.md` v1.0.0 — Fetches and interprets patch notes. Produces update cards in gaming-update skill format. Haiku-class.
+- `agents/gaming/Meta-Coach.md` v1.0.0 — Tier lists, loadouts, improvement plans, pro play translation. Patch-anchored coaching. Sonnet-class.
+- `agents/gaming/Game-Researcher.md` v1.0.0 — Mechanics explainers, upcoming content, esports coverage, community intelligence, lore. Haiku-class.
+
+**kiriko_bot.py Changes:**
+- Added `gaming_coaching` intent — routes "how to get better / tier lists / loadouts" queries to Meta-Coach via Claude
+- Added `gaming_research` intent — routes "mechanics / lore / esports / upcoming content" queries to Game-Researcher via Claude
+- Updated `/help` command to include gaming examples
+- Updated ROUTER_PROMPT with 2 new intent definitions
+
+**CLAUDE.md Changes:**
+- Version bumped: 1.9.7 → 1.10.0
+- Dir-Gaming added to department agent table
+- Gaming domain added to Step 1 keyword fast-path and Pass 2 intent signal table
+- Gaming routing added to Step 3 routing block
+
+**Propagation Completed:**
+- [x] Agent files created: 4 (Dir-Gaming, Patch-Analyst, Meta-Coach, Game-Researcher)
+- [x] CLAUDE.md updated: department table, routing, version history
+- [x] CHANGELOG.md entry written: YES (this entry)
+- [x] SYSTEM_MAP.md: Gaming department added to Family Tree and Routing Decision Tree (v1.10.0)
+
+**Sensitive Data Impact:** NONE
+
+---
+
 ## 2026-03-23 | AUDIT | batch_audit run — engineering dept, check=escalation
 
 **Changed By:** batch_audit.py (automated — llama3.2:3b)  

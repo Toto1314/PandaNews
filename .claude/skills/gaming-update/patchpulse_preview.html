@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PatchPulse — Preview</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #0d0d0f;
+    --surface:   #16181d;
+    --border:    #2a2d35;
+    --purple:    #7c3aed;
+    --purple-dim:#3b1c7a;
+    --green:     #22c55e;
+    --red:       #ef4444;
+    --amber:     #f59e0b;
+    --text:      #f1f5f9;
+    --muted:     #64748b;
+    --radius:    6px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── NAV ── */
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    height: 52px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .logo { font-size: 16px; font-weight: 700; letter-spacing: -0.3px; }
+  .logo span { color: var(--purple); }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .nav-tabs { display: flex; gap: 4px; }
+  .nav-tab {
+    padding: 5px 12px;
+    border-radius: var(--radius);
+    color: var(--muted);
+    font-size: 13px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    transition: all .15s;
+  }
+  .nav-tab:hover { color: var(--text); background: #1e2028; }
+  .nav-tab.active { color: var(--text); background: #1e2028; }
+  .nav-user {
+    font-size: 12px;
+    color: var(--muted);
+    padding: 4px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+  }
+
+  /* ── LAYOUT ── */
+  .layout { display: grid; grid-template-columns: 220px 1fr; min-height: calc(100vh - 52px); }
+
+  /* ── SIDEBAR ── */
+  .sidebar {
+    border-right: 1px solid var(--border);
+    padding: 20px 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .sidebar-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 4px 10px 8px;
+  }
+  .game-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: background .12s;
+  }
+  .game-row:hover { background: #1a1c22; }
+  .game-row.active { background: var(--purple-dim); }
+  .game-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .game-row-name { font-size: 13px; flex: 1; }
+  .badge-new {
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 99px;
+    background: var(--purple);
+    color: #fff;
+    letter-spacing: .04em;
+  }
+  .patch-ver { font-size: 11px; color: var(--muted); }
+
+  /* ── MAIN ── */
+  .main { padding: 28px 32px; max-width: 820px; }
+
+  .page-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 4px;
+  }
+  .game-title { font-size: 22px; font-weight: 700; }
+  .patch-tag {
+    font-size: 13px;
+    color: var(--purple);
+    font-weight: 600;
+    padding: 2px 8px;
+    border: 1px solid var(--purple);
+    border-radius: var(--radius);
+  }
+  .page-meta { font-size: 12px; color: var(--muted); margin-bottom: 20px; }
+
+  /* ── HISTORY TABS ── */
+  .history-tabs { display: flex; gap: 6px; margin-bottom: 24px; flex-wrap: wrap; }
+  .htab {
+    font-size: 12px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+    background: none;
+    color: var(--muted);
+    cursor: pointer;
+    transition: all .12s;
+  }
+  .htab:hover { border-color: var(--muted); color: var(--text); }
+  .htab.active { border-color: var(--purple); color: var(--purple); background: var(--purple-dim); }
+
+  /* ── PATCH SECTIONS ── */
+  .section {
+    margin-bottom: 12px;
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .section-tldr {
+    background: #1c1e25;
+    border: 1px solid var(--border);
+    padding: 14px 16px;
+  }
+  .section-tldr p { font-size: 14px; line-height: 1.7; }
+
+  .section-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left-width: 3px;
+    padding: 14px 16px;
+  }
+  .section-card.buffed   { border-left-color: var(--green); }
+  .section-card.nerfed   { border-left-color: var(--red); }
+  .section-card.op       { border-left-color: var(--amber); background: #1a1610; }
+  .section-card.dead     { border-left-color: var(--red); opacity: .8; }
+  .section-card.sleeper  { border-left-color: var(--purple); }
+  .section-card.verdict  {
+    border-left-color: var(--purple);
+    border-color: var(--purple);
+    background: #150f25;
+    padding: 16px 18px;
+  }
+
+  .section-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .section-label.buffed  { color: var(--green); }
+  .section-label.nerfed  { color: var(--red); }
+  .section-label.op      { color: var(--amber); }
+  .section-label.dead    { color: var(--red); }
+  .section-label.sleeper { color: var(--purple); }
+  .section-label.verdict { color: var(--purple); font-size: 11px; }
+  .section-label .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  .entry { margin-bottom: 12px; }
+  .entry:last-child { margin-bottom: 0; }
+  .entry-name { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+  .entry-body { font-size: 13px; color: #c8d0de; line-height: 1.65; }
+  .verdict-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 1px 8px;
+    border-radius: 4px;
+    margin-top: 4px;
+  }
+  .vt-play   { background: #14301f; color: var(--green); border: 1px solid #22c55e44; }
+  .vt-try    { background: #1a1408; color: var(--amber); border: 1px solid #f59e0b44; }
+  .vt-shelf  { background: #2a0d0d; color: var(--red);   border: 1px solid #ef444444; }
+  .vt-still  { background: #1e1e1e; color: var(--muted); border: 1px solid var(--border); }
+  .vt-sit    { background: #1e1e1e; color: var(--muted); border: 1px solid var(--border); }
+
+  .verdict-body { font-size: 14px; line-height: 1.75; color: #d4dae6; }
+
+  /* ── FEED VIEW (hidden by default) ── */
+  .feed-view { display: none; padding: 28px 32px; }
+  .feed-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; max-width: 860px; }
+  .game-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px;
+    cursor: pointer;
+    transition: border-color .15s;
+  }
+  .game-card:hover { border-color: var(--purple); }
+  .game-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 6px; }
+  .game-card-name { font-size: 16px; font-weight: 700; }
+  .game-card-patch { font-size: 12px; color: var(--muted); margin-bottom: 8px; }
+  .game-card-tldr { font-size: 13px; color: #9aa3b2; line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 14px; }
+  .game-card-btn {
+    width: 100%;
+    padding: 7px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: none;
+    color: var(--text);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .game-card-btn:hover { border-color: var(--purple); color: var(--purple); }
+  .game-card-ts { font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+  /* ── VIEW SWITCHER ── */
+  .view-switcher {
+    display: flex;
+    gap: 8px;
+    padding: 16px 24px 0;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .vs-btn {
+    padding: 8px 16px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    transition: all .12s;
+  }
+  .vs-btn.active { color: var(--text); border-bottom-color: var(--purple); }
+  .vs-btn:hover:not(.active) { color: var(--text); }
+
+  .sources {
+    margin-top: 20px;
+    font-size: 11px;
+    color: var(--muted);
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .sources a { color: var(--muted); text-decoration: none; }
+  .sources a:hover { color: var(--purple); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Patch<span>Pulse</span></div>
+  <div class="nav-right">
+    <div class="nav-tabs">
+      <button class="nav-tab active" onclick="switchView('card')">Patch Cards</button>
+      <button class="nav-tab" onclick="switchView('feed')">Feed</button>
+    </div>
+    <div class="nav-user">atank@demo.com ▾</div>
+  </div>
+</nav>
+
+<!-- VIEW SWITCHER -->
+<div class="view-switcher">
+  <button class="vs-btn active" id="btn-card" onclick="switchView('card')">Full Card View</button>
+  <button class="vs-btn" id="btn-feed" onclick="switchView('feed')">Game Feed</button>
+</div>
+
+<!-- CARD VIEW -->
+<div id="card-view">
+  <div class="layout">
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="sidebar-label">Your Games</div>
+
+      <div class="game-row active">
+        <div class="game-dot" style="background:#ff4655"></div>
+        <span class="game-row-name">Valorant</span>
+        <span class="badge-new">NEW</span>
+      </div>
+
+      <div class="game-row">
+        <div class="game-dot" style="background:#fa9c1e"></div>
+        <span class="game-row-name">Overwatch 2</span>
+        <span class="patch-ver">pending</span>
+      </div>
+
+      <div class="game-row">
+        <div class="game-dot" style="background:#ffd700"></div>
+        <span class="game-row-name">Helldivers 2</span>
+        <span class="patch-ver">pending</span>
+      </div>
+
+      <div class="game-row">
+        <div class="game-dot" style="background:#00d4ff"></div>
+        <span class="game-row-name">Fortnite</span>
+        <span class="patch-ver">pending</span>
+      </div>
+
+      <div class="game-row">
+        <div class="game-dot" style="background:#c89b3c"></div>
+        <span class="game-row-name">League of Legends</span>
+        <span class="patch-ver">pending</span>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <div class="main">
+      <div class="page-header">
+        <div class="game-title">Valorant</div>
+        <div class="patch-tag">Patch 12.05</div>
+      </div>
+      <div class="page-meta">Updated today · 2026-03-25 · Act 2 begins</div>
+
+      <!-- Patch history tabs -->
+      <div class="history-tabs">
+        <button class="htab active">12.05 (Latest)</button>
+        <button class="htab">12.04</button>
+        <button class="htab">12.03</button>
+        <button class="htab">12.02</button>
+        <button class="htab">12.01</button>
+      </div>
+
+      <!-- TL;DR -->
+      <div class="section">
+        <div class="section-tldr">
+          <p>Act 2 launches with new Controller <strong>Miks</strong> reshaping the support meta, while Yoru and Clove — the two most dominant flex picks of Act 1 — both get gutted simultaneously. The duelist meta just got a hard reset and Controller players are eating well.</p>
+        </div>
+      </div>
+
+      <!-- Buffed -->
+      <div class="section">
+        <div class="section-card buffed">
+          <div class="section-label buffed"><div class="dot"></div> Buffed</div>
+
+          <div class="entry">
+            <div class="entry-name">Skye — Guiding Light (Flashes)</div>
+            <div class="entry-body">Flashes are now rechargeable on a 60-second cooldown instead of consuming limited charges. Initiator players who stay alive get rewarded with a second or third flash mid-round.</div>
+            <span class="verdict-tag vt-play">Play this now</span>
+          </div>
+
+          <div class="entry">
+            <div class="entry-name">Miks (New Agent — Controller)</div>
+            <div class="entry-body">Sound-based kit: dual-use grenade (heals allies or concusses enemies), smokes, Combat Stim that refreshes on kills shared with a teammate, and an ultimate that knocks back + deafens + slows an entire push.</div>
+            <span class="verdict-tag vt-try">Worth trying</span>
+          </div>
+
+          <div class="entry">
+            <div class="entry-name">Lotus (Map Returns)</div>
+            <div class="entry-body">Attacker-side wall pen removed, jump to Vines repositioned, Tree Room wall reinforced. Attacking A-site is less miserable. Wall-bang cheese is gone.</div>
+            <span class="verdict-tag vt-sit">Situational</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Nerfed -->
+      <div class="section">
+        <div class="section-card nerfed">
+          <div class="section-label nerfed"><div class="dot"></div> Nerfed</div>
+
+          <div class="entry">
+            <div class="entry-name">Yoru</div>
+            <div class="entry-body">Gatecrash beacon duration cut from 30s → 15s. Blindside charges reduced from 2 → 1. One flash means one real play per round — no more double-flash fakeout entries.</div>
+            <span class="verdict-tag vt-still">Still playable</span>
+          </div>
+
+          <div class="entry">
+            <div class="entry-name">Clove</div>
+            <div class="entry-body">Ruse post-death duration: 14s → 6s. Meddle AoE: 6m → 4m. 6 seconds of smoke after death barely buys a push. The entire design proposition is significantly weaker.</div>
+            <span class="verdict-tag vt-shelf">Shelve it</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- OP Now -->
+      <div class="section">
+        <div class="section-card op">
+          <div class="section-label op"><div class="dot"></div> OP Right Now</div>
+          <div class="entry">
+            <div class="entry-name">Miks + Skye / KAY/O</div>
+            <div class="entry-body">Stim-share into flash-clear is the new fastest entry package. This combo will get solved in pro play first but it's already broken in ranked.</div>
+          </div>
+          <div class="entry">
+            <div class="entry-name">Omen / Viper</div>
+            <div class="entry-body">With Clove nerfed, both dominant solo-Controller picks fill the vacuum. Omen's one-way smokes on the reworked Lotus A-site are genuinely oppressive.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dead -->
+      <div class="section">
+        <div class="section-card dead">
+          <div class="section-label dead"><div class="dot"></div> Dead</div>
+          <div class="entry">
+            <div class="entry-name">Clove below Diamond</div>
+            <div class="entry-body">The post-death window is too short for most players to execute on. Drop rate in ranked will be steep.</div>
+          </div>
+          <div class="entry">
+            <div class="entry-name">Yoru soloqueue</div>
+            <div class="entry-body">Two charges of Blindside covered for bad coordination. One charge does not. Off the ranked table for most players.</div>
+          </div>
+          <div class="entry">
+            <div class="entry-name">Abyss & Corrode</div>
+            <div class="entry-body">Both maps removed from competitive rotation.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Under the Radar -->
+      <div class="section">
+        <div class="section-card sleeper">
+          <div class="section-label sleeper"><div class="dot"></div> Sleeper Pick</div>
+          <div class="entry">
+            <div class="entry-name">Skye's recharge system</div>
+            <div class="entry-body">A Skye who plays deep and gets value can cycle back into a second or third flash within the same round. Most opponents won't adjust to this for at least two weeks — it's a psychological edge that the scoreboard won't show.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Meta Verdict -->
+      <div class="section">
+        <div class="section-card verdict">
+          <div class="section-label verdict"><div class="dot"></div> Meta Verdict</div>
+          <div class="verdict-body">
+            Patch 12.05 is a genuine shake-up. The two safest picks from Act 1 both got hit hard in the same patch, Lotus is back with attacker-favored fixes, and a new high-ceiling Controller just entered the pool. <strong>This week belongs to Controller players</strong> — Omen and Viper move from "solid" to "dominant by default" while Miks gets figured out. On the Duelist side, Jett and Reyna are your best bets. Play Controller, learn Lotus A-site fast, and if you're running Initiator, lock Skye and do not waste flashes early.
+          </div>
+        </div>
+      </div>
+
+      <div class="sources">
+        Sources:
+        <a href="https://playvalorant.com/en-us/news/game-updates/valorant-patch-notes-12-05/" target="_blank">playvalorant.com</a> ·
+        <a href="https://www.dexerto.com/valorant/valorant-12-05-patch-notes-update-buff-nerfs-3336454/" target="_blank">Dexerto</a> ·
+        <a href="https://dotesports.com/valorant/news/valorant-patch-12-05-notes" target="_blank">Dot Esports</a> ·
+        <a href="https://tracker.gg/valorant/articles/valorant-patch-notes-12-05-new-agent-miks-map-updates-and-more" target="_blank">Valorant Tracker</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FEED VIEW -->
+<div id="feed-view" class="feed-view">
+  <h2 style="font-size:18px;font-weight:700;margin-bottom:20px;">Your Games</h2>
+  <div class="feed-grid">
+
+    <div class="game-card">
+      <div class="game-card-header">
+        <div class="game-card-name">Valorant</div>
+        <span class="badge-new">NEW</span>
+      </div>
+      <div class="game-card-patch">Patch 12.05</div>
+      <div class="game-card-tldr">Act 2 launches with new Controller Miks reshaping the support meta, while Yoru and Clove both get gutted simultaneously. Controller players are eating well.</div>
+      <button class="game-card-btn" onclick="switchView('card')">View Patch Card →</button>
+      <div class="game-card-ts">Updated 3h ago</div>
+    </div>
+
+    <div class="game-card" style="opacity:.5;">
+      <div class="game-card-header">
+        <div class="game-card-name">Overwatch 2</div>
+      </div>
+      <div class="game-card-patch">Awaiting next patch</div>
+      <div class="game-card-tldr">No new patch in the last 24 hours. Card will update automatically when a new patch drops.</div>
+      <button class="game-card-btn">View Last Card →</button>
+      <div class="game-card-ts">Last checked today</div>
+    </div>
+
+    <div class="game-card" style="opacity:.5;">
+      <div class="game-card-header">
+        <div class="game-card-name">Helldivers 2</div>
+      </div>
+      <div class="game-card-patch">Awaiting next patch</div>
+      <div class="game-card-tldr">No new patch in the last 24 hours. Card will update automatically when a new patch drops.</div>
+      <button class="game-card-btn">View Last Card →</button>
+      <div class="game-card-ts">Last checked today</div>
+    </div>
+
+    <div class="game-card" style="opacity:.5;">
+      <div class="game-card-header">
+        <div class="game-card-name">League of Legends</div>
+      </div>
+      <div class="game-card-patch">Awaiting next patch</div>
+      <div class="game-card-tldr">No new patch in the last 24 hours. Card will update automatically when a new patch drops.</div>
+      <button class="game-card-btn">View Last Card →</button>
+      <div class="game-card-ts">Last checked today</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  function switchView(view) {
+    document.getElementById('card-view').style.display = view === 'card' ? 'block' : 'none';
+    document.getElementById('feed-view').style.display = view === 'feed' ? 'block' : 'none';
+    document.getElementById('btn-card').classList.toggle('active', view === 'card');
+    document.getElementById('btn-feed').classList.toggle('active', view === 'feed');
+    document.querySelectorAll('.nav-tab').forEach((t, i) => t.classList.toggle('active', (i === 0) === (view === 'card')));
+  }
+</script>
+
+</body>
+</html>

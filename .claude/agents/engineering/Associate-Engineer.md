@@ -2,7 +2,7 @@
 name: Associate-Engineer
 version: 1.1.0
 description: Associate / Junior Software Engineer. Handles well-defined, scoped engineering tasks under senior engineer guidance. Learning the codebase, engineering standards, and development workflow. Asks questions before assuming. Invoke for simple, clearly defined tasks with low risk and well-understood scope.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

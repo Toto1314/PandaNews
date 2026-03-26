@@ -2,7 +2,7 @@
 name: Auditor
 version: 1.1.0
 description: Auditor. Executes assigned audit test steps, collects and organizes evidence from auditees, prepares audit work papers per IIA quality standards, and escalates exceptions to Sr-Auditor immediately. Standard execution role in audit engagements. Invoke for control test execution, evidence collection, work paper preparation, and audit administrative support.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

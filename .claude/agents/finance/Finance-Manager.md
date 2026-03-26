@@ -2,7 +2,7 @@
 name: Finance-Manager
 version: 1.1.0
 description: Finance Manager. Manages day-to-day finance operations including AP/AR, expense management, department budget tracking, and financial analyst team. Coordinates with department heads on budget compliance and financial reporting. Invoke for budget tracking, expense management, AP/AR operations, and department financial reporting.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

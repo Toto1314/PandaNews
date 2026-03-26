@@ -2,7 +2,7 @@
 name: Investment-Analyst
 version: 1.1.0
 description: Investment Analyst. Conducts fundamental research on individual equities, builds financial models, writes investment thesis documents, monitors portfolio holdings, and screens for new investment ideas. Invoke for equity research, financial modeling, investment thesis writing, and earnings analysis.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Read
   - Glob

@@ -1,0 +1,52 @@
+[
+  {
+    "id": "valorant",
+    "name": "Valorant",
+    "enabled": true,
+    "search_query": "Valorant latest patch notes 2024 site:playvalorant.com OR site:valorant.com",
+    "patch_url": "https://playvalorant.com/en-us/news/game-updates/",
+    "notify_telegram": true,
+    "last_checked": null,
+    "last_version": null
+  },
+  {
+    "id": "overwatch2",
+    "name": "Overwatch 2",
+    "enabled": true,
+    "search_query": "Overwatch 2 latest patch notes balance update site:blizzard.com OR site:overwatch.com",
+    "patch_url": "https://overwatch.blizzard.com/en-us/news/patch-notes/",
+    "notify_telegram": true,
+    "last_checked": null,
+    "last_version": null
+  },
+  {
+    "id": "helldivers2",
+    "name": "Helldivers 2",
+    "enabled": true,
+    "search_query": "Helldivers 2 latest patch notes update site:store.steampowered.com OR site:arrowheadgamestudios.com",
+    "patch_url": "https://store.steampowered.com/news/app/553850",
+    "notify_telegram": true,
+    "last_checked": null,
+    "last_version": null
+  },
+  {
+    "id": "fortnite",
+    "name": "Fortnite",
+    "enabled": true,
+    "search_query": "Fortnite latest patch notes update site:fortnite.com OR site:epicgames.com",
+    "patch_url": "https://www.fortnite.com/news",
+    "notify_telegram": true,
+    "last_checked": null,
+    "last_version": null
+  },
+  {
+    "id": "leagueoflegends",
+    "name": "League of Legends",
+    "enabled": true,
+    "search_query": "League of Legends latest patch notes site:leagueoflegends.com",
+    "patch_url": "https://www.leagueoflegends.com/en-us/news/tags/patch-notes/",
+    "notify_telegram": true,
+    "last_checked": null,
+    "last_version": null
+  }
+]

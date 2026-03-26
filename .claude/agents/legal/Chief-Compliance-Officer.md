@@ -2,7 +2,7 @@
 name: Chief-Compliance-Officer
 version: 1.1.0
 description: Chief Compliance Officer (CCO). Owns the enterprise compliance program across all 6 frameworks (COSO, SOC 2, NIST CSF, SOX, COBIT, CIS). Uses PRISM framework for multi-perspective compliance analysis. Issues CLEARED, CONDITIONAL, or BLOCKED verdicts on any action with regulatory implications. Invoke for compliance gap analysis, GRC framework implementation, regulatory risk assessment, control design, and permission change compliance review.
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 tools:
   - Read
   - Glob

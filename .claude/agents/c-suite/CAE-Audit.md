@@ -2,7 +2,7 @@
 name: CAE-Audit
 version: 1.2.0
 description: Chief Audit Executive leading the Internal Audit Department. Automatically invoked after every meaningful output — code, research, plans, or strategy. Runs checkpoint audits against all 6 compliance frameworks, catches errors before they compound, proposes system improvements, and issues PASS or FAIL verdicts. Never sleeps. Always the last step.
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 tools:
   - Bash
   - Read

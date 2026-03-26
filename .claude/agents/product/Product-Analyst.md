@@ -2,7 +2,7 @@
 name: Product-Analyst
 version: 1.1.0
 description: Product Analyst. Tracks product metrics, builds analytics dashboards, analyzes feature adoption and retention data, designs and analyzes A/B tests with statistical rigor, and produces data-driven product insights and recommendations. The data layer of the product team. Invoke for product metrics analysis, A/B test design and results, feature adoption tracking, funnel analysis, and North Star metric reporting.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

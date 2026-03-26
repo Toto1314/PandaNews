@@ -37,6 +37,19 @@ except ImportError:
         def _wrap(fn): return fn
         return _wrap
 
+try:
+    from vector_router import query_agents as _query_agents
+    _VECTOR_ROUTER = True
+except ImportError:
+    _VECTOR_ROUTER = False
+
+try:
+    from parallel_runner import fanout as _fanout
+    import asyncio as _asyncio
+    _PARALLEL_RUNNER = True
+except ImportError:
+    _PARALLEL_RUNNER = False
+
 OLLAMA_LOG = Path.home() / ".claude" / "ollama_usage.jsonl"
 BUDGET_FILE = Path.home() / ".claude" / "token_budget.json"
 
@@ -225,11 +238,28 @@ def run_task(
             result["error"] = str(e)
 
     else:
-        # Claude backend — return structured signal for Lead Orchestrator
+        # Claude backend — semantic agent lookup + routing signal
+        agent_hint = ""
+        if _VECTOR_ROUTER:
+            try:
+                hits = _query_agents(prompt, n=3)
+                if hits:
+                    top = hits[0]
+                    agent_hint = (
+                        f"\n  Top agent  : {top['agent']} "
+                        f"(dept={top['department']}, score={top['score']})"
+                    )
+                    if len(hits) > 1:
+                        others = ", ".join(h["agent"] for h in hits[1:])
+                        agent_hint += f"\n  Alternates : {others}"
+            except Exception:
+                pass  # index not built yet — graceful degradation
+
         result["output"] = (
             f"[smart_run] Route to Claude.\n"
             f"  model=\"{decision['agent_param']}\"\n"
             f"  Invoke: Agent tool with model=\"{decision['agent_param']}\""
+            f"{agent_hint}"
         )
 
     return result
@@ -279,7 +309,7 @@ if __name__ == "__main__":
     if not args:
         print(
             "Usage: python smart_run.py \"task\" "
-            "[--prefer-local] [--no-tools] [--dry-run] [--tier N] [--no-stream]"
+            "[--prefer-local] [--no-tools] [--dry-run] [--tier N] [--no-stream] [--fanout]"
         )
         sys.exit(1)
 
@@ -288,11 +318,37 @@ if __name__ == "__main__":
     needs_tools  = "--no-tools" not in args
     dry_run      = "--dry-run" in args
     stream       = "--no-stream" not in args
+    fanout_mode  = "--fanout" in args
     force_tier   = None
 
     for i, a in enumerate(args):
         if a == "--tier" and i + 1 < len(args):
             force_tier = int(args[i + 1])
+
+    # --fanout: run prompt across comparison models in parallel
+    if fanout_mode:
+        if not _PARALLEL_RUNNER:
+            print("parallel_runner not available. Ensure parallel_runner.py is in ~/.claude/")
+            sys.exit(1)
+        fanout_models = ["gemma3:1b", "llama3.2:3b", "qwen2.5-coder:7b"]
+        # Allow custom models: --fanout --models m1 m2 m3
+        if "--models" in args:
+            mi = args.index("--models")
+            fanout_models = [a for a in args[mi+1:] if not a.startswith("--")]
+        print(f"\n  [fanout] Running across {len(fanout_models)} models: {', '.join(fanout_models)}")
+        results = _asyncio.run(_fanout(prompt, fanout_models))
+        wall = max(r["elapsed"] for r in results) if results else 0
+        seq  = sum(r["elapsed"] for r in results)
+        print(f"  Wall: {wall:.2f}s  |  Sequential estimate: {seq:.1f}s  |  Speedup: {seq/wall:.1f}x\n")
+        for r in results:
+            tok = r["input_tokens"] + r["output_tokens"]
+            status = f"ERROR: {r['error']}" if r["error"] else f"{r['elapsed']}s | {tok} tok"
+            print(f"  [{r['model']}]  {status}")
+            if r["output"]:
+                for line in r["output"].strip().splitlines()[:4]:
+                    print(f"    {line}")
+            print()
+        sys.exit(0)
 
     result = run_task(
         prompt,

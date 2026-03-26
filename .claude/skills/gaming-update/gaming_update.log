@@ -1,0 +1,16 @@
+2026-03-24 23:23:08,309 INFO Processing 1 game(s).
+2026-03-24 23:23:08,310 INFO Fetching update for: Valorant
+2026-03-24 23:25:44,307 ERROR Claude timed out after 120s
+2026-03-24 23:25:44,311 INFO Received 24 chars for Valorant
+2026-03-24 23:25:44,322 WARNING Could not extract version from first line: 'Error: Claude timed out.'
+2026-03-24 23:25:44,323 INFO New version for Valorant: UNKNOWN (was: None)
+2026-03-24 23:25:44,330 INFO State saved after: Valorant
+2026-03-24 23:25:44,330 INFO fetch_updates.py complete.
+2026-03-24 23:26:36,782 INFO Processing 1 game(s).
+2026-03-24 23:26:36,783 INFO Fetching update for: Valorant
+2026-03-24 23:29:12,223 INFO Received 5247 chars for Valorant
+2026-03-24 23:29:12,243 INFO New version for Valorant: 12.05 (was: UNKNOWN)
+2026-03-24 23:29:12,247 INFO State saved after: Valorant
+2026-03-24 23:29:12,248 INFO fetch_updates.py complete.
+2026-03-25 10:45:18,344 ERROR No game found with id: overwatch2,valorant,arc-raiders
+2026-03-25 10:45:18,548 INFO No pending notifications to push.

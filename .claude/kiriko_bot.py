@@ -1,0 +1,466 @@
+#!/usr/bin/env python3
+"""
+Kiriko — Telegram bot with intent router.
+Natural language in -> classified intent -> right action executed.
+No slash commands needed. Uses claude --print for everything.
+Logs to ~/.claude/kiriko.log
+"""
+
+import os
+import sys
+import time
+import json
+import subprocess
+import urllib.request
+import textwrap
+import threading
+import logging
+import re
+
+# ── Logging ─────────────────────────────────────────────────────────────────────
+
+LOG_FILE = os.path.join(os.path.expanduser("~"), ".claude", "kiriko.log")
+logging.basicConfig(
+    level=logging.DEBUG,
+    format="%(asctime)s %(levelname)s %(message)s",
+    handlers=[
+        logging.FileHandler(LOG_FILE, encoding="utf-8"),
+        logging.StreamHandler(sys.stdout),
+    ]
+)
+log = logging.getLogger("kiriko")
+
+# ── Config ─────────────────────────────────────────────────────────────────────
+
+BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+CHAT_ID   = os.environ.get("TELEGRAM_CHAT_ID")
+
+if not BOT_TOKEN or not CHAT_ID:
+    log.error("TELEGRAM_BOT_TOKEN and TELEGRAM_CHAT_ID must be set.")
+    sys.exit(1)
+
+ALLOWED_CHAT_ID   = int(CHAT_ID)
+LONG_POLL_TIMEOUT = 20
+CLAUDE_TIMEOUT    = 120
+HOME              = os.path.expanduser("~")
+CLAUDE_PATH       = r"C:\Users\atank\AppData\Roaming\npm\claude.ps1"
+MEMORY_DIR        = os.path.join(HOME, ".claude", "projects", "C--Users-atank", "memory")
+
+# ── Telegram ───────────────────────────────────────────────────────────────────
+
+BASE = f"https://api.telegram.org/bot{BOT_TOKEN}"
+
+def tg(method: str, **kwargs) -> dict:
+    payload = json.dumps(kwargs).encode()
+    req = urllib.request.Request(
+        f"{BASE}/{method}",
+        data=payload,
+        headers={"Content-Type": "application/json"}
+    )
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            return json.loads(resp.read())
+    except Exception as e:
+        log.error(f"Telegram {method} failed: {e}")
+        return {"ok": False}
+
+def send(text: str, chat_id: int = None):
+    if not text.strip():
+        return
+    cid = chat_id or ALLOWED_CHAT_ID
+    chunks = textwrap.wrap(text, 4000, replace_whitespace=False, break_long_words=False) or [text]
+    for chunk in chunks:
+        result = tg("sendMessage", chat_id=cid, text=chunk)
+        if not result.get("ok"):
+            log.error(f"sendMessage failed: {result}")
+
+def keep_typing(chat_id: int, stop_event: threading.Event):
+    while not stop_event.is_set():
+        tg("sendChatAction", chat_id=chat_id, action="typing")
+        stop_event.wait(4)
+
+# ── Claude runner ──────────────────────────────────────────────────────────────
+
+def run_claude(prompt: str) -> str:
+    log.debug(f"claude --print: {prompt[:100]}")
+    tmp = os.path.join(HOME, ".claude", "_kiriko_prompt.txt")
+    try:
+        # Write prompt to temp file — avoids PowerShell arg length/escaping limits
+        with open(tmp, "w", encoding="utf-8") as f:
+            f.write(prompt)
+
+        result = subprocess.run(
+            [
+                "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass",
+                "-Command",
+                f"Get-Content -Raw -Encoding UTF8 '{tmp}' | & '{CLAUDE_PATH}' --print"
+            ],
+            capture_output=True,
+            text=True,
+            timeout=CLAUDE_TIMEOUT,
+            cwd=HOME
+        )
+        output = result.stdout.strip()
+        if not output:
+            err = result.stderr.strip()
+            log.warning(f"No stdout. stderr: {err[:300]}")
+            return f"Error: {err[:300]}" if err else "No response from Claude."
+        return output
+    except subprocess.TimeoutExpired:
+        return "Timed out (2 min limit)."
+    except Exception as e:
+        log.error(f"run_claude error: {e}")
+        return f"Error: {e}"
+    finally:
+        try:
+            os.remove(tmp)
+        except Exception:
+            pass
+
+# ── Intent Router ──────────────────────────────────────────────────────────────
+
+ROUTER_PROMPT = '''You are an intent classifier for a personal AI assistant Telegram bot.
+Classify the user message and return ONLY valid JSON — no explanation, no markdown, just the JSON object.
+
+Intent types:
+- "portfolio"    — anything about stocks, investments, portfolio performance, prices, how am I doing financially
+- "memory"       — user wants to save/remember/note something for future reference
+- "watchlist"    — user wants to add or remove a stock ticker from their watchlist
+- "deal_memo"    — user wants analysis on a specific company, stock, token, or investment
+- "skill"          — user wants to run a specific task: weekly review, vc scout, risk audit, etc.
+- "system"         — user wants to update the AI OS, add an agent, change a setting, build something
+- "gaming_update"  — user asks about game patches, meta, what's OP, what got nerfed, patch notes for a specific game; param: "game" (game name or id, e.g. "valorant", "overwatch2")
+- "gaming_coaching" — user wants to improve at a game, asks for tier lists, loadout recommendations, team comps, how to rank up, best characters/agents to play; param: "game" + "query"
+- "gaming_research" — user asks about game mechanics, lore, upcoming content, esports results, pro play, new releases, how a specific mechanic works; param: "game" + "query"
+- "chat"           — general question or conversation, just respond directly
+
+Return format:
+{
+  "intent": "<one of the above>",
+  "confidence": <0-100>,
+  "params": {
+    "ticker": "<if deal_memo or watchlist>",
+    "game": "<if gaming_update — game name or id>",
+    "content": "<if memory — what to save>",
+    "skill": "<if skill — which one>",
+    "query": "<the user's core question or request, cleaned up>"
+  },
+  "reasoning": "<one sentence why>"
+}
+
+User message: "USER_MESSAGE_PLACEHOLDER"'''
+
+def classify_intent(text: str) -> dict:
+    """Use claude to classify the intent of a message. Returns action dict."""
+    prompt = ROUTER_PROMPT.replace("USER_MESSAGE_PLACEHOLDER", text.replace('"', '\\"'))
+    raw = run_claude(prompt)
+    log.debug(f"Router raw response: {raw[:300]}")
+
+    # Extract JSON from response
+    try:
+        # Try direct parse first
+        return json.loads(raw)
+    except json.JSONDecodeError:
+        # Try to extract JSON block from response
+        match = re.search(r'\{.*\}', raw, re.DOTALL)
+        if match:
+            try:
+                return json.loads(match.group())
+            except json.JSONDecodeError:
+                pass
+    log.warning(f"Could not parse intent JSON: {raw[:200]}")
+    return {"intent": "chat", "params": {"query": text}, "confidence": 50}
+
+# ── Action Handlers ────────────────────────────────────────────────────────────
+
+def action_portfolio(params: dict) -> str:
+    query = params.get("query", "Give me a portfolio summary")
+    prompt = (
+        f"Telegram message (3-4 sentences, plain text only): {query}. "
+        "Use the portfolio context in your memory. Be specific with numbers."
+    )
+    return run_claude(prompt)
+
+def action_memory(params: dict) -> str:
+    content = params.get("content") or params.get("query", "")
+    if not content:
+        return "What do you want me to remember?"
+
+    # Append to a telegram_notes.md file in memory dir
+    notes_file = os.path.join(MEMORY_DIR, "telegram_notes.md")
+    timestamp = time.strftime("%Y-%m-%d %H:%M")
+    entry = f"\n- [{timestamp}] {content}"
+
+    try:
+        with open(notes_file, "a", encoding="utf-8") as f:
+            f.write(entry)
+        log.info(f"Saved to memory: {content}")
+        return f"Saved: \"{content}\""
+    except Exception as e:
+        log.error(f"Memory save error: {e}")
+        return f"Could not save: {e}"
+
+def action_watchlist(params: dict) -> str:
+    ticker = params.get("ticker", "").upper()
+    query  = params.get("query", "")
+    if not ticker:
+        # Try to extract from query
+        words = query.upper().split()
+        ticker = next((w for w in words if 2 <= len(w) <= 5 and w.isalpha()), "")
+
+    if not ticker:
+        return "Which ticker do you want to add to the watchlist?"
+
+    prompt = (
+        f"The user wants to add {ticker} to their investment watchlist. "
+        f"Read their watchlist file at ~/.claude/projects/C--Users-atank/memory/portfolio_watchlist.md "
+        f"and append a new entry for {ticker} following the same format as existing entries. "
+        f"Map it to the agent economy thesis. Then confirm what was added in 1 sentence."
+    )
+    return run_claude(prompt)
+
+def action_deal_memo(params: dict) -> str:
+    ticker = params.get("ticker", "") or params.get("query", "")
+    prompt = (
+        f"Run a quick deal memo on {ticker} for a Telegram message. "
+        f"Cover: what they do, agent economy fit, bull/bear case, and your recommendation. "
+        f"Keep it under 200 words, plain text only."
+    )
+    return run_claude(prompt)
+
+def action_skill(params: dict) -> str:
+    skill = params.get("skill", "")
+    query = params.get("query", "")
+    prompt = (
+        f"The user wants to run the /{skill} skill with this context: {query}. "
+        f"Execute it and return a Telegram-friendly summary (plain text, concise)."
+    )
+    return run_claude(prompt)
+
+def action_system(params: dict) -> str:
+    query = params.get("query", "")
+    prompt = (
+        f"The user wants to make this change to their AI OS from Telegram: {query}. "
+        f"Execute it following all AI OS governance rules. "
+        f"Confirm what was done in 1-2 sentences (plain text)."
+    )
+    return run_claude(prompt)
+
+def action_gaming_update(params: dict) -> str:
+    game  = params.get("game", "").strip()
+    query = params.get("query", "")
+
+    # Determine game arg — use explicit game param if set, else try to extract from query
+    game_arg = game if game else query
+
+    skill_dir = os.path.join(HOME, ".claude", "skills", "gaming-update")
+    fetch_py  = os.path.join(skill_dir, "fetch_updates.py")
+    push_py   = os.path.join(skill_dir, "push_updates.py")
+    state_file = os.path.join(skill_dir, "state.json")
+
+    # Build --game flag if a specific game was identified
+    game_flag = ["--game", game_arg.lower().replace(" ", "")] if game_arg else []
+
+    try:
+        # Fetch step
+        fetch_result = subprocess.run(
+            [sys.executable, fetch_py] + game_flag,
+            capture_output=True, text=True, timeout=CLAUDE_TIMEOUT * 3,
+            cwd=HOME
+        )
+        log.info(f"fetch_updates rc={fetch_result.returncode}")
+
+        # Push step
+        push_result = subprocess.run(
+            [sys.executable, push_py] + game_flag,
+            capture_output=True, text=True, timeout=30,
+            cwd=HOME
+        )
+        log.info(f"push_updates rc={push_result.returncode}")
+
+        # Read state.json to pull TL;DR for Telegram reply
+        if os.path.exists(state_file):
+            with open(state_file, "r", encoding="utf-8") as f:
+                state = json.load(f)
+
+            lines = []
+            for gid, entry in state.items():
+                if game_flag and gid not in game_arg.lower().replace(" ", ""):
+                    continue
+                name    = gid.capitalize()
+                version = entry.get("last_version", "?")
+                tldr    = entry.get("tldr", "").strip()
+                if tldr:
+                    lines.append(f"{name} Patch {version}: {tldr}")
+                else:
+                    lines.append(f"{name} Patch {version}: update fetched.")
+
+            return "\n\n".join(lines) if lines else "Update fetched. Check state.json for details."
+        else:
+            return "Update fetched but state.json not found."
+
+    except subprocess.TimeoutExpired:
+        return "Gaming update timed out — try again or run manually."
+    except Exception as e:
+        log.error(f"action_gaming_update error: {e}")
+        return f"Gaming update error: {e}"
+
+
+def action_gaming_coaching(params: dict) -> str:
+    game  = params.get("game", "").strip()
+    query = params.get("query", "")
+    game_context = f" for {game}" if game else ""
+    prompt = (
+        f"Answer this for a Telegram message (plain text only, no markdown, max 200 words). "
+        f"You are a gaming meta coach{game_context}. "
+        f"Give actionable, patch-anchored advice. Always state which patch/meta you're referencing. "
+        f"Question: {query}"
+    )
+    return run_claude(prompt)
+
+
+def action_gaming_research(params: dict) -> str:
+    game  = params.get("game", "").strip()
+    query = params.get("query", "")
+    game_context = f" about {game}" if game else ""
+    prompt = (
+        f"Answer this for a Telegram message (plain text only, no markdown, max 200 words). "
+        f"You are a game researcher{game_context}. "
+        f"Cover mechanics, lore, upcoming content, or esports as relevant. "
+        f"Label anything unconfirmed as UNCONFIRMED. "
+        f"Question: {query}"
+    )
+    return run_claude(prompt)
+
+
+def action_chat(params: dict) -> str:
+    query = params.get("query", "")
+    prompt = (
+        f"Answer this for a Telegram message (3-4 sentences max, plain text only, no markdown): {query}"
+    )
+    return run_claude(prompt)
+
+ACTION_MAP = {
+    "portfolio":      action_portfolio,
+    "memory":         action_memory,
+    "watchlist":      action_watchlist,
+    "deal_memo":      action_deal_memo,
+    "skill":          action_skill,
+    "system":         action_system,
+    "gaming_update":  action_gaming_update,
+    "gaming_coaching": action_gaming_coaching,
+    "gaming_research": action_gaming_research,
+    "chat":           action_chat,
+}
+
+# ── Message routing ────────────────────────────────────────────────────────────
+
+INSTANT_COMMANDS = {
+    "/help":  lambda: (
+        "Kiriko — just text me naturally.\n\n"
+        "Examples:\n"
+        "  how is my portfolio doing\n"
+        "  remember PLTR near entry at $78\n"
+        "  add ARM to my watchlist\n"
+        "  what do you think about NVDA\n"
+        "  how was my week\n"
+        "  build me a landing page for X\n\n"
+        "I'll figure out what you mean.\n\nGaming:\n  valorant patch notes\n  best agents to play in valorant right now\n  how do I get better at Overwatch\n  what's coming in the next LoL patch\n  helldivers 2 meta loadout"
+    ),
+    "/start": lambda: "Kiriko online. Just text me anything naturally.",
+    "/ping":  lambda: "Online.",
+    "/log":   lambda: open(LOG_FILE, encoding="utf-8").read()[-2000:] if os.path.exists(LOG_FILE) else "No log yet.",
+}
+
+def process_update(update: dict):
+    msg = update.get("message") or update.get("edited_message")
+    if not msg:
+        return
+
+    chat_id = msg["chat"]["id"]
+    text    = msg.get("text", "").strip()
+
+    if chat_id != ALLOWED_CHAT_ID:
+        log.warning(f"Ignored unknown chat {chat_id}")
+        return
+    if not text:
+        return
+
+    log.info(f"<< {text}")
+
+    # Instant commands
+    cmd = text.split()[0].lower().split("@")[0]
+    if cmd in INSTANT_COMMANDS:
+        reply = INSTANT_COMMANDS[cmd]()
+        send(reply, chat_id)
+        return
+
+    # Show typing while working
+    stop = threading.Event()
+    t = threading.Thread(target=keep_typing, args=(chat_id, stop), daemon=True)
+    t.start()
+
+    try:
+        # Classify intent
+        intent_data = classify_intent(text)
+        intent      = intent_data.get("intent", "chat")
+        params      = intent_data.get("params", {})
+        confidence  = intent_data.get("confidence", 50)
+        reasoning   = intent_data.get("reasoning", "")
+
+        log.info(f"Intent: {intent} ({confidence}%) — {reasoning}")
+
+        # Dispatch to handler
+        handler = ACTION_MAP.get(intent, action_chat)
+        if not params.get("query"):
+            params["query"] = text
+        reply = handler(params)
+
+    except Exception as e:
+        log.error(f"process_update error: {e}")
+        reply = f"Something went wrong: {e}"
+    finally:
+        stop.set()
+
+    log.info(f">> {reply[:100]}{'...' if len(reply) > 100 else ''}")
+    send(reply, chat_id)
+
+# ── Main loop ──────────────────────────────────────────────────────────────────
+
+def run():
+    log.info("Kiriko starting (intent router mode)...")
+    send("Kiriko online. Just text me naturally — no commands needed.")
+
+    offset = None
+    while True:
+        try:
+            params = {"timeout": LONG_POLL_TIMEOUT, "allowed_updates": ["message"]}
+            if offset is not None:
+                params["offset"] = offset
+
+            payload = json.dumps(params).encode()
+            req = urllib.request.Request(
+                f"{BASE}/getUpdates",
+                data=payload,
+                headers={"Content-Type": "application/json"}
+            )
+            with urllib.request.urlopen(req, timeout=LONG_POLL_TIMEOUT + 5) as resp:
+                data = json.loads(resp.read())
+
+            if data.get("ok") and data["result"]:
+                for update in data["result"]:
+                    process_update(update)
+                    offset = update["update_id"] + 1
+
+        except KeyboardInterrupt:
+            log.info("Stopped.")
+            send("Kiriko going offline.")
+            break
+        except Exception as e:
+            log.error(f"Poll error: {e}")
+            time.sleep(2)
+
+        time.sleep(2)
+
+if __name__ == "__main__":
+    run()

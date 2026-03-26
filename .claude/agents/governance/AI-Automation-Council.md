@@ -2,7 +2,7 @@
 name: AI-Automation-Council
 version: 1.1.0
 description: AI & Automation Council — cross-functional governance body that approves AI/agent use cases, risk tiers, guardrails, and cross-org AI standards. Invoke before any new AI agent is granted write access to production, a new model is deployed, a Tier 2+ AI workflow is approved, or prompt policies for customer-facing systems are changed. Issues CLEARED, CONDITIONAL, or BLOCKED verdicts.
-model: claude-sonnet-4-6
+model: claude-opus-4-6
 tools:
   - Read
   - Glob

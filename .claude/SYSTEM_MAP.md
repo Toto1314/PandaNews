@@ -1,5 +1,5 @@
 # AI OS — System Map & Visual Flowchart
-**Version:** 1.9.1 | **Owner:** Lead Orchestrator | **Auto-Update Required:** YES
+**Version:** 1.10.0 | **Owner:** Lead Orchestrator | **Auto-Update Required:** YES
 **Governed by:** COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS
 
 > **LIVING DOCUMENT.** Every structural change to CLAUDE.md MUST also update this file.
@@ -27,6 +27,7 @@ graph TD
     classDef ic fill:#bae6fd,stroke:#0284c7,color:#000
     classDef tech fill:#92400e,stroke:#fbbf24,color:#fff,font-weight:bold
     classDef audit fill:#7f1d1d,stroke:#fca5a5,color:#fff,font-weight:bold
+    classDef gaming fill:#14532d,stroke:#86efac,color:#fff,font-weight:bold
 
     CEO["👤 CEO\nFinal Authority"]:::ceo
     LO["🧠 Lead Orchestrator\nClaude"]:::lo
@@ -310,6 +311,19 @@ graph TD
     end
     COO --> CAE
     CAE -->|"Reports independently"| CEO
+
+    %% ── GAMING INTELLIGENCE ──────────────────────────────
+    subgraph GAM["🎮 Gaming Intelligence"]
+        direction TB
+        DIRGAM["Dir-Gaming\nDept Head · Skill Integration\nKiriko intent router"]:::gaming
+        PATCH["Patch-Analyst\nPatch notes · Update cards\nHaiku-class"]:::senior
+        COACH["Meta-Coach\nTier lists · Coaching · Loadouts\nSonnet-class"]:::senior
+        GRES["Game-Researcher\nMechanics · Esports · Lore\nHaiku-class"]:::ic
+        DIRGAM --> PATCH
+        DIRGAM --> COACH
+        DIRGAM --> GRES
+    end
+    LO --> DIRGAM
 ```
 
 ---
@@ -367,6 +381,7 @@ flowchart TD
     KW -->|"LLM · agent · RAG · fine-tune"| AI_R["AI / ML\nCAIO-AI → AI Council"]:::route
     KW -->|"prompt · system prompt · guardrail"| PRM_R["PROMPT ENGINEERING\nCPrO → Dir-PromptQA"]:::route
     KW -->|"UX · UI · design · NPS · CSAT"| UX_R["UX / DESIGN / CX\nCCO-Design → CPO"]:::route
+    KW -->|"patch · nerf · buff · meta · tier list · loadout · esports · ranked"| GAM_R["GAMING\nDir-Gaming → Patch-Analyst\nor Meta-Coach or Game-Researcher"]:::route
     KW -->|"format · summarize · classify · draft"| T0["TIER 0 — SIMPLE\nLocal-Model-Router\nOllama saves tokens"]:::local
     KW -->|unclear| Q{"One clarifying\nquestion"}:::decision
     Q -->|still unclear| STOP(["STOP\nEscalate to CEO"]):::stop
@@ -495,3 +510,4 @@ flowchart LR
 | 1.7.0 | 2026-03-19 | Initial creation. 8 diagrams covering authority, pipeline, routing, risk tiers, dept overview, all 14 dept chains, versioning, compliance. |
 | 1.8.0 | 2026-03-19 | Full rebuild. Added color-coded classDef styling to all diagrams. Replaced individual dept chain diagrams with unified Family Tree (all 100+ agents in one graph). Improved node shapes, edge labels, and layout. |
 | 1.8.1 | 2026-03-19 | Governance doc layer expanded. AGENT_STANDARDS.md and DEPARTMENT_WORKFLOWS.md added to Documentation Layer diagram. ~42 thin agents upgraded across Security, Finance, Legal, Compliance, Audit, Product, GTM, Investments, Data, Strategy, and Design departments. |
+| 1.10.0 | 2026-03-25 | Gaming Intelligence department added. Dir-Gaming + Patch-Analyst + Meta-Coach + Game-Researcher added to Family Tree. Gaming domain added to Routing Decision Tree. |

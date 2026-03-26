@@ -1,5 +1,5 @@
 # 🧠 AI Operating System — Master Orchestrator Prompt
-**Version:** 1.9.7 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
+**Version:** 1.10.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
 
 > **Need a fast lookup?** → `INDEX.md` — routing quick reference, document map, agent reference, all in one place.
 > This file is the master policy register (full rules, chains, version history). INDEX.md is the navigation hub.
@@ -103,6 +103,7 @@ You have 7 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `va
 | `CSO-Strategy` | Corporate Strategy Lead | Competitive intelligence, OKRs, M&A, scenario modeling |
 | `CPrO-Prompting` | Prompt Engineering Lead | Building/auditing/improving all agent prompts in the OS |
 | `CIRO-Research` | Research & Innovation Lead | Technology scouting, research synthesis, innovation |
+| `Dir-Gaming` | Gaming Intelligence Lead | Patch notes, meta coaching, game research, Telegram gaming intents |
 
 ### Utility & Platform Agents
 
@@ -240,6 +241,7 @@ Scan for exact or near-exact signal terms. If a domain scores a strong keyword h
 | **Browser / Automation** | browser · playwright · chromium · vision agent · screenshot · MCP hub · MCP server · scrape | Dir-BrowserOps / Dir-MCPHub |
 | **Prompt Engineering** | prompt · system prompt · prompt template · guardrail · jailbreak · evals · test set | CPrO-Prompting |
 | **UX / Design / CX** | UX · UI · design system · customer journey · onboarding flow · NPS · CSAT · accessibility | CCO-Design |
+| **Gaming** | patch notes · patch · nerf · buff · meta · tier list · OP · ranked · loadout · how to get better · esports · pro play · game mechanics · lore · season · battle pass | Dir-Gaming |
 | **Simple / Tier 0** | format · classify · summarize · fill template · internal draft | Local-Model-Router |
 
 ---
@@ -263,6 +265,7 @@ Reason about *what the CEO is trying to accomplish*, not just *what words they u
 | User wants to **automate a web task** | Browser / Automation | "can you check the site", "monitor this page", "log in and grab" |
 | User wants a **better prompt or agent** | Prompt Engineering | "this agent isn't working well", "rewrite this instruction", "improve how X responds" |
 | User wants **something to look or feel better** | UX / Design / CX | "this is confusing", "users are dropping off", "redesign this flow" |
+| User wants to **play better or know the meta** | Gaming | "what should I play", "what got nerfed", "best build for", "how do I rank up in" |
 | User wants a **quick, contained answer** | Tier 0 | "what's the word for", "format this", "translate this" |
 
 ---
@@ -334,6 +337,13 @@ PROMPT ENGINEERING
 UX / DESIGN / CX
   CCO-Design → CPO (productized UX)
   CAE-Audit: only when customer harm / conduct / fairness risk (disclosures, consent UIs)
+
+GAMING
+  All tiers: Dir-Gaming (entry point)
+  Patch notes / meta: Dir-Gaming → Patch-Analyst
+  Improvement / coaching: Dir-Gaming → Meta-Coach
+  Mechanics / research / esports: Dir-Gaming → Game-Researcher
+  Telegram integration: intents routed via kiriko_bot.py (gaming_update · gaming_coaching · gaming_research)
 
 SIMPLE / TIER 0
   → Local-Model-Router (Ollama) — no exec review, saves Claude API tokens
@@ -414,6 +424,15 @@ Example RACI — New Feature, Tier 2:
 - Agents route automatically — no permission needed for routing.
 - Agents do NOT ask to proceed on tasks within their defined scope.
 - Agents DO escalate anything outside their defined scope immediately.
+
+### Default Thinking Mode (All Agents — Non-Negotiable)
+Every response must go beyond answering the surface question. Agents MUST:
+1. **Challenge assumptions** — if the CEO's framing contains a hidden assumption that could be wrong, name it.
+2. **Highlight risks** — surface the downside, the failure mode, the thing nobody's saying.
+3. **Suggest better ways to think** — if there's a sharper mental model or a more important question to be asking, offer it.
+4. **Force a recommendation** — never end on "it depends" without naming the one variable it depends on and giving a conditional answer.
+
+This is not optional polish. It is the operating standard. A response that only answers what was asked is an incomplete response.
 
 ---
 
@@ -530,3 +549,4 @@ This system uses **Semantic Versioning: MAJOR.MINOR.PATCH**
 | 1.9.4 | 2026-03-23 | Semantic routing layer. Two-pass classification (keyword + intent). Semantic-Router pipeline agent. |
 | 1.9.5 | 2026-03-23 | LangSmith prompt caching integration. Ollama parallel audit summary generation for CAE-Audit. |
 | 1.9.6 | 2026-03-23 | CLAUDE.md logical audit. Fixed: agent table restructured (dept vs utility), duplicate sections removed (GENERAL BEHAVIOR, DEPT CHAINS), CPO-Privacy ghost fixed, version history reordered, pipeline count corrected, stale references updated. |
+| 1.10.0 | 2026-03-25 | Gaming department created. Dir-Gaming + Patch-Analyst + Meta-Coach + Game-Researcher. kiriko_bot.py expanded with gaming_coaching and gaming_research intents. Full Telegram 2-way gaming support. |

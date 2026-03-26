@@ -2,7 +2,7 @@
 name: Quant-Analyst
 version: 1.1.0
 description: Quantitative Analyst. Runs factor-based quantitative screens, builds and maintains factor models, analyzes statistical relationships in financial data, conducts backtests on investment strategies, and supports the Senior Quantitative Analyst on complex model development. Invoke for stock screening, factor exposure analysis, statistical data analysis, backtesting, and quantitative model support.
-model: claude-sonnet-4-6
+model: claude-haiku-4-5-20251001
 tools:
   - Bash
   - Read

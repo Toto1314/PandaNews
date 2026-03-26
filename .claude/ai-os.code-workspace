@@ -1,0 +1,36 @@
+{
+  "folders": [
+    {
+      "name": "📋 Governance",
+      "path": "."
+    },
+    {
+      "name": "🤖 Agents",
+      "path": "./agents"
+    },
+    {
+      "name": "🧠 Memory",
+      "path": "./projects/C--Users-atank/memory"
+    }
+  ],
+  "settings": {
+    "markdown.preview.breaks": true,
+    "markdown.mermaid.enabled": true,
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+      "CLAUDE.md": "CHANGELOG.md, CHANGE_MANAGEMENT.md, DATA_CLASSIFICATION.md, SYSTEM_MAP.md, AUDIT_FINDINGS.md"
+    },
+    "workbench.editor.enablePreview": true,
+    "files.associations": {
+      "*.md": "markdown"
+    },
+    "editor.wordWrap": "on"
+  },
+  "extensions": {
+    "recommendations": [
+      "bierner.markdown-mermaid",
+      "yzhang.markdown-all-in-one",
+      "shd101wyy.markdown-preview-enhanced"
+    ]
+  }
+}

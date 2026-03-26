@@ -38,7 +38,27 @@
       "Bash(xargs -I{} basename {})",
       "Bash(OLLAMA_MODEL=gemma3:latest python agent_ollama_openai_compat.py)",
       "Bash(wsl -e bash -c \"cat /etc/os-release | grep -E ''NAME|VERSION''\")",
-      "Bash(wsl -e bash -c \"which tmux mosh 2>/dev/null || echo ''not installed''\")"
+      "Bash(wsl -e bash -c \"which tmux mosh 2>/dev/null || echo ''not installed''\")",
+      "Bash(tasklist)",
+      "Bash(taskkill /F /IM \"ollama app.exe\" /IM \"ollama.exe\")",
+      "Bash(start \"\" \"C:/Program Files/Docker/Docker/Docker Desktop.exe\")",
+      "Bash(taskkill /F /PID 11000 /PID 2796)",
+      "Bash(powershell -Command \"\\(Get-NetTCPConnection -LocalPort 11434 -ErrorAction SilentlyContinue\\).OwningProcess\")",
+      "Bash(claude --version)",
+      "Skill(patch-meta)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npm run:*)",
+      "mcp__filesystem__list_directory",
+      "Bash(powershell.exe -NoProfile -Command \"Get-Process -Id 11520 -ErrorAction SilentlyContinue | Select-Object Id, CPU, WS\" 2>&1)",
+      "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -Command \"& 'C:\\\\Users\\\\atank\\\\AppData\\\\Roaming\\\\npm\\\\claude.ps1' --print 'say hi in one word'\" 2>&1)",
+      "Bash(curl:*)",
+      "Bash(powershell.exe -NoProfile -Command \"Get-ChildItem 'C:\\\\Users\\\\atank\\\\.claude\\\\skills\\\\gaming-update' | Select-Object Name, Length, LastWriteTime | Format-Table -AutoSize\")",
+      "Bash(wscript.exe \"C:\\\\Users\\\\atank\\\\.claude\\\\run_kiriko_hidden.vbs\")",
+      "Bash(grep -r \"UserPromptSubmit\\\\|promptInsertion\\\\|inject_prompt\\\\|prompt_injection\" /c/Users/atank/.claude/ --include=*.json --include=*.md -l)",
+      "Skill(patch)",
+      "Bash(grep -rl 'invoke when' /c/Users/atank/.claude/agents/ -i --include=*.md)",
+      "Bash(echo \"Exit code: $?\")"
     ]
   }
 }
