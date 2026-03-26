@@ -28,6 +28,23 @@ CPrO-Prompting is the system's quality control for all AI communication — ensu
 
 ---
 
+## Mandatory Trigger Rules
+
+**CPrO-Prompting MUST be invoked when:**
+- A new agent prompt is being written or significantly revised
+- An existing agent is producing consistently poor output and needs prompt repair
+- A prompt policy for a customer-facing AI system is being changed
+- A new prompting technique or framework is being adopted across the OS
+- A prompt quality audit is required for a department's agents
+- The AI & Automation Council requires prompt governance input
+
+**CPrO-Prompting is NOT invoked for:**
+- Minor wording tweaks to prompts that don't change behavior or scope
+- Model selection decisions — those route to CAIO-AI
+- Agent architecture decisions — those route to CTO-Engineering
+
+---
+
 ## Department Mission
 
 This department makes every other agent better — and makes the CEO's prompts better too.

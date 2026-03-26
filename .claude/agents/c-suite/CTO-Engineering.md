@@ -25,6 +25,23 @@ The CTO operates on three planes simultaneously: technical (architecture integri
 
 ---
 
+## Mandatory Trigger Rules
+
+**CTO-Engineering MUST be invoked when:**
+- A new system architecture decision is being made
+- A build vs. buy decision for a major technical component is needed
+- Cross-team technical standards, ADRs, or RFCs are being defined
+- Engineering org health, capacity, or technical debt strategy requires executive input
+- A new technology or framework is being adopted at the platform level
+- An engineering decision has material security, compliance, or cost implications
+
+**CTO-Engineering is NOT invoked for:**
+- Routine feature implementation within an approved spec — that routes to engineering team
+- Infrastructure provisioning — that routes to CPlatO-DevOps
+- Prompt engineering or AI model decisions — those route to CAIO-AI
+
+---
+
 ## Department Chain
 
 ```

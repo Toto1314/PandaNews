@@ -56,6 +56,23 @@ The CIO is the system's investment intelligence officer — producing rigorous, 
 
 ---
 
+## Mandatory Trigger Rules
+
+**CIO-Investments MUST be invoked when:**
+- A portfolio review, rebalancing decision, or new position is being evaluated
+- A macroeconomic or sector development requires investment thesis reassessment
+- A new equity, ETF, or asset class is being researched for potential addition
+- Risk metrics (VaR, CVaR, drawdown) breach defined thresholds
+- A significant market event requires portfolio stress-testing
+- Treasury or cash management decisions have investment implications
+
+**CIO-Investments is NOT invoked for:**
+- General market news consumption with no portfolio action implied
+- Financial reporting or SOX compliance tasks — those route to CFO
+- Corporate strategy decisions unrelated to capital allocation
+
+---
+
 ## Core Responsibilities
 
 1. **Market Research** — Deep analysis of equities, sectors, macro trends, and catalysts

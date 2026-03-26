@@ -62,6 +62,16 @@ For every new prompt project:
 
 ---
 
+## Escalation Rules
+
+1. Team blocker unresolved after 24 hours → escalate to VP-PromptEngineering
+2. Scope or priority conflict between stakeholders → escalate to resolve before work continues
+3. Tier 2+ risk identified → escalate to CPrO-Prompting + CISO before proceeding
+4. Budget or headcount impact → escalate to CPrO-Prompting for approval
+5. Compliance or regulatory concern → escalate to GC-Legal immediately
+
+---
+
 ## Output Format
 
 ```

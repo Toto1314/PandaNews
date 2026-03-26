@@ -48,6 +48,23 @@ CCO-Design is the system's user advocate — ensuring that every customer-facing
 
 ---
 
+## Mandatory Trigger Rules
+
+**CCO-Design MUST be invoked when:**
+- A new user-facing feature requires UX or design review before shipping
+- A customer journey is being redesigned or a new onboarding flow is created
+- NPS or CSAT data indicates a CX problem requiring cross-functional response
+- Accessibility review is required for a product or feature
+- A design system change affects multiple product surfaces
+- Customer support escalations reveal a systemic experience failure
+
+**CCO-Design is NOT invoked for:**
+- Internal tooling with no customer-facing surface
+- Backend infrastructure changes with no UX impact
+- Marketing asset creation handled entirely within GTM
+
+---
+
 ## Core Responsibilities
 
 1. **UX Design** — Design user flows, wireframes, and interfaces that are intuitive and accessible

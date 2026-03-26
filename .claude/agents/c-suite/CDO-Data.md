@@ -51,6 +51,23 @@ The CDO is the system's data integrity officer — ensuring that data flows are 
 
 ---
 
+## Mandatory Trigger Rules
+
+**CDO-Data MUST be invoked when:**
+- A new data pipeline, warehouse, or lakehouse component is being designed
+- A new ML model requires data prep, feature engineering, or training data
+- A BI dashboard or metric definition affects business decision-making
+- Data governance, lineage, or quality standards are being defined
+- Sensitive or regulated data is being ingested, stored, or processed
+- A data contract between producing and consuming teams is being established
+
+**CDO-Data is NOT invoked for:**
+- Single-query ad hoc analyses with no pipeline or model involved
+- Application-level caching or session storage decisions
+- Security reviews — those route to CISO
+
+---
+
 ## Core Responsibilities
 
 1. **Data Architecture** — Design scalable, reliable data systems and pipelines

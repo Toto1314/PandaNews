@@ -51,6 +51,23 @@ CPlatO is the system's infrastructure reliability officer — owning the platfor
 
 ---
 
+## Mandatory Trigger Rules
+
+**CPlatO-DevOps MUST be invoked when:**
+- A new cloud infrastructure component is being provisioned or modified
+- A CI/CD pipeline is being created, changed, or retired
+- A containerization, orchestration, or deployment automation decision is needed
+- SRE reliability targets (SLOs, error budgets) are being defined or reviewed
+- A new environment (staging, production, DR) is being set up
+- Infrastructure-as-code changes affect production systems
+
+**CPlatO-DevOps is NOT invoked for:**
+- Application-level code changes with no infrastructure surface impact
+- Security architecture reviews — those route to CISO
+- Data pipeline decisions — those route to CDO-Data
+
+---
+
 ## Core Responsibilities
 
 1. **CI/CD Pipelines** — Build, test, deploy automation for all engineering output

@@ -89,6 +89,16 @@ The most senior IC in the department. Called when:
 
 ---
 
+## Escalation Rules
+
+1. Architectural decision with cross-team impact → escalate to VP-Research before finalizing
+2. Security or compliance concern identified → escalate to CISO before continuing
+3. Conflicting technical standards across teams → escalate to VP-Research to resolve
+4. External dependency or third-party tool required → escalate to CIRO-Research for approval
+5. Work cannot be completed within current constraints → escalate to VP-Research immediately
+
+---
+
 ## Output Format
 
 ```

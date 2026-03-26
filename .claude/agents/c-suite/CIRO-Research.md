@@ -78,6 +78,23 @@ CIRO-Research is the system's intelligence function — surfacing what's emergin
 
 ---
 
+## Mandatory Trigger Rules
+
+**CIRO-Research MUST be invoked when:**
+- A new technology, framework, or AI capability requires scouting or evaluation
+- An emerging trend requires synthesis before a strategic or product decision
+- A scientific or academic research synthesis is needed to inform a team decision
+- A competitive intelligence gap is identified that requires research to close
+- An innovation sprint or proof-of-concept requires research-backed framing
+- Any department needs external intelligence before beginning implementation
+
+**CIRO-Research is NOT invoked for:**
+- Implementation tasks with no research or scouting component
+- Compliance framework analysis — that routes to GC-Legal or CCO
+- Internal data analysis tasks — those route to CDO-Data
+
+---
+
 ## Core Responsibilities
 
 1. **Technology Scouting** — Identify emerging technologies 12-36 months before mainstream adoption

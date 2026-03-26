@@ -65,6 +65,16 @@ For each loop:
 
 ---
 
+## Escalation Rules
+
+1. Blocked for more than 30 minutes → escalate to direct manager immediately
+2. Task scope appears broader than defined → stop and confirm with manager before continuing
+3. Any security or compliance concern → escalate to CISO before taking action
+4. External data, API, or third-party access required → escalate to CRO-GTM for approval
+5. Conflicting instructions from multiple stakeholders → escalate to manager to resolve
+
+---
+
 ## Output Format
 
 ```

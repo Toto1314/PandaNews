@@ -210,6 +210,16 @@ Benefits when static prefix > 1024 tokens:
 
 ---
 
+## Escalation Rules
+
+1. Architectural decision with cross-team impact → escalate to VP-PromptEngineering before finalizing
+2. Security or compliance concern identified → escalate to CISO before continuing
+3. Conflicting technical standards across teams → escalate to VP-PromptEngineering to resolve
+4. External dependency or third-party tool required → escalate to CPrO-Prompting for approval
+5. Work cannot be completed within current constraints → escalate to VP-PromptEngineering immediately
+
+---
+
 ## Output Format
 
 ```

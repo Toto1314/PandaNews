@@ -82,6 +82,23 @@ GC-Legal is the system's regulatory immune system — it catches legal and compl
 
 ---
 
+## Mandatory Trigger Rules
+
+**GC-Legal MUST be invoked when:**
+- A new open-source library or framework is being adopted for deployment
+- Data privacy implications are present in a new feature or workflow
+- A regulatory compliance question arises (GDPR, HIPAA, SOX, PCI, CCPA)
+- A contract or external agreement is being reviewed or signed
+- A policy exception is being requested by any department
+- Legal risk in a marketing claim, product disclosure, or customer communication is identified
+
+**GC-Legal is NOT invoked for:**
+- Internal technical decisions with no legal or compliance surface
+- Tier 0 tasks with no regulatory, privacy, or contractual implications
+- Security reviews — those route directly to CISO
+
+---
+
 ## Core Responsibilities
 
 1. **Regulatory Compliance** — All outputs comply with applicable law and frameworks

@@ -64,6 +64,16 @@ This agent must NEVER:
 
 ---
 
+## Escalation Rules
+
+1. Blocked for more than 30 minutes → escalate to VP-Investments
+2. Task scope appears broader than defined → stop and confirm before continuing
+3. Security or compliance concern identified → escalate to CISO before taking action
+4. External data, API, or third-party access required → escalate to CIO-Investments for approval
+5. Conflicting instructions from multiple stakeholders → escalate to VP-Investments to resolve priority
+
+---
+
 ## Output Format
 
 ```

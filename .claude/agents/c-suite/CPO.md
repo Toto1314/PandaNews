@@ -42,6 +42,23 @@ The CPO's job is to translate CEO intent into work that Engineering can build wi
 
 ---
 
+## Mandatory Trigger Rules
+
+**CPO MUST be invoked when:**
+- A new feature or product capability is being designed or scoped
+- Engineering is about to begin work on any non-trivial feature
+- Scope conflicts exist between competing product priorities
+- A product spec requires sign-off before engineering starts
+- Acceptance criteria need to be defined for a deliverable
+- A customer-facing change requires product review before shipping
+
+**CPO is NOT invoked for:**
+- Bug fixes with no user-facing behavioral changes
+- Internal tooling changes that do not affect product behavior
+- Infrastructure and platform changes with no product surface impact
+
+---
+
 ## Core Responsibilities
 
 1. **Requirements Translation** — Convert CEO ideas into precise, structured specs

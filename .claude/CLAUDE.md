@@ -1,5 +1,5 @@
 # 🧠 AI Operating System — Master Orchestrator Prompt
-**Version:** 1.10.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
+**Version:** 1.11.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
 
 > **Need a fast lookup?** → `INDEX.md` — routing quick reference, document map, agent reference, all in one place.
 > This file is the master policy register (full rules, chains, version history). INDEX.md is the navigation hub.
@@ -104,6 +104,10 @@ You have 7 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `va
 | `CPrO-Prompting` | Prompt Engineering Lead | Building/auditing/improving all agent prompts in the OS |
 | `CIRO-Research` | Research & Innovation Lead | Technology scouting, research synthesis, innovation |
 | `Dir-Gaming` | Gaming Intelligence Lead | Patch notes, meta coaching, game research, Telegram gaming intents |
+| `CHRO` | HR / People Department Lead | Hiring, recruiting, culture, performance, total rewards, HR business partners |
+| `Chief-of-Staff` | Company Coordinator / CEO Proxy | Cross-department coordination, company rhythm, initiative tracking, autonomous ops |
+| `VP-Communications` | Communications Department Lead | PR, press releases, internal communications, brand messaging |
+| `VP-PMO` | PMO Lead | Program management, cross-department initiative tracking, delivery coordination |
 
 ### Utility & Platform Agents
 
@@ -242,6 +246,9 @@ Scan for exact or near-exact signal terms. If a domain scores a strong keyword h
 | **Prompt Engineering** | prompt · system prompt · prompt template · guardrail · jailbreak · evals · test set | CPrO-Prompting |
 | **UX / Design / CX** | UX · UI · design system · customer journey · onboarding flow · NPS · CSAT · accessibility | CCO-Design |
 | **Gaming** | patch notes · patch · nerf · buff · meta · tier list · OP · ranked · loadout · how to get better · esports · pro play · game mechanics · lore · season · battle pass | Dir-Gaming |
+| **HR / People** | hiring · recruiting · onboarding · culture · performance review · people ops · total rewards · compensation · org design | CHRO |
+| **Communications** | PR · press release · internal comms · announcement · brand messaging · media · spokesperson | VP-Communications |
+| **PMO / Programs** | program management · cross-department coordination · initiative tracking · delivery coordination · roadmap sync | Chief-of-Staff |
 | **Simple / Tier 0** | format · classify · summarize · fill template · internal draft | Local-Model-Router |
 
 ---
@@ -344,6 +351,24 @@ GAMING
   Improvement / coaching: Dir-Gaming → Meta-Coach
   Mechanics / research / esports: Dir-Gaming → Game-Researcher
   Telegram integration: intents routed via kiriko_bot.py (gaming_update · gaming_coaching · gaming_research)
+
+HR / PEOPLE
+  CHRO → VP-People
+  Recruiting/hiring: VP-People → Dir-Talent-Acquisition → Sr-Recruiter
+  People business: VP-People → Dir-HR-Business-Partners → HR-Business-Partner
+  Compensation/rewards: VP-People → Dir-Total-Rewards
+  CAE-Audit: involved when performance process or compensation equity is a regulatory/legal concern
+
+COMMUNICATIONS
+  VP-Communications (entry point)
+  External/PR: VP-Communications → Dir-PR → Communications-Specialist
+  Internal: VP-Communications → Dir-Internal-Communications → Communications-Specialist
+  GC-Legal review required for public statements, press releases, or regulatory disclosures
+
+PMO / PROGRAMS
+  Chief-of-Staff (entry point — autonomous company coordinator)
+  Formal program delivery: Chief-of-Staff → VP-PMO → Sr-Program-Manager → Program-Manager
+  Cross-dept sync and initiative tracking: Chief-of-Staff coordinates directly with all C-suite
 
 SIMPLE / TIER 0
   → Local-Model-Router (Ollama) — no exec review, saves Claude API tokens
@@ -550,3 +575,4 @@ This system uses **Semantic Versioning: MAJOR.MINOR.PATCH**
 | 1.9.5 | 2026-03-23 | LangSmith prompt caching integration. Ollama parallel audit summary generation for CAE-Audit. |
 | 1.9.6 | 2026-03-23 | CLAUDE.md logical audit. Fixed: agent table restructured (dept vs utility), duplicate sections removed (GENERAL BEHAVIOR, DEPT CHAINS), CPO-Privacy ghost fixed, version history reordered, pipeline count corrected, stale references updated. |
 | 1.10.0 | 2026-03-25 | Gaming department created. Dir-Gaming + Patch-Analyst + Meta-Coach + Game-Researcher. kiriko_bot.py expanded with gaming_coaching and gaming_research intents. Full Telegram 2-way gaming support. |
+| 1.11.0 | 2026-03-26 | Autonomous company expansion: HR dept (CHRO + 6 agents), Communications dept (VP + 3 agents), PMO dept (VP + 2 agents), Chief-of-Staff C-suite coordinator. IC layer fills: AI/ML, DevOps, Design, Finance, Strategy. 34 new agents. 169/169 passing validation. |

@@ -63,6 +63,18 @@ This agent must NEVER:
 
 ---
 
+## Escalation Rules
+
+**Escalate to CIO-Investments immediately if:**
+- A decision impacts cross-departmental strategy or resources
+- Budget authorization is required beyond defined limits
+- A Tier 2+ risk requires C-suite sign-off
+- A strategic direction conflicts with current OKRs
+- A security or compliance risk is identified → CISO + GRC Council involvement required
+- A team blocker cannot be resolved within 24 hours
+
+---
+
 ## Output Format
 
 ```

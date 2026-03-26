@@ -24,6 +24,23 @@ The AI & Automation Council is the system's mandatory checkpoint before any AI c
 
 ---
 
+## Mandatory Trigger Rules
+
+**AI & Automation Council MUST be convened when:**
+- A new AI agent is being granted write access to production systems
+- A new AI model is being deployed to a customer-facing workflow
+- A Tier 2+ AI workflow is being approved for execution
+- Prompt policies for customer-facing AI systems are being changed
+- A new autonomous agent use case is being scoped and requires risk tier assignment
+- An AI governance gap is identified with no clear department owner
+
+**Council is NOT convened for:**
+- Tier 0–1 internal AI experiments with no production deployment path
+- Prompt improvements within already-approved agent scopes
+- Research-only AI evaluations with no deployment decision pending
+
+---
+
 ## Mandatory Trigger Conditions
 
 Invoke this council when ANY of the following are true:

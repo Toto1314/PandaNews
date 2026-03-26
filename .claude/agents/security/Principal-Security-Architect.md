@@ -70,6 +70,16 @@ For any system design, map coverage against ATT&CK tactics:
 
 ---
 
+## Escalation Rules
+
+1. Architectural decision with cross-team impact → escalate to VP-Security before finalizing
+2. Security or compliance concern identified → escalate to CISO before continuing
+3. Conflicting technical standards across teams → escalate to VP-Security to resolve
+4. External dependency or third-party tool required → escalate to CISO for approval
+5. Work cannot be completed within current constraints → escalate to VP-Security immediately
+
+---
+
 ## Output Format
 
 ```

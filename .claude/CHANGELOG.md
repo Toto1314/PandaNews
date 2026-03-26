@@ -4,6 +4,215 @@
 
 ---
 
+## 2026-03-26 | AGENT-CREATE + AGENT-UPDATE — chore(ai-os): v1.10.0 gaming dept + agent upgrades + skills + kiriko bot  - Added Gaming Department: Dir-Gaming, Patch-A
+
+**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
+**Risk Tier:** 1
+**Agent Count After:** 169
+
+**AI & ML:**
+- Created: Dir-MLOps, ML-Engineer, MLOps-Engineer
+- Updated: Sr-ML-Engineer, VP-AI-Engineering
+
+**C-Suite:**
+- Created: CHRO, Chief-of-Staff
+- Updated: CAE-Audit, CAIO-AI, CCO-Design, CDO-Data, CFO, CIO-Investments, CIRO-Research, CPO, CPlatO-DevOps, CPrO-Prompting, CRO-GTM, CSO-Strategy, CTO-Engineering, GC-Legal
+
+**Communications:**
+- Created: Communications-Specialist, Dir-Internal-Communications, Dir-PR, VP-Communications
+
+**Data & Analytics:**
+- Updated: Principal-Data-Architect, Sr-Data-Engineer, VP-Data
+
+**CX & Design:**
+- Created: Customer-Support-Specialist, UX-Designer, UX-Researcher
+- Updated: Dir-UX-Design, Sr-UX-Designer, VP-Customer-Experience
+
+**DevOps / Platform:**
+- Created: DevOps-Engineer, SRE-Engineer
+- Updated: Dir-Cloud-Infrastructure, Dir-MCPHub, Dir-SRE, Principal-Platform-Architect, Sr-DevOps-Engineer, VP-Platform-Engineering
+
+**Finance:**
+- Created: Dir-FP-and-A, Dir-Treasury, Financial-Controller
+- Updated: Principal-Financial-Analyst
+
+**Gaming Intelligence:**
+- Updated: Dir-Gaming, Game-Researcher, Meta-Coach, Patch-Analyst
+
+**Governance:**
+- Updated: AI-Automation-Council, GRC-Council
+
+**GTM / Revenue:**
+- Updated: Account-Executive, CSM, FDE, Growth-Analyst, Regional-Sales-Director, Solutions-Architect, VP-Marketing, VP-Sales
+
+**HR / People:**
+- Created: Dir-HR-Business-Partners, Dir-Talent-Acquisition, Dir-Total-Rewards, HR-Business-Partner, Sr-Recruiter, VP-People
+
+**Investments:**
+- Updated: Investment-Analyst, Portfolio-Manager, Sr-Equity-Analyst, Sr-Quant-Analyst, VP-Investments
+
+**Legal / GRC:**
+- Updated: Principal-Compliance-Architect
+
+**Technical Pipeline:**
+- Updated: Local-Model-Router, Semantic-Router
+
+**PMO:**
+- Created: Program-Manager, Sr-Program-Manager, VP-PMO
+
+**Product:**
+- Updated: Principal-PM, Sr-PM, VP-Product
+
+**Prompt Engineering:**
+- Updated: AI-Integration-Specialist, Principal-PromptEngineer, Prompt-Engineer, Prompt-Engineering-Manager, Sr-Prompt-Engineer, VP-PromptEngineering
+
+**Research & Innovation:**
+- Updated: Dir-TechResearch, Principal-Researcher, Research-Associate, Research-Scientist, Sr-TechResearcher
+
+**Security:**
+- Updated: Principal-Security-Architect, Sr-Security-Engineer
+
+**Strategy:**
+- Created: Sr-Strategy-Analyst, Strategy-Analyst, Strategy-Manager
+- Updated: Dir-MarketResearch, Dir-Strategic-Partnerships, VP-Strategy
+
+---
+## 2026-03-26 | AGENT-CREATE + AGENT-UPDATE — chore(ai-os): v1.10.0 gaming dept + agent upgrades + skills + kiriko bot  - Added Gaming Department: Dir-Gaming, Patch-A
+
+**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
+**Risk Tier:** 1
+**Agent Count After:** 169
+
+**AI & ML:**
+- Created: Dir-MLOps, ML-Engineer, MLOps-Engineer
+- Updated: Sr-ML-Engineer, VP-AI-Engineering
+
+**C-Suite:**
+- Created: CHRO, Chief-of-Staff
+- Updated: CAE-Audit, CAIO-AI, CCO-Design, CDO-Data, CFO, CIO-Investments, CIRO-Research, CPO, CPlatO-DevOps, CPrO-Prompting, CRO-GTM, CSO-Strategy, CTO-Engineering, GC-Legal
+
+**Communications:**
+- Created: Communications-Specialist, Dir-Internal-Communications, Dir-PR, VP-Communications
+
+**Data & Analytics:**
+- Updated: Principal-Data-Architect, Sr-Data-Engineer, VP-Data
+
+**CX & Design:**
+- Created: Customer-Support-Specialist, UX-Designer, UX-Researcher
+- Updated: Dir-UX-Design, Sr-UX-Designer, VP-Customer-Experience
+
+**DevOps / Platform:**
+- Created: DevOps-Engineer, SRE-Engineer
+- Updated: Dir-Cloud-Infrastructure, Dir-MCPHub, Dir-SRE, Principal-Platform-Architect, Sr-DevOps-Engineer, VP-Platform-Engineering
+
+**Finance:**
+- Created: Dir-FP-and-A, Dir-Treasury, Financial-Controller
+- Updated: Principal-Financial-Analyst
+
+**Gaming Intelligence:**
+- Updated: Dir-Gaming, Game-Researcher, Meta-Coach, Patch-Analyst
+
+**Governance:**
+- Updated: AI-Automation-Council, GRC-Council
+
+**GTM / Revenue:**
+- Updated: Account-Executive, CSM, FDE, Growth-Analyst, Regional-Sales-Director, Solutions-Architect, VP-Marketing, VP-Sales
+
+**HR / People:**
+- Created: Dir-HR-Business-Partners, Dir-Talent-Acquisition, Dir-Total-Rewards, HR-Business-Partner, Sr-Recruiter, VP-People
+
+**Investments:**
+- Updated: Investment-Analyst, Portfolio-Manager, Sr-Equity-Analyst, Sr-Quant-Analyst, VP-Investments
+
+**Legal / GRC:**
+- Updated: Principal-Compliance-Architect
+
+**Technical Pipeline:**
+- Updated: Local-Model-Router, Semantic-Router
+
+**PMO:**
+- Created: Program-Manager, Sr-Program-Manager, VP-PMO
+
+**Product:**
+- Updated: Principal-PM, Sr-PM, VP-Product
+
+**Prompt Engineering:**
+- Updated: AI-Integration-Specialist, Principal-PromptEngineer, Prompt-Engineer, Prompt-Engineering-Manager, Sr-Prompt-Engineer, VP-PromptEngineering
+
+**Research & Innovation:**
+- Updated: Dir-TechResearch, Principal-Researcher, Research-Associate, Research-Scientist, Sr-TechResearcher
+
+**Security:**
+- Updated: Principal-Security-Architect, Sr-Security-Engineer
+
+**Strategy:**
+- Created: Sr-Strategy-Analyst, Strategy-Analyst, Strategy-Manager
+- Updated: Dir-MarketResearch, Dir-Strategic-Partnerships, VP-Strategy
+
+---
+## 2026-03-26 | DEPT-CREATE + IC-EXPAND | Autonomous Company Expansion — v1.11.0
+
+**Changed By:** Lead Orchestrator (CEO-directed)
+**Approved By:** CEO
+**Risk Tier:** 1
+**COSO Component:** Control Environment · Organizational Structure · Control Activities
+
+**Summary:** Full autonomous company expansion. 3 new departments created (HR, Communications, PMO), 1 new C-suite coordinator (Chief-of-Staff), IC layer fills for 5 existing departments (AI/ML, DevOps, Design, Finance, Strategy). 34 new agents total. 4 misplaced agent files corrected. All 169 agents passing validation.
+
+**New C-Suite Agent:**
+- `agents/c-suite/Chief-of-Staff.md` v1.0.0 — CEO proxy, autonomous company coordinator, owns weekly rhythm, cross-dept initiative tracking. Has built-in ACT/CONSULT/ESCALATE decision authority table.
+
+**New HR / People Department (agents/hr/ + c-suite/CHRO.md):**
+- `agents/c-suite/CHRO.md` v1.0.0 — Chief Human Resources Officer
+- `agents/hr/VP-People.md` v1.0.0
+- `agents/hr/Dir-Talent-Acquisition.md` v1.0.0
+- `agents/hr/Dir-HR-Business-Partners.md` v1.0.0
+- `agents/hr/Dir-Total-Rewards.md` v1.0.0
+- `agents/hr/Sr-Recruiter.md` v1.0.0
+- `agents/hr/HR-Business-Partner.md` v1.0.0
+
+**New Communications Department (agents/comms/):**
+- `agents/comms/VP-Communications.md` v1.0.0
+- `agents/comms/Dir-PR.md` v1.0.0
+- `agents/comms/Dir-Internal-Communications.md` v1.0.0
+- `agents/comms/Communications-Specialist.md` v1.0.0
+
+**New PMO Department (agents/pmo/):**
+- `agents/pmo/VP-PMO.md` v1.0.0
+- `agents/pmo/Sr-Program-Manager.md` v1.0.0
+- `agents/pmo/Program-Manager.md` v1.0.0
+
+**IC Layer Fills:**
+- AI/ML: `Dir-MLOps.md`, `ML-Engineer.md`, `MLOps-Engineer.md`
+- DevOps: `DevOps-Engineer.md`, `SRE-Engineer.md`
+- Design: `UX-Designer.md`, `UX-Researcher.md`, `Customer-Support-Specialist.md`
+- Finance: `Dir-FP-and-A.md`, `Financial-Controller.md`, `Dir-Treasury.md`
+- Strategy: `Strategy-Manager.md`, `Sr-Strategy-Analyst.md`, `Strategy-Analyst.md`
+
+**File Moves (structural corrections):**
+- `agents/data/Dir-AI-Research.md` → `agents/ai-ml/Dir-AI-Research.md`
+- `agents/ai-ml/Head-InnovationLab.md` → `agents/research/Head-InnovationLab.md`
+- `agents/ai-ml/Innovation-Engineer.md` → `agents/research/Innovation-Engineer.md`
+- `agents/ai-ml/Dir-BrowserOps.md` → `agents/devops/Dir-BrowserOps.md`
+
+**CLAUDE.md Changes:**
+- Version bumped: 1.10.0 → 1.11.0
+- CHRO, Chief-of-Staff, VP-Communications, VP-PMO added to department agent table
+- HR, Communications, PMO domains added to Step 1 keyword fast-path
+- HR, Communications, PMO routing blocks added to Step 3
+
+**Propagation Completed:**
+- [x] Agent files created: 34 new agents
+- [x] Directories created: agents/hr/, agents/comms/, agents/pmo/
+- [x] CLAUDE.md updated: agent table, routing, version history
+- [x] CHANGELOG.md entry written: YES (this entry)
+- [x] SYSTEM_MAP.md updated: new depts in Family Tree, routing decision tree (v1.11.0)
+- [x] Validation: 169/169 agents passing
+
+**Sensitive Data Impact:** NONE
+
+---
+
 ## 2026-03-25 | DEPT-CREATE | Gaming Department — Dir-Gaming + 3 specialists (v1.10.0)
 
 **Changed By:** Lead Orchestrator (CEO-directed)

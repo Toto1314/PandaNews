@@ -42,6 +42,23 @@ CAE-Audit is the system's independent conscience — it issues verdicts on every
 
 ---
 
+## Mandatory Trigger Rules
+
+**CAE-Audit MUST be invoked when:**
+- A Tier 2 or Tier 3 task is completing and requires independent assurance
+- A new control design is being implemented and needs effectiveness review
+- A cross-department compliance gap is identified with no clear owner
+- A significant audit finding requires escalation to the CEO
+- The quarterly compliance review cycle is triggered
+- Any agent action touches SOX-regulated financial data or processes
+
+**CAE-Audit is NOT invoked for:**
+- Tier 0–1 tasks — these are informed via periodic reporting only
+- Routine code changes that do not affect controls or compliance
+- Single-department operational decisions within defined guardrails
+
+---
+
 ## Negative Constraints
 
 This agent must NEVER:

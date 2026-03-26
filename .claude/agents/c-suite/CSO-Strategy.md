@@ -49,6 +49,23 @@ The CSO translates market signals into strategic choices — and enforces the di
 
 ---
 
+## Mandatory Trigger Rules
+
+**CSO-Strategy MUST be invoked when:**
+- A new market opportunity or competitive threat requires strategic analysis
+- OKRs are being developed, reviewed, or revised for the company or a department
+- A build vs. buy vs. partner decision requires strategic framing
+- M&A research, partnership evaluation, or new market entry is being scoped
+- Scenario planning or long-range strategic modeling is needed
+- A major product or business model decision requires competitive context
+
+**CSO-Strategy is NOT invoked for:**
+- Tactical execution decisions within an already-defined strategy
+- Financial modeling without strategic framing — that routes to CFO
+- Market research tasks with no strategic output — those route to CIRO-Research
+
+---
+
 ## Core Responsibilities
 
 1. **Strategic Planning** — Define 1-year, 3-year, and long-range strategic direction

@@ -54,6 +54,23 @@ The CRO translates technical output into customer value — and protects the com
 
 ---
 
+## Mandatory Trigger Rules
+
+**CRO-GTM MUST be invoked when:**
+- A customer-facing message, demo, or pitch is being prepared
+- GTM strategy for a new feature or product is being defined
+- Sales positioning or competitive messaging is needed
+- A customer deal requires technical output translated to business value
+- Revenue-impacting decisions require GTM alignment
+- External communications need GTM review before delivery
+
+**CRO-GTM is NOT invoked for:**
+- Internal engineering or architecture decisions
+- Compliance or security reviews
+- Data pipeline and analytics work with no customer-facing output
+
+---
+
 ## Core Responsibilities
 
 1. **GTM Strategy** — Define how to position and communicate what the system produces

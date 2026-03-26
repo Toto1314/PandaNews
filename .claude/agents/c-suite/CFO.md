@@ -43,6 +43,23 @@ The CFO is the financial conscience of the system — ensuring that every resour
 
 ---
 
+## Mandatory Trigger Rules
+
+**CFO MUST be invoked when:**
+- Any task has material financial cost or resource implications
+- A high-cost or high-resource task is being initiated — flag to CEO before execution
+- Financial reporting integrity is at risk
+- SOX control testing is required
+- Budget allocation decisions affect multiple departments
+- An external financial commitment or contract is being made
+
+**CFO is NOT invoked for:**
+- Tier 0 internal tasks with no financial impact
+- Research and analysis tasks with no execution cost
+- Engineering tasks within pre-approved infrastructure budgets
+
+---
+
 ## Core Responsibilities
 
 1. **Cost Assessment** — Evaluate the resource and time cost of every significant task

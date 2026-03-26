@@ -1,5 +1,5 @@
 # AI OS — System Map & Visual Flowchart
-**Version:** 1.10.0 | **Owner:** Lead Orchestrator | **Auto-Update Required:** YES
+**Version:** 1.11.0 | **Owner:** Lead Orchestrator | **Auto-Update Required:** YES
 **Governed by:** COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS
 
 > **LIVING DOCUMENT.** Every structural change to CLAUDE.md MUST also update this file.
@@ -109,11 +109,16 @@ graph TD
         VPFIN["VP of Finance"]:::vp
         PFA["Principal Financial Analyst"]:::principal
         DIRFIN["Director of Finance"]:::director
+        DIRFPA["Director of FP&A"]:::director
+        DIRTRSY["Director of Treasury"]:::director
         FINMGR["Finance Manager"]:::manager
+        FINCTRL["Financial Controller"]:::manager
         SRFA["Sr Financial Analyst"]:::senior
         FA["Financial Analyst"]:::ic
         FINA["Finance Associate"]:::ic
         CFO --> VPFIN --> PFA --> DIRFIN --> FINMGR --> SRFA --> FA --> FINA
+        VPFIN --> DIRFPA --> SRFA
+        VPFIN --> DIRTRSY --> FINCTRL
     end
     COO --> CFO
 
@@ -202,11 +207,13 @@ graph TD
         PPA["Principal Platform Architect"]:::principal
         DIRCI["Director of Cloud Infrastructure"]:::director
         SRDOE["Sr DevOps Engineer"]:::senior
+        DOES["DevOps Engineer"]:::ic
         DIRSRE["Director of SRE"]:::director
+        SREE["SRE Engineer"]:::ic
         DIRBOPS["Dir-BrowserOps\nPlaywright MCP · Domain Allowlist"]:::director
         DIRMCH["Dir-MCPHub\nMetaMCP · Tool ACLs · Namespaces"]:::director
-        CPLATO --> VPPE --> PPA --> DIRCI --> SRDOE
-        VPPE --> DIRSRE
+        CPLATO --> VPPE --> PPA --> DIRCI --> SRDOE --> DOES
+        VPPE --> DIRSRE --> SREE
         VPPE --> DIRBOPS
         VPPE --> DIRMCH
     end
@@ -218,9 +225,13 @@ graph TD
         CAIO["CAIO-AI"]:::csuite
         VPAIE["VP of AI Engineering"]:::vp
         DIRML["Director of ML Engineering"]:::director
+        DIRMLO["Director of MLOps"]:::director
         SRML["Sr ML Engineer"]:::senior
+        MLE["ML Engineer"]:::ic
+        MLO["MLOps Engineer"]:::ic
         DIRAIR["Director of AI Research"]:::director
-        CAIO --> VPAIE --> DIRML --> SRML
+        CAIO --> VPAIE --> DIRML --> SRML --> MLE
+        VPAIE --> DIRMLO --> MLO
         VPAIE --> DIRAIR
     end
     COO --> CAIO
@@ -232,11 +243,14 @@ graph TD
         VPCX["VP of Customer Experience"]:::vp
         DIRUX["Director of UX Design"]:::director
         SRUXD["Sr UX Designer"]:::senior
+        UXDG["UX Designer"]:::ic
         DIRUR["Director of User Research"]:::director
+        UXRES["UX Researcher"]:::ic
         DIRCS["Director of Customer Support"]:::director
-        CCO_D --> VPCX --> DIRUX --> SRUXD
-        VPCX --> DIRUR
-        VPCX --> DIRCS
+        CSS["Customer Support Specialist"]:::ic
+        CCO_D --> VPCX --> DIRUX --> SRUXD --> UXDG
+        VPCX --> DIRUR --> UXRES
+        VPCX --> DIRCS --> CSS
     end
     COO --> CCO_D
 
@@ -324,6 +338,49 @@ graph TD
         DIRGAM --> GRES
     end
     LO --> DIRGAM
+
+    %% ── CHIEF OF STAFF (AUTONOMOUS COORDINATOR) ──────────
+    COS["🗂️ Chief-of-Staff\nCEO proxy · Company rhythm\nAutonomous decision authority"]:::coo
+    LO --> COS
+    COS --> COO
+
+    %% ── HR / PEOPLE ──────────────────────────────────────
+    subgraph HRP["👥 HR / People"]
+        direction TB
+        CHRO["CHRO"]:::csuite
+        VPPPL["VP of People"]:::vp
+        DIRTA["Director of Talent Acquisition"]:::director
+        DIRHRBP["Director of HR Business Partners"]:::director
+        DIRTR2["Director of Total Rewards"]:::director
+        SREC["Sr Recruiter"]:::senior
+        HRBP["HR Business Partner"]:::ic
+        CHRO --> VPPPL --> DIRTA --> SREC
+        VPPPL --> DIRHRBP --> HRBP
+        VPPPL --> DIRTR2
+    end
+    COO --> CHRO
+
+    %% ── COMMUNICATIONS ───────────────────────────────────
+    subgraph COM["📣 Communications"]
+        direction TB
+        VPCOM["VP of Communications"]:::vp
+        DIRPR["Director of PR"]:::director
+        DIRI["Director of Internal Comms"]:::director
+        COMSP["Communications Specialist"]:::ic
+        VPCOM --> DIRPR --> COMSP
+        VPCOM --> DIRI --> COMSP
+    end
+    COO --> VPCOM
+
+    %% ── PMO / PROGRAMS ───────────────────────────────────
+    subgraph PMO["📋 PMO"]
+        direction TB
+        VPPMO["VP of PMO"]:::vp
+        SRPGM["Sr Program Manager"]:::senior
+        PGM["Program Manager"]:::ic
+        VPPMO --> SRPGM --> PGM
+    end
+    COS --> VPPMO
 ```
 
 ---
@@ -382,6 +439,9 @@ flowchart TD
     KW -->|"prompt · system prompt · guardrail"| PRM_R["PROMPT ENGINEERING\nCPrO → Dir-PromptQA"]:::route
     KW -->|"UX · UI · design · NPS · CSAT"| UX_R["UX / DESIGN / CX\nCCO-Design → CPO"]:::route
     KW -->|"patch · nerf · buff · meta · tier list · loadout · esports · ranked"| GAM_R["GAMING\nDir-Gaming → Patch-Analyst\nor Meta-Coach or Game-Researcher"]:::route
+    KW -->|"hiring · recruiting · people ops · culture · onboarding · performance"| HR_R["HR / PEOPLE\nCHRO → VP-People"]:::route
+    KW -->|"PR · press release · internal comms · announcement · brand messaging"| COM_R["COMMUNICATIONS\nVP-Communications → Dir-PR or Dir-Internal-Comms"]:::route
+    KW -->|"program management · cross-dept coordination · initiative tracking"| PMO_R["PMO\nChief-of-Staff → VP-PMO"]:::route
     KW -->|"format · summarize · classify · draft"| T0["TIER 0 — SIMPLE\nLocal-Model-Router\nOllama saves tokens"]:::local
     KW -->|unclear| Q{"One clarifying\nquestion"}:::decision
     Q -->|still unclear| STOP(["STOP\nEscalate to CEO"]):::stop

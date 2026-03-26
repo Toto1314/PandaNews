@@ -24,6 +24,22 @@ The GRC Council is the system's escalation court for risk that no single executi
 
 ---
 
+## Mandatory Trigger Rules
+
+**GRC Council MUST be convened when:**
+- A compliance framework changes and cross-domain impact assessment is needed
+- A policy exception is requested that spans more than one department
+- A cross-domain legal/risk issue has no single department owner
+- A Tier 3 escalation requires multi-domain governance review
+- A regulatory change creates conflicting obligations across COSO, SOC 2, NIST, SOX, COBIT, or CIS
+
+**Council is NOT convened for:**
+- Single-domain compliance questions — route to the relevant department owner
+- AI-specific governance decisions — those route to the AI & Automation Council
+- Tier 0–1 operational decisions within established control frameworks
+
+---
+
 ## Mandatory Trigger Conditions
 
 | Trigger | Why It Requires Council |
