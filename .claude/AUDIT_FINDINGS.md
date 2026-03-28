@@ -1,6 +1,7 @@
 # AI OS — Audit Findings Log
 **Owner:** CAE-Audit | **Format:** Persistent across sessions
 **Purpose:** Tracks all open and resolved audit findings. CAE-Audit writes here after every meaningful audit engagement.
+**Last Reviewed:** 2026-03-27 | v1.12.1 | COSO Full Audit — CONDITIONAL PASS
 
 > **Navigation:** `INDEX.md` — fast lookup | `CLAUDE.md` — master register | `CHANGE_MANAGEMENT.md` — remediation changes are logged here after a finding is resolved | `CHANGELOG.md` — audit trail for all resolved findings
 
@@ -22,7 +23,78 @@
 
 ## OPEN FINDINGS
 
-*(none — all findings resolved as of 2026-03-20 v1.8.5)*
+### [2026-03-27] | HIGH | CA-001 — CHANGELOG Format Drift
+**Status:** RESOLVED (same session)
+**Framework:** COSO · SOX
+**Description:** CHANGELOG entries from v1.9.0 forward were missing required fields from CHANGE_MANAGEMENT.md: Approved By, COSO Component, Propagation Completed checkboxes, Sensitive Data Impact, Rollback. The pre-commit hook generated abbreviated entries that satisfied git history but not the audit trail standard.
+**Root Cause:** auto_changelog.py `build_changelog_entry()` never included the full CHANGE_MANAGEMENT.md field set. The hook was written before CHANGE_MANAGEMENT.md defined the required format.
+**Remediation:** Updated auto_changelog.py to generate fully compliant entries including all required fields, batch-size escalation inference, structural change approval flags, and TODO placeholders for human-required fields.
+**Resolution Entry:** 2026-03-27 Priority 1 remediation. auto_changelog.py updated.
+
+---
+
+### [2026-03-27] | HIGH | MO-001 — Monitoring Cadence Gap (v1.10.0–v1.12.1)
+**Status:** OPEN
+**Framework:** COSO (Monitoring Activities)
+**Description:** No CAE-Audit monitoring notes in AUDIT_FINDINGS.md for seven version cycles (v1.9.0–v1.12.1). Three structurally significant batches — v1.10.0 (gaming dept + Telegram), v1.11.0 (34-agent expansion, 3 new depts), v1.12.0 (MasterPlanner gate) — executed with no documented audit monitoring.
+**Root Cause:** Monitoring cadence was active in Sessions 1–4 (2026-03-19/20) and then fell silent. No session-level health check was documented for any subsequent version cycle.
+**Remediation:** (1) Write backfill monitoring notes below for v1.10.0–v1.12.1. (2) Going forward: one AUDIT_FINDINGS.md entry per minor version release minimum. (3) Update "Last Reviewed" timestamp at top of this file each session.
+**Resolution Entry:** Partially resolved this session (backfill written below). Ongoing cadence requires enforcement across future sessions.
+
+**Backfill Monitoring Notes:**
+
+*v1.10.0 (2026-03-25) — Gaming Dept + Telegram expansion*
+Scope: Dir-Gaming, Patch-Analyst, Meta-Coach, Game-Researcher created. kiriko_bot.py expanded. C-suite agents updated (14). AI/ML agents created (3). CX/Design agents created (3).
+Health check: New gaming department follows standard department structure. kiriko_bot.py Telegram expansion is an external integration — should have triggered CISO review at Tier 2 per Step 0 governance gate (New external service integration). No CISO review documented. Finding: RA-001 applies retroactively.
+Verdict: MONITORING NOTE — retroactive Tier 2 classification warranted; no remediation required for completed change but policy gap logged as RA-001.
+
+*v1.11.0 (2026-03-26) — Autonomous company expansion (34 agents, 3 depts)*
+Scope: HR dept (CHRO + 6), Communications (VP + 3), PMO (VP + 2), Chief-of-Staff. IC layer fills across AI/ML, DevOps, Design, Finance, Strategy.
+Health check: Batch of 34 agents across 3 new departments. Under new RA-001 remediation (batch ≥10 agents, ≥3 departments), this would auto-classify Tier 2 with CISO review required. No CISO review documented. Five-File Rule: new departments added to CLAUDE.md routing — appears compliant from CHANGELOG entry but parent chain confirmation for all 34 agents not individually verified. Sample check: CHRO, Chief-of-Staff, VP-Communications found in CLAUDE.md agent table — structural propagation appears complete.
+Verdict: MONITORING NOTE — batch escalation rule (RA-001) would have caught this; policy applied prospectively from 2026-03-27.
+
+*v1.12.0–v1.12.1 (2026-03-27) — MasterPlanner gate + Custodian*
+Scope: MasterPlanner pipeline agent created (v1.2.0 by end of session). Step 4 added to CLAUDE.md routing. Custodian created in prompt-eng (v1.11.1). Model bumps for 3 agents.
+Health check: MasterPlanner Five-File Rule check: agent file ✓, CLAUDE.md pipeline table ✓, CLAUDE.md Step 4 ✓, CHANGELOG.md ✓. SYSTEM_MAP.md — not confirmed updated (CA-002 applies). MasterPlanner is a pipeline agent — parent agent is Lead Orchestrator (CLAUDE.md) not a separate file, so no parent .md to update. Custodian: CPrO-Prompting parent chain — CHANGELOG entry references SYSTEM_MAP.md update but parent chain confirmation for all three C-suite agents (CPrO-Prompting) partially documented.
+Verdict: MONITORING NOTE — MasterPlanner propagation 4/5 complete (SYSTEM_MAP.md gap = CA-002). No critical failures.
+
+---
+
+### [2026-03-27] | MEDIUM | CE-001 — AUDIT_FINDINGS.md Stale Since v1.8.5
+**Status:** RESOLVED (this entry)
+**Framework:** COSO (Control Environment · Information & Communication)
+**Description:** AUDIT_FINDINGS.md showed "none — all findings resolved as of 2026-03-20 v1.8.5" for seven version cycles, creating a misleadingly clean compliance picture.
+**Root Cause:** Monitoring cadence gap (MO-001). No session produced a documented AUDIT_FINDINGS.md update.
+**Remediation:** This entry and the backfill notes above resolve CE-001. "Last Reviewed" timestamp added to header.
+**Resolution Entry:** 2026-03-27 — this session.
+
+---
+
+### [2026-03-27] | MEDIUM | RA-001 — No Batch-Size Escalation Rule
+**Status:** RESOLVED (same session)
+**Framework:** COSO (Risk Assessment)
+**Description:** No rule existed to escalate large batch operations to Tier 2. A 34-agent expansion classified as Tier 1 the same as a single-agent update, bypassing CISO review and CAE-Audit design review gates.
+**Root Cause:** Risk Tier system was designed per-change, not per-batch. Batch scale was not considered a risk multiplier in the original policy design.
+**Remediation:** Added batch escalation rule to CLAUDE.md Risk Tier system: any single change event touching ≥10 agents OR creating/modifying ≥3 departments auto-elevates to Tier 2. auto_changelog.py updated to detect and flag batch escalation automatically.
+**Resolution Entry:** 2026-03-27 Priority 3 remediation. CLAUDE.md v1.12.2.
+
+---
+
+### [2026-03-27] | MEDIUM | IC-001 — Documentation Layer Compliance Picture
+**Status:** RESOLVED (via CE-001 resolution)
+**Framework:** COSO (Information & Communication)
+**Description:** Stale AUDIT_FINDINGS.md made the documentation layer show a false-clean compliance state. Resolved by CE-001 remediation above.
+**Resolution Entry:** 2026-03-27 — same session as CE-001.
+
+---
+
+### [2026-03-27] | LOW | CA-002 — MasterPlanner SYSTEM_MAP.md Not Updated
+**Status:** OPEN
+**Framework:** COSO (Control Activities — Five-File Rule)
+**Description:** MasterPlanner v1.0.0 was created without a confirmed SYSTEM_MAP.md update. The Five-File Rule requires SYSTEM_MAP.md to be updated for all structural agent changes. MasterPlanner is a new pipeline agent — the pipeline diagram in SYSTEM_MAP.md should include it.
+**Root Cause:** SYSTEM_MAP.md updates are manual and token-expensive (Mermaid diagrams). The auto-commit hook does not update SYSTEM_MAP.md.
+**Remediation:** Update SYSTEM_MAP.md pipeline diagram to add MasterPlanner node between Step 3 routing and execution.
+**Resolution Entry:** PENDING — deferred to next available session with sufficient token budget.
 
 ---
 

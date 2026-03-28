@@ -4,6 +4,135 @@
 
 ---
 
+## 2026-03-27 | AGENT-CREATE — feat(ai-os): multi-agent chain executor (chain.py)  - chain.py: multi-dept task routing following CLAUDE.md chain logic 
+
+**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
+**Approved By:** CEO [REQUIRED — structural change or batch escalation]
+**Risk Tier:** 1
+**COSO Component:** Control Activities (new agent — control scope change)
+**Agent Count After:** 172
+
+**Summary:** [TODO: describe what changed and why — auto-entry requires human summary for audit completeness]
+
+**Files Modified:**
+- `.claude/agents/pipeline/MasterPlanner.md` — created
+
+**Changes by Department:**
+- **Technical Pipeline:**
+  - Created: MasterPlanner
+
+**Propagation Completed:**
+- [ ] Parent agent updated: [TODO: confirm or N/A]
+- [ ] CLAUDE.md updated: [TODO: confirm or N/A]
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE
+**Rollback:** `git revert HEAD` — agent files will be restored to prior state
+
+---
+## 2026-03-27 | POLICY-UPDATE — v1.12.2 COSO Audit Remediation (3 findings resolved)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (batch escalation rule is structural — CEO approved via "yes" to remediation execution)
+**Risk Tier:** 1
+**COSO Component:** Control Activities · Risk Assessment · Monitoring Activities · Information & Communication
+
+**Summary:** Executed three remediation priorities from 2026-03-27 COSO internal audit (CONDITIONAL PASS verdict). Fixed CHANGELOG format drift, backfilled seven cycles of missing audit monitoring, and added batch escalation rule to Risk Tier system.
+
+**Files Modified:**
+- `auto_changelog.py` — updated `build_changelog_entry()` to produce CHANGE_MANAGEMENT.md-compliant entries with all required fields (Approved By, COSO Component, Propagation Completed, Sensitive Data Impact, Rollback, batch-size escalation detection)
+- `CLAUDE.md` — added Batch Escalation Rule (≥10 agents or ≥3 depts → auto Tier 2); version bumped to 1.12.2
+- `AUDIT_FINDINGS.md` — Last Reviewed timestamp added; 6 new findings logged (CA-001 RESOLVED, MO-001 OPEN with backfill, CE-001 RESOLVED, RA-001 RESOLVED, IC-001 RESOLVED, CA-002 OPEN); monitoring backfill notes written for v1.10.0–v1.12.1
+
+**Propagation Completed:**
+- [x] Parent agent updated: N/A (policy change, no agent parent)
+- [x] CLAUDE.md updated: Risk Tier section, version history
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE
+**Rollback:** `git revert HEAD` — restores all three files to pre-remediation state; findings would re-open
+
+---
+
+## 2026-03-27 | AGENT-BATCH — Custodian Maintenance Cycle v1 (Dir-PromptQA CONDITIONAL PASS)
+
+**Changed By:** Custodian (plan approved by Dir-PromptQA)
+**Risk Tier:** 1
+**Version Bump:** 1.12.1 (patch — maintenance remediation)
+
+**Model Tier Corrections (haiku → sonnet):**
+- `agents/finance/Finance-Associate.md` v1.1.0 → v1.2.0 — SOX AP/AR processing requires Sonnet-tier reasoning
+- `agents/security/Security-Analyst.md` v1.1.0 → v1.2.0 — MITRE ATT&CK triage is Sonnet-tier analysis
+- `agents/engineering/Software-Engineer.md` v1.1.0 → v1.2.0 — multi-file implementation is Sonnet-tier work
+
+**Compliance Gap Fixes (missing required sections added):**
+- `agents/investments/Sr-Risk-Analyst.md` v2.0.0 → v2.0.1 — Output Format: renamed "Weekly Risk Dashboard Template" → "Output Format"
+- `agents/investments/Equity-Research-Analyst.md` v2.0.0 → v2.0.1 — Output Format: promoted existing Investment Memo Schema/Earnings Note/Crypto Assessment as formal Output Format
+- `agents/comms/Vonnegut-Writer.md` v1.0.0 → v1.1.0 — Added Escalation Rules + Output Format (creative-appropriate format)
+
+**Prompt Compression:**
+- `agents/pipeline/scout.md` v1.1.0 → v1.2.0 — Removed duplicate Rules section (covered by Negative Constraints); folded "max 300 words" into Output Format
+
+**Cache:**
+- Removed 4 stale cache entries (source files changed); 90 valid entries preserved
+
+**Blocked (Dir-PromptQA DENY):**
+- CPrO-Prompting compression: BLOCKED — framework content is functional, not boilerplate
+- Associate-Engineer, Finance-Associate, Security-Analyst, Software-Engineer, SDR compressions: BLOCKED — step-by-step protocols are behavioral specification, not narrative padding
+- Associate-Engineer, SDR model bumps: DENIED — haiku appropriate for task complexity
+
+**Docs:**
+- Updated: `CHANGELOG.md` — this entry
+
+---
+
+## 2026-03-27 | AGENT-CREATE — Custodian v1.0.0
+
+**Changed By:** Lead Orchestrator
+**Risk Tier:** 1
+**Version Bump:** 1.11.1
+
+**Prompt Engineering:**
+- Created: `agents/prompt-eng/Custodian.md` — maintenance & optimization engine (bloat detection, model-tier optimization, cache/memory/changelog management)
+- Updated: `agents/prompt-eng/VP-PromptEngineering.md` — Custodian added to Manages
+- Updated: `agents/c-suite/CPrO-Prompting.md` — Custodian added to Department Chain
+
+**Infrastructure:**
+- Created: `custodian.py` — Python maintenance module. CLI: report · cycle · analyze · cache · memory · patterns · warm · changelog
+
+**Docs:**
+- Updated: `SYSTEM_MAP.md` — Custodian node added to Prompt Engineering subgraph
+- Updated: `CHANGELOG.md` — this entry
+
+---
+
+## 2026-03-27 | POLICY-UPDATE — feat(ai-os): v1.12.0 Master Plan gate (Step 4)
+
+**Changed By:** Lead Orchestrator
+**Risk Tier:** 1
+**Version:** 1.11.1 → 1.12.0
+
+**Summary:**
+Added Step 4 — Master Plan as a mandatory confirmation gate before execution of any large-scale request. The system previously routed and executed without CEO consent on multi-agent, multi-file, Tier 2+, financial, or external-action tasks, spending tokens on unconfirmed scope extrapolations. MasterPlanner is the dedicated pipeline agent that owns this responsibility.
+
+**Changes:**
+- `CLAUDE.md`: Added Step 4 (Master Plan) section. Defines 8 trigger conditions, Step 4 "What to Do" flow, structured plan format, TL;DR block, and hard rules. Updated pipeline agent count to 8. Added "Always invoke MasterPlanner when" block to pipeline agent invocation rules. Version bumped to 1.12.0.
+- `agents/pipeline/MasterPlanner.md`: New pipeline agent (v1.0.0). Produces Master Plan + CEO TL;DR execution contract before any large-scale work begins. 7 negative constraints. Full escalation rules (5 named triggers). Structured input/output format. STOPS after output — never executes.
+
+**Trigger Conditions Added:**
+- Multi-department routing (COO involved)
+- 3+ agents in expected chain
+- 2+ files to be created or modified
+- Tier 2+ tasks
+- Investment or financial write actions
+- External API/service/production actions
+- Governance council invocations
+- CEO uses build/create/implement/refactor/deploy on non-trivial scope
+
+**Agent Count:** 169 → 170
+
+---
+
 ## 2026-03-26 | AGENT-CREATE + AGENT-UPDATE — chore(ai-os): v1.10.0 gaming dept + agent upgrades + skills + kiriko bot  - Added Gaming Department: Dir-Gaming, Patch-A
 
 **Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)

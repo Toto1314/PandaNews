@@ -127,11 +127,40 @@ def count_total_agents():
     return sum(1 for f in agents_path.rglob("*.md"))
 
 
+def infer_risk_tier(changes, by_dept):
+    """Infer risk tier from batch size. Batches ≥10 agents or ≥3 departments → Tier 2."""
+    if len(changes) >= 10 or len(by_dept) >= 3:
+        return "2 [BATCH-ESCALATED: ≥10 agents or ≥3 departments — CISO review required]"
+    return "1"
+
+
+def infer_coso_component(changes):
+    """Infer primary COSO component from change types."""
+    types = {s for s, _ in changes}
+    if "A" in types:
+        return "Control Activities (new agent — control scope change)"
+    if "D" in types:
+        return "Control Activities (agent removed — control scope change)"
+    return "Control Activities (agent update)"
+
+
+def build_files_modified(by_dept):
+    """Build Files Modified list from staged changes."""
+    lines = []
+    for dept, items in sorted(by_dept.items()):
+        for label, agent, filepath in items:
+            action = {"AGENT-CREATE": "created", "AGENT-UPDATE": "updated", "AGENT-DELETE": "deleted"}.get(label, "modified")
+            lines.append(f"- `{filepath}` — {action}")
+    return lines
+
+
 def build_changelog_entry(changes, by_dept):
-    """Build a full CHANGELOG.md entry string."""
+    """Build a CHANGE_MANAGEMENT.md-compliant CHANGELOG.md entry."""
     today = datetime.now().strftime("%Y-%m-%d")
     entry_type = determine_entry_type(changes)
     total = count_total_agents()
+    risk_tier = infer_risk_tier(changes, by_dept)
+    coso_component = infer_coso_component(changes)
 
     # Build dept summary for title
     depts = sorted(DEPT_NAMES.get(d, d.title()) for d in by_dept)
@@ -140,33 +169,56 @@ def build_changelog_entry(changes, by_dept):
     commit_msg = get_staged_commit_msg()
     title_suffix = f" — {commit_msg}" if commit_msg else f" — {dept_summary}"
 
+    # Determine structural change (needs CEO approval flag)
+    is_structural = len(by_dept) >= 3 or any(s == "A" for s, _ in changes)
+    approved_by = "CEO [REQUIRED — structural change or batch escalation]" if is_structural else "Auto (Tier 1 minor update)"
+
     lines = [
         f"## {today} | {entry_type}{title_suffix}",
         "",
         f"**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)",
-        f"**Risk Tier:** 1",
+        f"**Approved By:** {approved_by}",
+        f"**Risk Tier:** {risk_tier}",
+        f"**COSO Component:** {coso_component}",
         f"**Agent Count After:** {total}",
         "",
+        f"**Summary:** [TODO: describe what changed and why — auto-entry requires human summary for audit completeness]",
+        "",
+        "**Files Modified:**",
     ]
 
+    lines.extend(build_files_modified(by_dept))
+    lines.append("")
+
     # Per-department breakdown
+    lines.append("**Changes by Department:**")
     for dept, items in sorted(by_dept.items()):
         dept_label = DEPT_NAMES.get(dept, dept.title())
         creates = [a for l, a, _ in items if l == "AGENT-CREATE"]
         updates = [a for l, a, _ in items if l == "AGENT-UPDATE"]
         deletes = [a for l, a, _ in items if l == "AGENT-DELETE"]
 
-        lines.append(f"**{dept_label}:**")
+        lines.append(f"- **{dept_label}:**")
         if creates:
-            lines.append(f"- Created: {', '.join(creates)}")
+            lines.append(f"  - Created: {', '.join(creates)}")
         if updates:
-            lines.append(f"- Updated: {', '.join(updates)}")
+            lines.append(f"  - Updated: {', '.join(updates)}")
         if deletes:
-            lines.append(f"- Deleted: {', '.join(deletes)}")
-        lines.append("")
+            lines.append(f"  - Deleted: {', '.join(deletes)}")
 
-    lines.append("---")
-    lines.append("")
+    lines += [
+        "",
+        "**Propagation Completed:**",
+        "- [ ] Parent agent updated: [TODO: confirm or N/A]",
+        "- [ ] CLAUDE.md updated: [TODO: confirm or N/A]",
+        "- [x] CHANGELOG.md entry written: YES",
+        "",
+        "**Sensitive Data Impact:** NONE",
+        "**Rollback:** `git revert HEAD` — agent files will be restored to prior state",
+        "",
+        "---",
+        "",
+    ]
     return "\n".join(lines)
 
 

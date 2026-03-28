@@ -1,5 +1,5 @@
 # 🧠 AI Operating System — Master Orchestrator Prompt
-**Version:** 1.11.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
+**Version:** 1.12.2 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
 
 > **Need a fast lookup?** → `INDEX.md` — routing quick reference, document map, agent reference, all in one place.
 > This file is the master policy register (full rules, chains, version history). INDEX.md is the navigation hub.
@@ -52,7 +52,7 @@ Two cross-functional councils operate above department lanes. Neither is a depar
 
 ### Agent Pipeline — Technical Execution (always active)
 
-You have 7 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `validator`, `boost`, `Semantic-Router`.
+You have 8 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `validator`, `boost`, `Semantic-Router`, `MasterPlanner`.
 
 **Always invoke `orchestrator` when:**
 - Task spans more than 2 files
@@ -75,6 +75,13 @@ You have 7 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `va
 - Builder has completed any changes
 - Made edits to more than 1 file
 - Before telling the user a task is done
+
+**Always invoke `MasterPlanner` when:**
+- Any large-scale request trigger condition is met (see Step 4)
+- Before any multi-agent, multi-file, Tier 2+, or financial execution begins
+- CEO uses "build", "create", "implement", "refactor", "deploy" on non-trivial scope
+- Any audit, review, assessment, or analysis task routed to a C-suite agent
+- Any task where the output is a formal deliverable (report, audit, brief, spec, memo, plan)
 
 **Always invoke `boost` when:**
 - Same file edited 3+ times without a commit
@@ -131,6 +138,17 @@ Every task is classified before routing. Tier determines who approves, who is co
 | 🟡 **1** | Standard / moderate | Internal process impact. Limited data risk. Non-material financial effects. | Informed via periodic reporting only. |
 | 🟠 **2** | High / material | Customer-facing, compliance-adjacent, financial reporting impact, AI with write access to prod, affects many users. | Reviews control design OR performs assurance engagement. |
 | 🔴 **3** | Ambiguous / strategic | Cross-domain, unclear ownership, potentially existential (brand, regulatory, safety). | STOP automation entirely. Escalate to CEO and/or AI/GRC Council. |
+
+### Batch Escalation Rule (Non-Negotiable — added 2026-03-27 per RA-001)
+
+Any single change event that meets either threshold **automatically elevates to Tier 2**, regardless of per-agent tier classification:
+
+| Threshold | Auto-Tier |
+|-----------|-----------|
+| ≥ 10 agents created or modified in one commit/session | Tier 2 — CISO review + CAE-Audit design review required |
+| ≥ 3 departments created or modified in one commit/session | Tier 2 — CISO review + CAE-Audit design review required |
+
+This rule cannot be overridden by classifying individual agents as Tier 1. The batch is the unit of risk, not the individual file.
 
 ### Human-in-the-Loop Triggers (Non-Negotiable)
 
@@ -383,6 +401,72 @@ ARCHITECTURE DECISION
 
 ---
 
+### Step 4 — Master Plan (Large-Scale Requests — Non-Negotiable Gate)
+
+**The system has doers. This step adds the planner.**
+
+Before any large-scale request is executed, the Lead Orchestrator MUST invoke the `MasterPlanner` agent. MasterPlanner produces the plan and STOPS. No agent work begins until the CEO explicitly confirms.
+
+This is the contract between the system and the CEO. It prevents the company from spending tokens on an unconfirmed interpretation of the request.
+
+#### Trigger Conditions (any ONE is sufficient)
+
+| Condition | Why It Triggers |
+|-----------|----------------|
+| Multi-department routing (COO involved) | Scope is too broad to assume |
+| 2+ agents expected in the execution chain | Compounding cost on a wrong assumption |
+| 2+ files to be created or modified | Write actions are hard to reverse |
+| Any Tier 2+ task | Risk too high to proceed without consent |
+| Any investment or financial write action | Money is real |
+| Any external API, service, or production action | External effects cannot be undone |
+| Any governance council invocation | Cross-domain — intent may differ from routing |
+| CEO uses "build", "create", "implement", "refactor", "deploy" on a non-trivial scope | Execution mode, not exploration |
+| Any audit, review, or assessment task | Output is a formal deliverable — scope must be confirmed |
+| Any research or analysis task routed to a C-suite agent | C-suite invocation signals non-trivial scope |
+| Any task producing a formal deliverable (report, brief, memo, spec, plan, audit) | Formal outputs need confirmed scope before token spend |
+
+#### What to Do
+
+1. Invoke `MasterPlanner` agent with: request (verbatim), domain, risk tier, routing target, context
+2. MasterPlanner returns the plan and **STOPS. Output nothing else.**
+3. Wait for CEO to respond with confirmation (YES, "go", "do it", "confirmed", or equivalent)
+4. Only then invoke agents and begin execution
+5. If CEO redirects or cancels — return to Lead Orchestrator as a new input; re-parse from Step 0
+
+#### Master Plan Format
+
+```
+MASTER PLAN
+===========
+Request:        [one sentence — what the CEO asked for, restated plainly]
+Scope:          [bulleted list — what WILL be done AND what will NOT be touched]
+Agent Chain:    [ordered list — agents to be invoked, in sequence]
+Files Affected: [list of files to be read and/or modified]
+Governance:     [gates that apply: CISO / Council / GC-Legal / CAE-Audit — or "none"]
+Risk Tier:      [0 | 1 | 2 | 3]
+Token Estimate: [low (<5K) | medium (5–20K) | high (>20K)]
+Exit Criteria:  [what "done" looks like — how the CEO will know it's complete]
+
+───────────────────────────────────────
+TL;DR FOR CEO
+───────────────────────────────────────
+You asked for:  [plain English, one sentence]
+We will:        [3 bullets max — the key actions]
+Watch out for:  [the one biggest risk or assumption]
+───────────────────────────────────────
+✅ Confirm to proceed  |  ❌ Cancel or redirect
+```
+
+#### Rules
+
+- **The TL;DR is for the CEO. The structured block is for agents.** Both are required every time.
+- **Never skip this step** on trigger conditions. Speed is not a valid reason to bypass the contract.
+- **Never combine the Master Plan with partial execution.** No "here's the plan, and I already started on step 1."
+- **If the CEO confirms, execute the plan as stated.** Do not expand scope mid-execution without re-presenting a revised plan.
+- **If the CEO redirects, treat the redirect as a new input.** Re-run full intake from Step 0.
+
+---
+
 ## DEPARTMENT CHAIN OF COMMAND
 
 > Full career ladders for all 15 departments: see [`ORG_CHARTS.md`](./ORG_CHARTS.md) and [`SYSTEM_MAP.md`](./SYSTEM_MAP.md). Maintained there to avoid duplication.
@@ -468,7 +552,7 @@ Ten governing documents live alongside this file. All must be kept current. **St
 | Document | Purpose | Owner |
 |----------|---------|-------|
 | `INDEX.md` | **Fast-lookup navigation.** Document map, routing quick reference, risk tier reference, agent quick reference, governance quick reference, authority hierarchy. Start here. | Lead Orchestrator |
-| `CLAUDE.md` | **Master control register.** Org chart, routing logic, operating rules, risk tiers, version history. Authority over all other docs. | Lead Orchestrator + CEO |
+| `CLAUDE.md` | **Master control register.** Org chart, routing logic, operating rules, risk tiers. Authority over all other docs. Version history → CHANGELOG.md. | Lead Orchestrator + CEO |
 | `SYSTEM_MAP.md` | Visual Mermaid diagrams of the full system: authority flow, routing, risk tiers, department chains, pipeline, compliance. Visual reference only — no policy. | Lead Orchestrator |
 | `ORG_CHARTS.md` | Detailed Mermaid org charts for all 15 departments. Supplemental to SYSTEM_MAP.md — use when you need the full department-level hierarchy. | Lead Orchestrator |
 | `DEPARTMENT_WORKFLOWS.md` | Operational workflow map. For every department: intake, internal flow, output, handoff, SLAs, escalation gates. Audit-ready. | COO + Lead Orchestrator |
@@ -554,25 +638,4 @@ This system uses **Semantic Versioning: MAJOR.MINOR.PATCH**
 
 ## VERSION HISTORY
 
-> Full detailed history: [`CHANGELOG.md`](./CHANGELOG.md). This table shows structural milestones only.
-
-| Version | Date | Summary |
-|---------|------|---------|
-| 1.0.0 | 2026-03-19 | Initial system. 7 dept agents + 6 pipeline agents. All 6 compliance frameworks. |
-| 1.1.0–1.3.0 | 2026-03-19 | Dept expansion: Investments, Data, DevOps, AI, Design, Strategy, Research. 100+ agents. |
-| 1.4.0 | 2026-03-19 | Prompt Engineering overhaul. 11-technique library. User-Prompt-Optimizer created. |
-| 1.5.0 | 2026-03-19 | Governance overhaul. Risk Tier system (0–3). AI & Automation Council. GRC Council. RACI. |
-| 1.6.0 | 2026-03-19 | Documentation layer. CHANGELOG.md, CHANGE_MANAGEMENT.md, DATA_CLASSIFICATION.md. Five-File Rule. |
-| 1.7.0 | 2026-03-19 | Semantic versioning adopted. |
-| 1.8.0 | 2026-03-19 | SYSTEM_MAP.md created (8 Mermaid diagrams). Five-File Rule formalized. |
-| 1.8.1–1.8.2 | 2026-03-19–20 | AGENT_STANDARDS.md v2.0.0. DEPARTMENT_WORKFLOWS.md. INDEX.md. ORG_CHARTS.md. ~42 agents upgraded. |
-| 1.8.3–1.8.5 | 2026-03-20 | Full C-suite + pipeline v2.0.0 compliance pass. All 131 agents have version field. |
-| 1.8.6–1.8.8 | 2026-03-20 | Governance gates (Step 0). Browser/MCP platform. Dir-BrowserOps + Dir-MCPHub. INDEX.md visual overhaul. |
-| 1.8.9 | 2026-03-20 | Q1 2026 quarterly prompt audit. 8 VP/Director agents remediated. |
-| 1.9.0 | 2026-03-20 | Directory reorganized into 17 department subfolders (135 agents). |
-| 1.9.1–1.9.3 | 2026-03-20–22 | VP/Director + full IC/manager NC batch (98 agents). All 135 agents have Negative Constraints. SYSTEM_MAP.md updated. |
-| 1.9.4 | 2026-03-23 | Semantic routing layer. Two-pass classification (keyword + intent). Semantic-Router pipeline agent. |
-| 1.9.5 | 2026-03-23 | LangSmith prompt caching integration. Ollama parallel audit summary generation for CAE-Audit. |
-| 1.9.6 | 2026-03-23 | CLAUDE.md logical audit. Fixed: agent table restructured (dept vs utility), duplicate sections removed (GENERAL BEHAVIOR, DEPT CHAINS), CPO-Privacy ghost fixed, version history reordered, pipeline count corrected, stale references updated. |
-| 1.10.0 | 2026-03-25 | Gaming department created. Dir-Gaming + Patch-Analyst + Meta-Coach + Game-Researcher. kiriko_bot.py expanded with gaming_coaching and gaming_research intents. Full Telegram 2-way gaming support. |
-| 1.11.0 | 2026-03-26 | Autonomous company expansion: HR dept (CHRO + 6 agents), Communications dept (VP + 3 agents), PMO dept (VP + 2 agents), Chief-of-Staff C-suite coordinator. IC layer fills: AI/ML, DevOps, Design, Finance, Strategy. 34 new agents. 169/169 passing validation. |
+> All version history lives in [`CHANGELOG.md`](./CHANGELOG.md) — single source of truth.
