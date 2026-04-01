@@ -58,7 +58,8 @@
       "Bash(grep -r \"UserPromptSubmit\\\\|promptInsertion\\\\|inject_prompt\\\\|prompt_injection\" /c/Users/atank/.claude/ --include=*.json --include=*.md -l)",
       "Skill(patch)",
       "Bash(grep -rl 'invoke when' /c/Users/atank/.claude/agents/ -i --include=*.md)",
-      "Bash(echo \"Exit code: $?\")"
+      "Bash(echo \"Exit code: $?\")",
+      "Bash(xargs -I{} git grep -l REDACTED_LANGSMITH_KEY {})"
     ]
   }
 }
