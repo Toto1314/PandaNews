@@ -4,6 +4,68 @@
 
 ---
 
+## 2026-04-01 | AGENT-CREATE — chore(security): redact LangSmith API key from settings files  Token replaced with REDACTED_LANGSMITH_KEY placeholder fo
+
+**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
+**Approved By:** CEO [REQUIRED — structural change or batch escalation]
+**Risk Tier:** 1
+**COSO Component:** Control Activities (new agent — control scope change)
+**Agent Count After:** 201
+
+**Summary:** [TODO: describe what changed and why — auto-entry requires human summary for audit completeness]
+
+**Files Modified:**
+- `.claude/agents/music/Dir-MusicProduction.md` — created
+- `.claude/agents/music/Lyricist.md` — created
+- `.claude/agents/music/Music-Producer.md` — created
+- `.claude/agents/music/News-Analyst-Music.md` — created
+- `.claude/agents/music/Suno-Prompter.md` — created
+
+**Changes by Department:**
+- **Music:**
+  - Created: Dir-MusicProduction, Lyricist, Music-Producer, News-Analyst-Music, Suno-Prompter
+
+**Propagation Completed:**
+- [ ] Parent agent updated: [TODO: confirm or N/A]
+- [ ] CLAUDE.md updated: [TODO: confirm or N/A]
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE
+**Rollback:** `git revert HEAD` — agent files will be restored to prior state
+
+---
+## 2026-04-01 | DEPT-CREATE + SKILL-CREATE — feat(ai-os): Music Production dept + /news-song skill (v1.17.0)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (confirmed execution after MasterPlanner gate)
+**Risk Tier:** 1 (internal creative workflow, no regulated data, no production write access)
+**COSO Component:** Control Activities (new department, new agent chain, new skill)
+**Agent Count After:** 201
+
+**New Department:** `.claude/agents/music/`
+- `Dir-MusicProduction.md` — department entry point; coordinates full pipeline; quality gate on all Suno packages
+- `News-Analyst-Music.md` — translates portfolio news into creative raw material (themes, metaphors, emotional register)
+- `Music-Producer.md` — owns all genre/style/production decisions; produces beat timing cues and production sheet
+- `Lyricist.md` — writes full lyrics with Suno structure markers, anchored to Production Sheet
+- `Suno-Prompter.md` — assembles final copy-paste-ready Suno AI prompt package; maintains suno_guide.md
+
+**New Skill:** `.claude/skills/news-song/`
+- `SKILL.md` — full /news-song pipeline definition; 6-step ordered agent chain; portfolio watchlist; quality checklist
+- `suno_guide.md` — comprehensive Suno AI prompting research guide: prompt anatomy, style tags, structure markers, inline annotations, beat timing reference, V3 vs V4, character limits, 3 worked examples
+
+**Updated Core Docs:**
+- `CLAUDE.md` — v1.16.0 → v1.17.0; Dir-MusicProduction row added to agent table; MUSIC routing block added to Step 3
+- `CHANGELOG.md` — this entry
+- `SYSTEM_MAP.md` — Music Production department added to department diagram
+
+**Upstream Integrations:**
+- CIRO-Research → news brief (no agent file modified)
+- CIO-Investments → portfolio mapping (no agent file modified)
+
+**Five-File Rule:** ✅ Agent files ✅ Parent agent (Dir-MusicProduction declares all 4 downstream) ✅ CLAUDE.md ✅ CHANGELOG.md ✅ SYSTEM_MAP.md
+
+---
+
 ## 2026-04-01 | AGENT-CREATE + AGENT-UPDATE — feat(ai-os): v1.12.2 MasterPlanner gate + COSO audit remediation  Add MasterPlanner pipeline agent (v1.2.0) — mandatory 
 
 **Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)

@@ -422,6 +422,22 @@ graph TD
         CNO_H --> PACURN
     end
     LO --> CNO_H
+
+    %% ── MUSIC PRODUCTION ─────────────────────────────────
+    subgraph MUS["🎵 Music Production"]
+        direction TB
+        DIRMUS["Dir-MusicProduction\nDept Head · Pipeline Coordinator\n/news-song skill"]:::director
+        NEWSANA["News-Analyst-Music\nNews → Creative Raw Material\nThemes · Metaphors · Emotional Register"]:::senior
+        MUSICPROD["Music-Producer\nGenre · Style · BPM\nBeat Timing Cues · Production Sheet"]:::senior
+        LYRICIST["Lyricist\nFull Lyrics · Structure Markers\nAnchored to Production Sheet"]:::ic
+        SUNOPROMPT["Suno-Prompter\nFinal Prompt Package\nStyle Tags · Inline Annotations · Guide"]:::ic
+        DIRMUS --> NEWSANA
+        DIRMUS --> MUSICPROD
+        NEWSANA --> LYRICIST
+        MUSICPROD --> LYRICIST
+        LYRICIST --> SUNOPROMPT
+    end
+    LO --> DIRMUS
 ```
 
 ---
@@ -483,6 +499,7 @@ flowchart TD
     KW -->|"hiring · recruiting · people ops · culture · onboarding · performance"| HR_R["HR / PEOPLE\nCHRO → VP-People"]:::route
     KW -->|"PR · press release · internal comms · announcement · brand messaging"| COM_R["COMMUNICATIONS\nVP-Communications → Dir-PR or Dir-Internal-Comms"]:::route
     KW -->|"program management · cross-dept coordination · initiative tracking"| PMO_R["PMO\nChief-of-Staff → VP-PMO"]:::route
+    KW -->|"news-song · suno · lyrics · beat · portfolio news · music"| MUS_R["MUSIC PRODUCTION\nDir-MusicProduction → full pipeline\nCIRO-Research + CIO-Investments upstream"]:::route
     KW -->|"format · summarize · classify · draft"| T0["TIER 0 — SIMPLE\nLocal-Model-Router\nOllama saves tokens"]:::local
     KW -->|unclear| Q{"One clarifying\nquestion"}:::decision
     Q -->|still unclear| STOP(["STOP\nEscalate to CEO"]):::stop
@@ -804,3 +821,4 @@ flowchart TD
 | 1.11.1 | 2026-03-27 | Custodian added to Prompt Engineering subgraph (Family Tree diagram). |
 | 1.13.0 | 2026-03-28 | Chief-Notes-Officer added to Family Tree. New Section 7: SESH Data Flow diagram — Librarian/Library/Compressor/INDEX infra layer, COO↔CPO↔Librarian/Compressor access pattern, SESH instantiation from INDEX, workers/sub-agents, background CAE-Audit+Custodian, CNO note tap. |
 | 1.13.1 | 2026-03-28 | Section 5b: INDEX.md added to Documentation Layer diagram (was missing despite being the primary nav hub); ORG_CHARTS.md added; agent count corrected to 173; navigation edges added. Section 3: MasterPlanner gate added to routing decision tree (multi-file/multi-agent path now shows STOP→plan→CEO confirm loop). New Section 8: Model Selection Decision Tree (Haiku/Sonnet/Opus/Ollama with tier mapping and tool-support branching). New Section 9: Governance Gate Flow (Step 0 full blocking logic as a visual flowchart — COO→AI Council→CISO→GC-Legal→CISO MCP→Five-File Rule). |
+| 1.17.0 | 2026-04-01 | Music Production department added to Family Tree (Dir-MusicProduction → News-Analyst-Music · Music-Producer · Lyricist · Suno-Prompter). Music/news-song routing added to Routing Decision Tree. Agent count: 201. |

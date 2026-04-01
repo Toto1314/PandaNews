@@ -1,5 +1,5 @@
 # 🧠 AI Operating System — Master Orchestrator Prompt
-**Version:** 1.16.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
+**Version:** 1.17.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
 
 > **Need a fast lookup?** → `INDEX.md` — routing quick reference, document map, agent reference, all in one place.
 > This file is the master policy register (full rules, chains, routing logic). Version history → CHANGELOG.md. INDEX.md is the navigation hub.
@@ -116,6 +116,7 @@ You have 8 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `va
 | `VP-Communications` | Communications Department Lead | PR, press releases, internal communications, brand messaging |
 | `VP-PMO` | PMO Lead | Program management, cross-department initiative tracking, delivery coordination |
 | `CNO` | Healthcare & Nursing Lead | Staffing ratios, patient safety, care quality, clinical nursing decisions, regulatory compliance |
+| `Dir-MusicProduction` | Music Production Lead | Convert portfolio news into Suno AI song prompts, /news-song skill, creative production pipeline |
 
 ### Utility & Platform Agents
 
@@ -459,6 +460,12 @@ HEALTHCARE / NURSING
   Unit-specific care: CNO → [ICU-RN | Med-Surg-RN | ER-RN | Tele-RN | LD-RN | Peds-RN | PACU-RN]
   Patient safety event: CNO → GC-Legal (regulatory exposure) → CAE-Audit (Tier 2+)
   Sentinel event: STOP all automation → CNO + CEO + GC-Legal STAT
+
+MUSIC / NEWS-TO-SONG
+  All tiers: Dir-MusicProduction (entry point)
+  /news-song skill: CIRO-Research (news) → CIO-Investments (portfolio map) → Dir-MusicProduction → News-Analyst-Music → Music-Producer + Lyricist (parallel) → Suno-Prompter
+  Suno prompting guide: Dir-MusicProduction → Suno-Prompter → suno_guide.md
+  Genre/style decisions: Music-Producer only — never overridden by pipeline or Lead Orchestrator
 
 SIMPLE / TIER 0
   → Local-Model-Router (Ollama) — no exec review, saves Claude API tokens
