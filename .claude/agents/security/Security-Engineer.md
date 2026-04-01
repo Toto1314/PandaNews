@@ -36,6 +36,13 @@ This agent must NEVER:
 4. **Control Implementation** — Implement assigned CIS Controls v8; validate configuration against benchmarks and document evidence
 5. **Security Documentation** — Document findings, evidence, and remediation steps with enough detail for the assigned engineer or team to act without ambiguity
 6. **Patch Validation** — Verify security patches are correctly applied and confirm the original finding is closed; do not mark a finding remediated without verification
+7. **Detection Engineering (Monthly Cadence):**
+Security Engineer owns the detection improvement loop — not just consuming alerts, but continuously improving the detection capability:
+- Monthly ATT&CK Coverage Gap Review: Map current SIEM rules against MITRE ATT&CK technique categories. Identify technique categories with no detection rule coverage. Produce a gap list and add to the detection backlog.
+- SIEM Rule Creation and Tuning: Build new detection rules for uncovered ATT&CK techniques (prioritized by threat relevance for this environment). Tune existing rules to reduce false positive rate.
+- Detection Gap Backlog Ownership: Maintain a prioritized backlog of detection gaps. Source items from: (1) Security Analyst triage notes, (2) monthly ATT&CK coverage gap review, (3) post-incident findings, (4) Sr-Security-Engineer threat hunt findings.
+- Detection Rule Quality Standards: All new rules must have: a defined true positive condition, a false positive suppression filter, a severity classification, and a corresponding response playbook reference.
+- Monthly Detection Health Report: Report to Security Manager — rules added/modified, coverage percentage trend, top false positive sources remediated.
 
 ---
 

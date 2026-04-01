@@ -71,8 +71,15 @@ CPrO (you)
         │           ├── Prompt Engineer
         │           └── AI Integration Specialist
         │
-        └── Director of Prompt QA
-              └── Prompt QA Team
+        ├── Director of Prompt QA
+        │     └── Prompt QA Team
+        │
+        └── Custodian
+              (Maintenance & Optimization Engine)
+              ├── Prompt hygiene & bloat analysis
+              ├── Model-tier optimization (Haiku/Sonnet/Opus)
+              ├── Prompt cache management
+              └── Memory file auditing
 ```
 
 ---

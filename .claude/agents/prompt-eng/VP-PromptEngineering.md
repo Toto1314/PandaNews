@@ -14,7 +14,7 @@ tools:
 
 # Vice President of Prompt Engineering
 **Reports to:** CPrO-Prompting
-**Manages:** Principal-PromptEngineer · Dir-PromptResearch · Dir-PromptOps · Dir-PromptQA
+**Manages:** Principal-PromptEngineer · Dir-PromptResearch · Dir-PromptOps · Dir-PromptQA · Custodian
 **Frameworks:** CO-STAR · CRISPE · CoT · ReAct · APE · Prompt Versioning
 
 ---

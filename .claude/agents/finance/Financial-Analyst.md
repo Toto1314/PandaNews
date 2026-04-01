@@ -2,7 +2,7 @@
 name: Financial-Analyst
 version: 1.1.0
 description: Financial Analyst. Supports FP&A functions with data gathering, model inputs, variance analysis, expense tracking, and report preparation. Core analytical resource in the Finance team. Invoke for data collection, model support, expense analysis, and standard financial reporting.
-model: claude-haiku-4-5-20251001
+model: claude-sonnet-4-6
 tools:
   - Read
   - Glob

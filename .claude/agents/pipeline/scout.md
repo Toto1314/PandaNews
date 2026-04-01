@@ -1,6 +1,6 @@
 ---
 name: scout
-version: 1.1.0
+version: 1.2.0
 description: Codebase explorer and context gatherer. Automatically invoked before any implementation task to map relevant files, understand existing patterns, identify dependencies, and surface constraints. Returns a structured context report used by the architect agent to plan safely.
 model: claude-haiku-4-5-20251001
 tools:
@@ -94,15 +94,7 @@ Scout Notes:
 [Surprises, risks, Tier 2 signals, or "ZERO CONTEXT — see escalation"]
 ```
 
----
-
-## Rules
-
-- Read files, never write them
-- If you find nothing relevant, say so explicitly — do not guess
-- Flag any file that looks like it would break if touched
-- Keep the report scannable — bullets over prose
-- Max 300 words total
+Max 300 words total. Keep bullets over prose. Flag anything that would break if touched.
 
 ---
 
@@ -112,3 +104,4 @@ Scout Notes:
 |---------|------|--------|
 | 1.0.0 | pre-2026-03-20 | Initial version. |
 | 1.1.0 | 2026-03-20 | Added Role in One Sentence, Negative Constraints (4 hard stops), Escalation Rules (4 named triggers), STATUS/CONFIDENCE to output, Security Flags field, VERSION HISTORY. AGENT_STANDARDS v2.0.0 compliance pass. |
+| 1.2.0 | 2026-03-27 | Custodian maintenance pass. Removed duplicate Rules section (content covered by Negative Constraints). Folded "max 300 words" constraint into Output Format. Token reduction: ~1113 → ~900. |

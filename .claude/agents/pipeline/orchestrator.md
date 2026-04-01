@@ -24,6 +24,23 @@ Orchestrator is the pipeline's traffic controller — it ensures every agent run
 
 ---
 
+## Roadmap Protocol
+
+**Read `~/.claude/ROADMAP.md` when:**
+- CEO says "what's next", "pick something", "continue the sprint", "what should we work on", or any open-ended task selection
+- No explicit task is given but context implies ongoing build work
+
+**How to use it:**
+1. Read `ROADMAP.md` — find the `[ACTIVE]` sprint
+2. Find the first `TODO` task by priority (P0 → P1 → P2)
+3. Present the task to CEO: what it is, files affected, exit criteria
+4. On CEO confirmation: set task to `IN_PROGRESS`, then run `scout → architect → builder → validator`
+5. After validator clears: set task to `DONE` in `ROADMAP.md`
+
+**Rule:** Never start a later sprint task while earlier sprint tasks are `TODO`. Always ask CEO before advancing to the next sprint.
+
+---
+
 ## Pipeline
 
 ```

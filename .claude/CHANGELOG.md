@@ -4,6 +4,323 @@
 
 ---
 
+## 2026-04-01 | AGENT-CREATE + AGENT-UPDATE — feat(ai-os): v1.12.2 MasterPlanner gate + COSO audit remediation  Add MasterPlanner pipeline agent (v1.2.0) — mandatory 
+
+**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
+**Approved By:** CEO [REQUIRED — structural change or batch escalation]
+**Risk Tier:** 2 [BATCH-ESCALATED: ≥10 agents or ≥3 departments — CISO review required]
+**COSO Component:** Control Activities (new agent — control scope change)
+**Agent Count After:** 196
+
+**Summary:** [TODO: describe what changed and why — auto-entry requires human summary for audit completeness]
+
+**Files Modified:**
+- `.claude/agents/c-suite/CIO-Investments.md` — updated
+- `.claude/agents/c-suite/CISO.md` — updated
+- `.claude/agents/c-suite/CPrO-Prompting.md` — updated
+- `.claude/agents/comms/Vonnegut-Writer.md` — created
+- `.claude/agents/engineering/Software-Engineer.md` — updated
+- `.claude/agents/finance/Finance-Associate.md` — updated
+- `.claude/agents/finance/Finance-Manager.md` — updated
+- `.claude/agents/finance/Financial-Analyst.md` — updated
+- `.claude/agents/healthcare/CNO.md` — created
+- `.claude/agents/healthcare/Charge-Nurse.md` — created
+- `.claude/agents/healthcare/ER-RN.md` — created
+- `.claude/agents/healthcare/ICU-RN.md` — created
+- `.claude/agents/healthcare/LD-RN.md` — created
+- `.claude/agents/healthcare/Med-Surg-RN.md` — created
+- `.claude/agents/healthcare/PACU-RN.md` — created
+- `.claude/agents/healthcare/Peds-RN.md` — created
+- `.claude/agents/healthcare/Resource-Nurse.md` — created
+- `.claude/agents/healthcare/Tele-RN.md` — created
+- `.claude/agents/investments/Contrarian-Analyst.md` — created
+- `.claude/agents/investments/Dir-Research-Investments.md` — updated
+- `.claude/agents/investments/Equity-Research-Analyst.md` — updated
+- `.claude/agents/investments/Investment-Analyst.md` — updated
+- `.claude/agents/investments/Portfolio-Manager.md` — updated
+- `.claude/agents/investments/Quant-Analyst.md` — updated
+- `.claude/agents/investments/Risk-Manager-Investments.md` — updated
+- `.claude/agents/investments/Sr-Equity-Analyst.md` — updated
+- `.claude/agents/investments/Sr-Quant-Analyst.md` — updated
+- `.claude/agents/investments/Sr-Risk-Analyst.md` — updated
+- `.claude/agents/investments/VP-Investments.md` — updated
+- `.claude/agents/kv-marketing/Billy-Pilgrim.md` — created
+- `.claude/agents/kv-marketing/Bokonon.md` — created
+- `.claude/agents/kv-marketing/Eliot-Rosewater.md` — created
+- `.claude/agents/kv-marketing/Howard-W-Campbell.md` — created
+- `.claude/agents/kv-marketing/Kilgore-Trout.md` — created
+- `.claude/agents/kv-marketing/Montana-Wildhack.md` — created
+- `.claude/agents/kv-marketing/Rumfoord.md` — created
+- `.claude/agents/kv-marketing/So-It-Goes.md` — created
+- `.claude/agents/legal/Risk-Analyst.md` — updated
+- `.claude/agents/pipeline/Chief-Notes-Officer.md` — created
+- `.claude/agents/pipeline/orchestrator.md` — updated
+- `.claude/agents/pipeline/scout.md` — updated
+- `.claude/agents/prompt-eng/Custodian.md` — created
+- `.claude/agents/prompt-eng/VP-PromptEngineering.md` — updated
+- `.claude/agents/security/Application-Security-Engineer.md` — created
+- `.claude/agents/security/Cloud-Security-Engineer.md` — created
+- `.claude/agents/security/Dir-Security.md` — updated
+- `.claude/agents/security/Red-Team-Engineer.md` — created
+- `.claude/agents/security/Security-Analyst.md` — updated
+- `.claude/agents/security/Security-Engineer.md` — updated
+- `.claude/agents/security/Security-Manager.md` — updated
+- `.claude/agents/security/Sr-Security-Engineer.md` — updated
+- `.claude/agents/security/Threat-Intelligence-Analyst.md` — created
+- `.claude/agents/security/VP-Security.md` — updated
+
+**Changes by Department:**
+- **C-Suite:**
+  - Updated: CIO-Investments, CISO, CPrO-Prompting
+- **Communications:**
+  - Created: Vonnegut-Writer
+- **Engineering:**
+  - Updated: Software-Engineer
+- **Finance:**
+  - Updated: Finance-Associate, Finance-Manager, Financial-Analyst
+- **Healthcare:**
+  - Created: CNO, Charge-Nurse, ER-RN, ICU-RN, LD-RN, Med-Surg-RN, PACU-RN, Peds-RN, Resource-Nurse, Tele-RN
+- **Investments:**
+  - Created: Contrarian-Analyst
+  - Updated: Dir-Research-Investments, Equity-Research-Analyst, Investment-Analyst, Portfolio-Manager, Quant-Analyst, Risk-Manager-Investments, Sr-Equity-Analyst, Sr-Quant-Analyst, Sr-Risk-Analyst, VP-Investments
+- **Kv-Marketing:**
+  - Created: Billy-Pilgrim, Bokonon, Eliot-Rosewater, Howard-W-Campbell, Kilgore-Trout, Montana-Wildhack, Rumfoord, So-It-Goes
+- **Legal / GRC:**
+  - Updated: Risk-Analyst
+- **Technical Pipeline:**
+  - Created: Chief-Notes-Officer
+  - Updated: orchestrator, scout
+- **Prompt Engineering:**
+  - Created: Custodian
+  - Updated: VP-PromptEngineering
+- **Security:**
+  - Created: Application-Security-Engineer, Cloud-Security-Engineer, Red-Team-Engineer, Threat-Intelligence-Analyst
+  - Updated: Dir-Security, Security-Analyst, Security-Engineer, Security-Manager, Sr-Security-Engineer, VP-Security
+
+**Propagation Completed:**
+- [ ] Parent agent updated: [TODO: confirm or N/A]
+- [ ] CLAUDE.md updated: [TODO: confirm or N/A]
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE
+**Rollback:** `git revert HEAD` — agent files will be restored to prior state
+
+---
+## 2026-03-31 | MINOR — feat(security): 4 new security agent roles — Threat Intelligence, Red Team, AppSec, Cloud Security (v1.16.0)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO · AI & Automation Council (CONDITIONAL → CLEARED pending CAE-Audit confirmation)
+**Risk Tier:** 2 (Batch Escalation Rule — 4 new agents, security department, CISO review + CAE-Audit required)
+**COSO Component:** Control Environment (new security roles) · Control Activities (new review gates) · Information & Communication (new intelligence and reporting functions)
+
+**Summary:** Created 4 new security department agent roles identified by CIRO-Research gap analysis: Threat-Intelligence-Analyst (threat feed curation, TTP briefings, IOC enrichment), Red-Team-Engineer (adversarial simulation, independent of defensive chain, reports to VP-Security), Application-Security-Engineer (secure SDLC, SAST/SCA, developer security, dual-reports Security-Manager + CTO-Engineering), Cloud-Security-Engineer (CSPM, IaC security review, IAM policy review, secrets management). All AI & Automation Council conditions incorporated. Updated parent agents Security-Manager and VP-Security. CLAUDE.md version bumped to 1.16.0.
+
+**Files Created:**
+- `.claude/agents/security/Threat-Intelligence-Analyst.md` — v1.0.0. Threat intelligence program ownership. Tools: Bash, Read, WebSearch, WebFetch (public sources only, no internal data in external queries). Reports to Security-Manager.
+- `.claude/agents/security/Red-Team-Engineer.md` — v1.0.0. Adversarial simulation, assumed-breach, purple team. Tools: Bash, Read, Glob, Grep. Reports to VP-Security (SoD independence). CEO/CISO-only authorization required.
+- `.claude/agents/security/Application-Security-Engineer.md` — v1.0.0. Secure SDLC, SAST/SCA, security champions, pre-release gate. Tools: Bash, Read, Glob, Grep. Dual-reports Security-Manager + CTO-Engineering; CISO tiebreaker on chain conflicts.
+- `.claude/agents/security/Cloud-Security-Engineer.md` — v1.0.0. CSPM, IaC security review, IAM policy review, secrets management. Tools: Bash, Read, Glob, Grep. Read-only — all remediation through CPlatO-DevOps. Regulated-access IAM protocol requires CISO + GC-Legal clearance.
+
+**Files Modified:**
+- `.claude/agents/security/Security-Manager.md` — Updated Manages list to include Threat-Intelligence-Analyst, Application-Security-Engineer, Cloud-Security-Engineer; updated assignment matrix with 3 new rows
+- `.claude/agents/security/VP-Security.md` — Updated Manages list to include Red-Team-Engineer (direct, independent of defensive chain); updated Red Team Program Oversight responsibility to reflect active role
+- `.claude/CLAUDE.md` — Version bumped from 1.15.0 to 1.16.0 (MINOR — new security department roles added)
+
+**AI & Automation Council Conditions Incorporated (all 11):**
+- Threat-Intelligence-Analyst: no internal data in external queries (#1), authorized sources list (#2), Bash audit log (#3)
+- Red-Team-Engineer: CEO/CISO-only authorization (#4), regulated control GC-Legal flag (#5), Bash audit log (#6), distribution log (#7)
+- Application-Security-Engineer: CISO tiebreaker for chain conflicts (#8), Bash audit log (#9)
+- Cloud-Security-Engineer: Bash audit log (#10), regulated-access IAM protocol (#11)
+
+**Propagation Completed:**
+- [x] Agent files created: 4 new agents
+- [x] Parent agents updated: Security-Manager.md + VP-Security.md
+- [x] CLAUDE.md updated: YES — version bumped to 1.16.0
+- [x] CHANGELOG.md entry written: YES (this entry)
+- [ ] SYSTEM_MAP.md updated: PENDING — security department chain diagram needs 4 new agents added
+- [ ] CAE-Audit condition confirmation: PENDING — light-touch review to confirm all 11 council conditions met
+
+**Sensitive Data Impact:** NONE (internal governance agents; no customer data touched)
+**Rollback:** Delete 4 new agent files; revert Security-Manager.md, VP-Security.md, CLAUDE.md to prior versions
+
+---
+
+## 2026-03-31 | PATCH — chore(security): CISO/VP/Dir/Engineers/Analyst capability enhancements (v1.15.1)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO
+**Risk Tier:** 1 (agent prompt upgrades, no new agents, internal governance enhancements)
+**COSO Component:** Control Environment (enhanced controls framework) · Risk Assessment (KRI framework) · Information & Communication (security posture briefing)
+
+**Summary:** Enhanced security department agents with proactive review cadences, KRI framework, red team oversight, threat hunting methodology, supply chain security, detection engineering, IR playbook ownership, and cross-functional risk-security integration. No new agents created — all changes are prompt/scope enhancements to existing agents: CISO, VP-Security, Dir-Security, Sr-Security-Engineer, Security-Engineer, Security-Analyst, and Risk-Analyst.
+
+**Files Modified:**
+- `.claude/agents/security/CISO.md` — Added Proactive Review Cadence (monthly KRI review + CEO Security Posture Brief; quarterly ATT&CK Coverage Assessment + Threat Landscape Briefing; annual Architecture Security Review); added Risk-Security Integration triggers (simultaneous CISO notification for security-category HIGH/CRITICAL risks from Risk-Analyst; mandatory CISO security architecture review for Tier 1 vendor assessments); added CEO Security Posture Brief output format
+- `.claude/agents/security/VP-Security.md` — Added KRI Framework section with 8 KRIs and escalation thresholds (Failed authentication attempts >500/24h; Patch lag CRITICAL CVEs >7 days; MFA exception count >5; Third-party access accounts not reviewed in 90 days >10; SIEM alert backlog untriaged >48h >20; Open CRITICAL findings >14 days; Security Awareness training completion <80%; Detection coverage against ATT&CK <60%); added Red Team Program Oversight responsibility
+- `.claude/agents/security/Dir-Security.md` — Added IR Playbook Ownership (5 categories: ransomware/destructive malware, data exfiltration, account compromise/credential theft, supply chain compromise, cloud misconfiguration with data exposure; quarterly tabletops; retainer management); added Risk-Analyst cross-functional interface with 5-business-day SLA
+- `.claude/agents/security/Sr-Security-Engineer.md` — Elevated Threat Hunting to primary responsibility with 6-step hypothesis-driven methodology and monthly cadence; added Supply Chain Security capability (SBOM generation, provenance verification, SLSA level assessment)
+- `.claude/agents/security/Security-Engineer.md` — Added Detection Engineering as core responsibility (monthly ATT&CK coverage gap review; SIEM rule creation/tuning; detection gap backlog ownership)
+- `.claude/agents/security/Security-Analyst.md` — Added Tier 3 Parallel Escalation protocol (direct CISO + CEO notification for confirmed active breach indicators; bypasses serial chain delay for critical time-sensitive incidents)
+- `.claude/agents/legal/Risk-Analyst.md` — Added CISO notification rule for security-category HIGH/CRITICAL risks (simultaneous with Compliance-Manager); added CISO/Dir-Security cross-functional interface table (5-business-day SLA, escalation triggers)
+
+**Changes by Department:**
+- **Security (7 agents enhanced):** KRI framework, proactive review cadences, threat hunting, supply chain security, detection engineering, IR playbook ownership, threat landscape briefing, architecture security reviews
+- **Legal & Risk (1 agent enhanced):** CISO/Dir-Security integration points for security-category HIGH/CRITICAL risks
+
+**Propagation Completed:**
+- [x] Agent files modified: 7 security agents, 1 legal/risk agent
+- [x] CLAUDE.md updated: NO (agent table already reflects CISO/VP-Security/Dir-Security/etc.; no organizational changes)
+- [x] CHANGELOG.md entry written: YES
+- [x] SYSTEM_MAP.md updated: NO (organizational structure unchanged; internal agent scope enhancements only)
+
+**Sensitive Data Impact:** NONE (internal governance enhancements; no customer data touched)
+**Rollback:** `git revert HEAD` — reverts all 8 agent files to prior prompt versions
+
+---
+
+## 2026-03-30 | FEATURE — feat(ai-os): Resource Impact Tracker (water + energy)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO
+**Risk Tier:** 1 (internal tool, no external data, reversible)
+**COSO Component:** Information & Communication (new observability layer)
+
+**Summary:** Built `resource_tracker.py` — a permanent SQLite-backed tracker that estimates water (mL) and energy (Wh) consumed per AI request across all models (Claude API + Ollama local). Hooked into `run.py` and `chain.py` so every future request is auto-recorded. Bootstrap path backfills history from `stats-cache.json`, `run_log.jsonl`, and `ollama_usage.jsonl`. KV skill added for Vonnegut-voice impact summaries.
+
+**Files Created:**
+- `.claude/resource_tracker.py` — core library + SQLite DB + CLI
+- `.claude/skills/KV/resource-stats.md` — KV skill for water/energy queries
+
+**Files Modified:**
+- `.claude/run.py` — added `resource_tracker.record()` calls after Claude + Ollama execution
+- `.claude/chain.py` — fixed token discard bug on subtask calls; added record calls; synthesis now captures tokens
+- `.claude/CHANGELOG.md` — this entry
+
+**Coefficients (per 1,000 tokens):**
+- Claude Sonnet: 0.30 Wh energy, 0.036 mL water
+- Claude Opus: 0.90 Wh energy, 0.108 mL water
+- Claude Haiku: 0.06 Wh energy, 0.007 mL water
+- Ollama local (varies by model): 0.12–0.97 Wh, 0.001 mL (air-cooled)
+
+**Sources:** Luccioni et al. 2023 (arXiv:2311.16863) · Li et al. 2023 (arXiv:2304.03271)
+
+**CLI Usage:**
+- `python ~/.claude/resource_tracker.py report` — lifetime + 7-day chart + model breakdown
+- `python ~/.claude/resource_tracker.py today` — today only
+- `python ~/.claude/resource_tracker.py bootstrap` — backfill history
+- Ask "how much water/energy have I used" → triggers resource-stats KV skill
+
+**Side effect fixed:** `chain.py` line 326 was discarding all token counts for multi-agent chain subtasks (`output, _, _ = _run_claude(...)`). This has been fixed to capture tokens and record them.
+
+---
+
+## 2026-03-30 | DEPT-CREATE — feat(ai-os): Healthcare & Nursing Department (v1.15.0)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO
+**Risk Tier:** 2 (batch rule: 10 agents in one session)
+**COSO Component:** Control Environment (new department + staffing controls)
+**Agent Count After:** 185
+
+**Summary:** Created full Healthcare & Nursing Department with evidence-based nurse-to-patient ratios baked into every agent. CNO is C-suite entry point. Charge Nurse and Resource Nurse handle real-time staffing coverage. Eight specialty RN agents cover ICU, Med-Surg, ER, Telemetry, L&D, Peds, and PACU — each with unit-specific ratio policy, escalation triggers, and clinical competency scope.
+
+**Ratios implemented:**
+- ICU: 1:2 (1:1 for CRRT/ECMO/IABP)
+- PACU Phase I: 1:2 (1:1 unstable)
+- L&D: 1:2 active labor, 1:1 delivery + 2hr recovery
+- Telemetry: 1:3 (max 1:4 temporary)
+- ER: 1:3 (trauma 1:1, fast track 1:4–5)
+- Pediatrics: 1:3–4 (PICU follows ICU rules)
+- Med-Surg: 1:4 (absolute max 1:5 per CA mandate)
+
+**Files Created:**
+- `.claude/agents/healthcare/CNO.md`
+- `.claude/agents/healthcare/Charge-Nurse.md`
+- `.claude/agents/healthcare/Resource-Nurse.md`
+- `.claude/agents/healthcare/ICU-RN.md`
+- `.claude/agents/healthcare/Med-Surg-RN.md`
+- `.claude/agents/healthcare/ER-RN.md`
+- `.claude/agents/healthcare/Tele-RN.md`
+- `.claude/agents/healthcare/LD-RN.md`
+- `.claude/agents/healthcare/Peds-RN.md`
+- `.claude/agents/healthcare/PACU-RN.md`
+
+**Files Modified:**
+- `.claude/CLAUDE.md` — CNO added to agent table + Healthcare routing + keyword fast-path; v1.15.0
+- `.claude/CHANGELOG.md` — this entry
+- `.claude/SYSTEM_MAP.md` — Healthcare subgraph added
+
+**Propagation Completed:**
+- [x] Agent files created: 10
+- [x] CLAUDE.md updated: agent table, routing, keyword table, version bumped to 1.15.0
+- [x] CHANGELOG.md entry written: YES
+- [x] SYSTEM_MAP.md updated: Healthcare subgraph
+
+**Sensitive Data Impact:** NONE (internal AI OS — no real patient data)
+
+---
+
+## 2026-03-28 | AGENT-CREATE + DOC — feat(ai-os): Contrarian-Analyst + Failure Museum (v1.13.1)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO
+**Risk Tier:** 1
+**COSO Component:** Control Activities (new agent — detective control) + Control Environment (Failure Museum)
+**Agent Count After:** 175
+
+**Summary:** Added Contrarian-Analyst to the investments chain (mandatory bear case on every BUY/HOLD — a structural de-biasing mechanism against thesis confirmation). Added FAILURE_MUSEUM.md — a learning artifact for intelligence failures, distinct from audit findings. Both are additive, non-breaking changes.
+
+**Files Modified:**
+- `.claude/agents/investments/Contrarian-Analyst.md` — created
+- `.claude/agents/investments/Risk-Manager-Investments.md` — Manages field updated
+- `.claude/FAILURE_MUSEUM.md` — created
+- `.claude/CLAUDE.md` — v1.13.1, investments routing updated with Contrarian-Analyst
+- `.claude/SYSTEM_MAP.md` — Contrarian-Analyst node added to Investments subgraph
+- `.claude/CHANGELOG.md` — this entry
+
+**Propagation Completed:**
+- [x] Agent file created: Contrarian-Analyst.md
+- [x] Parent agent updated: Risk-Manager-Investments.md
+- [x] CLAUDE.md updated: routing + version bump to 1.13.1
+- [x] SYSTEM_MAP.md updated: Investments subgraph
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE
+**Rollback:** `git revert HEAD`
+
+---
+
+## 2026-03-28 | AGENT-CREATE + ARCH — feat(ai-os): Chief-Notes-Officer + SESH data flow architecture (v1.13.0)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO
+**Risk Tier:** 1
+**COSO Component:** Control Activities (new agent) + Control Environment (architecture documentation)
+**Agent Count After:** 173
+
+**Summary:** Added Chief-Notes-Officer (CNO) — a Haiku-tier, passive, always-on system note-taker that taps note signals from all execution layers (LO, SESH, workers, sub-agents, background agents). Also formalized the SESH data flow architecture: COO↔Librarian↔Library proxy pattern, CPO↔Compressor+INDEX access pattern, SESH instantiation model (1..N C-suite from INDEX), worker/sub-agent spawn model (0–5), and background parallel layer (CAE-Audit + Custodian). Documented in CLAUDE.md (DATA FLOW ARCHITECTURE section) and SYSTEM_MAP.md (Section 7 diagram).
+
+**Files Modified:**
+- `.claude/agents/pipeline/Chief-Notes-Officer.md` — created
+- `.claude/CLAUDE.md` — v1.13.0, CNO added to Utility & Platform Agents table, DATA FLOW ARCHITECTURE section added
+- `.claude/SYSTEM_MAP.md` — CNO node in Family Tree, Section 7 SESH Data Flow diagram added
+- `.claude/CHANGELOG.md` — this entry
+
+**Changes by Department:**
+- **Technical Pipeline:** Created Chief-Notes-Officer
+- **Architecture:** SESH data flow + infrastructure layer formalized
+
+**Propagation Completed:**
+- [x] Agent file created: Chief-Notes-Officer.md
+- [x] CLAUDE.md updated: utility table + DATA FLOW ARCHITECTURE section + version bump to 1.13.0
+- [x] SYSTEM_MAP.md updated: Family Tree + Section 7 diagram
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE — CNO writes only to `session_notes/` (local, non-committed)
+**Rollback:** `git revert HEAD` — agent file and doc sections restored to prior state
+
+---
+
 ## 2026-03-27 | AGENT-CREATE — feat(ai-os): multi-agent chain executor (chain.py)  - chain.py: multi-dept task routing following CLAUDE.md chain logic 
 
 **Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
@@ -51,6 +368,23 @@
 
 **Sensitive Data Impact:** NONE
 **Rollback:** `git revert HEAD` — restores all three files to pre-remediation state; findings would re-open
+
+---
+
+## 2026-03-27 | POLICY-UPDATE — Consolidate version history to CHANGELOG.md only
+
+**Changed By:** Lead Orchestrator
+**Risk Tier:** 1
+**Version Bump:** 1.12.3
+
+**Change:**
+- Removed duplicate VERSION HISTORY table from `CLAUDE.md` (21 rows spanning v1.0.0–v1.12.2)
+- Replaced with a single pointer: `> All version history lives in CHANGELOG.md — single source of truth.`
+- Updated VERSIONING CONVENTION rule, LIVING DOCUMENT rules, tagline, and DOCUMENTATION LAYER to reflect consolidation
+
+**Docs:**
+- Updated: `CLAUDE.md` — v1.12.2 → v1.12.3
+- Updated: `CHANGELOG.md` — this entry
 
 ---
 

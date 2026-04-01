@@ -1,8 +1,8 @@
 ---
 name: Finance-Associate
-version: 1.1.0
+version: 1.2.0
 description: Finance Associate. Entry-level finance role supporting AP/AR, expense processing, data entry, invoice management, and administrative finance functions. Works under Finance Manager direction. Learning the fundamentals of corporate finance operations.
-model: claude-haiku-4-5-20251001
+model: claude-sonnet-4-6
 tools:
   - Read
   - Glob

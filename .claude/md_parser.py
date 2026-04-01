@@ -661,6 +661,81 @@ __all__ = [
 # and encoding edge cases that the current regex-based approach cannot.
 
 
+# ── Agent validator ───────────────────────────────────────────────────────────
+
+_REQUIRED_FM_FIELDS = {"name", "version", "description", "model", "tools"}
+_REQUIRED_SECTIONS_ALL = {
+    "Negative Constraints",
+    "Escalation Rules",
+    "Output Format",
+}
+_REQUIRED_SECTIONS_CSUITE = {
+    "Mandatory Trigger Rules",
+    "Role in One Sentence",
+}
+
+def _validate_agent(doc: ParsedDoc) -> list:
+    """Return list of findings for an agent .md file. Empty list = PASS."""
+    findings = []
+
+    # Skip non-agent files (no frontmatter)
+    if not doc.frontmatter:
+        return []
+
+    # 1. Frontmatter fields
+    missing_fm = _REQUIRED_FM_FIELDS - set(doc.frontmatter.keys())
+    for f in sorted(missing_fm):
+        findings.append(f"Missing frontmatter field: {f}")
+
+    # 2. description must be non-empty
+    desc = str(doc.frontmatter.get("description", "")).strip()
+    if not desc:
+        findings.append("description field is empty")
+    elif len(desc) < 20:
+        findings.append(f"description too short ({len(desc)} chars) — must describe invoke conditions")
+
+    # 3. version must be semver-like
+    version = str(doc.frontmatter.get("version", "")).strip()
+    if not re.match(r"^\d+\.\d+\.\d+$", version):
+        findings.append(f"version '{version}' is not semver (expected X.Y.Z)")
+
+    # 4. Required sections (all agents)
+    heading_texts_lower = {h.text.lower() for h in doc.headings}
+    def _has_section(required: str) -> bool:
+        req = required.lower()
+        return any(h.startswith(req) for h in heading_texts_lower)
+
+    for section in _REQUIRED_SECTIONS_ALL:
+        if not _has_section(section):
+            findings.append(f"Missing required section: {section}")
+
+    # 5. C-suite detection: agents in c-suite/ or governance/ directories
+    name = doc.frontmatter.get("name", "")
+    model = doc.frontmatter.get("model", "")
+    dept = doc.path.parent.name if doc.path != Path("<string>") else ""
+    is_senior = dept in ("c-suite", "governance")
+    if is_senior:
+        for section in _REQUIRED_SECTIONS_CSUITE:
+            if not _has_section(section):
+                findings.append(f"Missing C-suite section: {section}")
+
+    # 6. Negative Constraints must have ≥3 bullet points
+    nc_h = doc.find_heading("Negative Constraints")
+    nc_section = doc.sections.get(nc_h.text) if nc_h else None
+    if nc_section:
+        bullets = [l for l in nc_section.splitlines() if l.strip().startswith(("-", "*", "•"))]
+        if len(bullets) < 3:
+            findings.append(f"Negative Constraints has only {len(bullets)} bullet(s) — minimum 3 required")
+
+    # 7. Output Format must not contain placeholder text
+    of_h = doc.find_heading("Output Format")
+    of_section = doc.sections.get(of_h.text) if of_h else None
+    if of_section and "[domain fields]" in of_section.lower():
+        findings.append("Output Format contains unfilled placeholder '[domain fields]'")
+
+    return findings
+
+
 # ── CLI ───────────────────────────────────────────────────────────────────────
 
 _USAGE = """
@@ -675,6 +750,7 @@ Usage:
   python md_parser.py index   <dir>               Index all .md files in dir
   python md_parser.py search  <dir> <query>       Search across all .md files
   python md_parser.py agents                      Index ~/.claude/agents
+  python md_parser.py validate <file|dir>         Check agent files against AGENT_STANDARDS
 """.strip()
 
 
@@ -799,6 +875,27 @@ def _cli():
                 model = doc.frontmatter.get("model", "-")
                 print(f"{name:<40} {dept:<25} {version:<10} {model:<12}")
             print(f"\nTotal: {len(agent_map)} agents")
+
+        elif cmd == "validate":
+            if len(args) < 2:
+                print("Usage: md_parser.py validate <file|dir>"); sys.exit(1)
+            target = Path(args[1])
+            files = list(target.rglob("*.md")) if target.is_dir() else [target]
+            mp = MarkdownParser()
+            total = passed = 0
+            for f in sorted(files):
+                findings = _validate_agent(mp.parse_file(f))
+                total += 1
+                if not findings:
+                    passed += 1
+                    print(f"  PASS  {f.name}")
+                else:
+                    print(f"  FAIL  {f.name}")
+                    for issue in findings:
+                        print(f"         • {issue}")
+            print(f"\n{passed}/{total} passed")
+            if passed < total:
+                sys.exit(1)
 
         else:
             print(f"Unknown command: {cmd}\n")

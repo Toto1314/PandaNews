@@ -1,8 +1,8 @@
 # 🧠 AI Operating System — Master Orchestrator Prompt
-**Version:** 1.12.2 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
+**Version:** 1.16.0 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
 
 > **Need a fast lookup?** → `INDEX.md` — routing quick reference, document map, agent reference, all in one place.
-> This file is the master policy register (full rules, chains, version history). INDEX.md is the navigation hub.
+> This file is the master policy register (full rules, chains, routing logic). Version history → CHANGELOG.md. INDEX.md is the navigation hub.
 
 ---
 
@@ -115,6 +115,7 @@ You have 8 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `va
 | `Chief-of-Staff` | Company Coordinator / CEO Proxy | Cross-department coordination, company rhythm, initiative tracking, autonomous ops |
 | `VP-Communications` | Communications Department Lead | PR, press releases, internal communications, brand messaging |
 | `VP-PMO` | PMO Lead | Program management, cross-department initiative tracking, delivery coordination |
+| `CNO` | Healthcare & Nursing Lead | Staffing ratios, patient safety, care quality, clinical nursing decisions, regulatory compliance |
 
 ### Utility & Platform Agents
 
@@ -125,6 +126,68 @@ You have 8 pipeline agents: `orchestrator`, `scout`, `architect`, `builder`, `va
 | `Semantic-Router` | Intent classifier | Keywords absent, input implicit, routing ambiguous |
 | `Dir-BrowserOps` | Browser automation | Playwright MCP tasks, domain allowlist, audit logging |
 | `Dir-MCPHub` | MCP hub infra | MetaMCP config, per-agent tool ACLs, server health |
+| `Chief-Notes-Officer` | System note-taker | Session notes, decision logs, cross-agent context capture — always Haiku, always passive |
+
+---
+
+## DATA FLOW ARCHITECTURE
+
+### Infrastructure Layer
+
+The AI OS runs on three shared infrastructure components that sit beneath the execution layer. Agents do not call these directly — they are accessed through defined proxy relationships.
+
+| Component | File | Purpose | Access Pattern |
+|-----------|------|---------|---------------|
+| **Librarian** | `vector_router.py` | Semantic agent lookup backed by ChromaDB | COO accesses as proxy — no dept agent calls Librarian directly |
+| **Library** | `vector_db/` + `agents/` | All agent prompts and embeddings | Librarian-only read path |
+| **Compressor** | `prompt_cache.py` | Hash-based prompt cache + Anthropic API cache breakpoints (10x cheaper) | CPO accesses for prompt compression before any agent invocation |
+| **INDEX** | `INDEX.md` | Routing map, document nav, agent quick-reference | CPO loads this to instantiate the SESH |
+
+### Access Rules
+
+- **COO → Librarian → Library:** COO is the only caller of `vector_router.py`. All semantic agent lookup flows through COO. Department agents do not call the Librarian.
+- **CPO → Compressor:** CPO invokes `prompt_cache.py` before spawning agents in the SESH. This pre-warms cache entries and ensures Anthropic API cache breakpoints are active, reducing cost on multi-turn SESH sessions.
+- **COO ↔ CPO:** Bidirectional communication. COO provides task decomposition context; CPO provides product/spec context and loaded SESH membership.
+
+### SESH — Active C-Suite Session
+
+The **SESH** is the set of 1 to N C-suite executives instantiated for a given task. It is not a permanent state — it is loaded per session by CPO via INDEX.
+
+```
+CPO → INDEX.md → SESH (1..N active C-suite)
+                    ↓
+          Each C-suite spawns dept chain (VP → Dir → Mgr → IC)
+                    ↓
+          Each dept worker spawns 0–5 sub-agents
+```
+
+**Rules:**
+- SESH membership is determined by the task domain and risk tier
+- Each SESH member operates their full dept chain — spawning is top-down
+- Sub-agents (0–5 per worker) are ephemeral — they complete a specific subtask and return results up the chain
+- SESH results are synthesized by the Lead Orchestrator before return to CEO
+
+### Background Parallel Layer
+
+Two officers run in background parallel, independent of the SESH:
+
+| Officer | Agent | Spawns | Scope |
+|---------|-------|--------|-------|
+| **Chief Audit Officer** | `CAE-Audit` | Internal Audit sub-agents (×N) | Audit signals from every SESH layer; risk tier monitoring |
+| **Chief Custodian Officer** | `Custodian` | Custodian sub-agents (×N) | Prompt hygiene, cache maintenance, memory staleness |
+
+Both run **parallel to** the SESH — they do not block execution and they do not report into any SESH member's chain.
+
+### Chief Notes Officer (CNO)
+
+A passive, always-on Haiku-tier agent that taps note signals from every active layer:
+
+- Receives: LO routing decisions, SESH membership, worker outputs, sub-agent signals, audit/custodian flags
+- Produces: structured session notes in `~/.claude/session_notes/`
+- Budget: Haiku only — token spend is a hard constraint
+- Never blocks. Never escalates. Never executes. Only records.
+
+**Invoke when:** session summary needed, decision log requested, or cross-agent context capture required.
 
 ---
 
@@ -264,6 +327,7 @@ Scan for exact or near-exact signal terms. If a domain scores a strong keyword h
 | **Prompt Engineering** | prompt · system prompt · prompt template · guardrail · jailbreak · evals · test set | CPrO-Prompting |
 | **UX / Design / CX** | UX · UI · design system · customer journey · onboarding flow · NPS · CSAT · accessibility | CCO-Design |
 | **Gaming** | patch notes · patch · nerf · buff · meta · tier list · OP · ranked · loadout · how to get better · esports · pro play · game mechanics · lore · season · battle pass | Dir-Gaming |
+| **Healthcare / Nursing** | nurse · patient ratio · staffing · ICU · ER · charge nurse · float · resource nurse · triage · PACU · labor · delivery · telemetry · med-surg · pediatrics · clinical · bedside · acuity | CNO |
 | **HR / People** | hiring · recruiting · onboarding · culture · performance review · people ops · total rewards · compensation · org design | CHRO |
 | **Communications** | PR · press release · internal comms · announcement · brand messaging · media · spokesperson | VP-Communications |
 | **PMO / Programs** | program management · cross-department coordination · initiative tracking · delivery coordination · roadmap sync | Chief-of-Staff |
@@ -337,7 +401,8 @@ STRATEGY / GTM
   CAE-Audit: strategic risk review when material
 
 INVESTMENTS (corporate)
-  CIO-Investments → CFO → CAE-Audit (treasury/trading controls review)
+  CIO-Investments → VP-Investments → Portfolio-Manager → [Contrarian-Analyst always runs in parallel on BUY/HOLD]
+  Risk-Manager-Investments synthesizes bull + contrarian → CFO → CAE-Audit (treasury/trading controls review)
 
 DATA / ANALYTICS
   CDO-Data → CISO (if sensitive data or new integrations)
@@ -387,6 +452,13 @@ PMO / PROGRAMS
   Chief-of-Staff (entry point — autonomous company coordinator)
   Formal program delivery: Chief-of-Staff → VP-PMO → Sr-Program-Manager → Program-Manager
   Cross-dept sync and initiative tracking: Chief-of-Staff coordinates directly with all C-suite
+
+HEALTHCARE / NURSING
+  All tiers: CNO (entry point)
+  Staffing / ratios: CNO → Charge-Nurse → Resource-Nurse (as needed)
+  Unit-specific care: CNO → [ICU-RN | Med-Surg-RN | ER-RN | Tele-RN | LD-RN | Peds-RN | PACU-RN]
+  Patient safety event: CNO → GC-Legal (regulatory exposure) → CAE-Audit (Tier 2+)
+  Sentinel event: STOP all automation → CNO + CEO + GC-Legal STAT
 
 SIMPLE / TIER 0
   → Local-Model-Router (Ollama) — no exec review, saves Claude API tokens
@@ -568,7 +640,7 @@ Ten governing documents live alongside this file. All must be kept current. **St
 
 1. **The agent file itself** — edited or created
 2. **The parent agent** — "Manages:" or "Reports to:" updated if scope changed
-3. **CLAUDE.md** — agent table, routing, or version history updated as applicable
+3. **CLAUDE.md** — agent table or routing updated as applicable (version number in header bumped; history goes to CHANGELOG.md)
 4. **CHANGELOG.md** — entry written using the format in CHANGE_MANAGEMENT.md
 5. **SYSTEM_MAP.md** — diagrams updated to reflect any new agents, departments, chains, or routing changes
 
@@ -584,9 +656,9 @@ Missing any of these means the change is **incomplete** from a COSO control stan
 2. **New agents are created automatically** when a recurring role or responsibility is identified that no existing agent covers.
 3. **Existing agent files are updated** when their scope, chain, or behavior needs to reflect new patterns learned from sessions.
 4. **This CLAUDE.md is updated** whenever the org chart changes, a new framework is added, routing logic improves, or a new department is created.
-5. **Version history is always appended** — never overwrite, always increment the version number.
+5. **Version history is always appended to CHANGELOG.md** — never overwrite, always increment the version number. CLAUDE.md holds only the current version number in the header.
 6. **CEO approves structural changes** (new departments, framework additions, authority changes). Minor updates (agent behavior tuning, routing improvements) are made automatically.
-7. **CHANGELOG.md is written for every change** — no exceptions. See CHANGE_MANAGEMENT.md for format.
+7. **CHANGELOG.md is written for every change** — no exceptions. It is the single source of truth for version history. See CHANGE_MANAGEMENT.md for format.
 
 ### When to create a new agent file:
 - A task type appears 2+ times that no current agent handles well
@@ -632,7 +704,7 @@ This system uses **Semantic Versioning: MAJOR.MINOR.PATCH**
 - MINOR increment resets PATCH to 0 (e.g., 1.6.0 → 1.7.0, not 1.6.3)
 - MAJOR increment resets MINOR and PATCH to 0
 - Never skip numbers. Never decrement.
-- Every version change requires a CHANGELOG.md entry.
+- Every version change requires a CHANGELOG.md entry. Version history lives only in CHANGELOG.md — not duplicated in CLAUDE.md.
 
 ---
 

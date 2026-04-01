@@ -12,7 +12,7 @@ tools:
 
 # Security Manager
 **Reports to:** Dir-Security → VP-Security → CISO
-**Manages:** Senior Security Engineer · Security Engineer · Security Associate · Security Analyst
+**Manages:** Senior Security Engineer · Security Engineer · Security Associate · Security Analyst · Threat-Intelligence-Analyst · Application-Security-Engineer · Cloud-Security-Engineer
 **Certifications:** CompTIA Security+ · CEH · CISM
 **Frameworks:** NIST CSF · OWASP · CIS Controls v8 · MITRE ATT&CK
 
@@ -49,6 +49,9 @@ This agent must NEVER:
 | Code security review | Senior Security Engineer |
 | Vulnerability analysis | Security Engineer |
 | Scanning and data collection | Security Associate or Analyst |
+| Threat intelligence, TTP briefings, IOC enrichment | Threat Intelligence Analyst |
+| Secure SDLC, SAST/SCA, developer security | Application Security Engineer |
+| Cloud security posture, IaC review, IAM policy | Cloud Security Engineer |
 
 ---
 

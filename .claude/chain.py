@@ -41,7 +41,14 @@ if _env_file.exists():
             os.environ.setdefault(_k.strip(), _v.strip())
 
 import anthropic
-from run import run, _find_agent, _load_agent_prompt, _run_claude, CLAUDE_MODEL_MAP
+from run import run, _find_agent, _load_agent_prompt, _get_system_param, _run_claude, CLAUDE_MODEL_MAP
+import job_store
+
+try:
+    from resource_tracker import record as _rt_record
+    _HAS_RESOURCE_TRACKER = True
+except ImportError:
+    _HAS_RESOURCE_TRACKER = False
 
 AGENTS_DIR = Path.home() / ".claude" / "agents"
 
@@ -59,12 +66,19 @@ MULTI_DEPT_SIGNALS = [
 ]
 
 
+def _kw_match(kw: str, text: str) -> bool:
+    """Match keyword using word boundaries for short terms, substring for longer."""
+    if len(kw) <= 4:
+        return bool(re.search(r'\b' + re.escape(kw) + r'\b', text))
+    return kw in text
+
+
 def _count_domain_hits(task: str) -> int:
     """Count how many domain clusters have at least one keyword hit."""
     task_lower = task.lower()
     return sum(
         1 for cluster in MULTI_DEPT_SIGNALS
-        if any(kw in task_lower for kw in cluster)
+        if any(_kw_match(kw, task_lower) for kw in cluster)
     )
 
 
@@ -139,22 +153,47 @@ def decompose_with_coo(task: str) -> list[dict]:
 
 
 def _simple_decompose(task: str) -> list[dict]:
-    """Fallback: use vector search to find top 3 agents and assign them."""
-    try:
-        from vector_router import query_agents
-        hits = query_agents(task, n=3)
-        return [
-            {
-                "dept": h["department"],
-                "agent": h["agent"],
+    """
+    Fallback decomposition using keyword cluster → C-suite entry point mapping.
+    Uses hardcoded domain→agent map (not vector search) to preserve chain-of-command.
+    AF-008 fix: restricts to C-suite entry points, not arbitrary IC-level agents.
+    """
+    DOMAIN_TO_CSUITE = {
+        "security":    ("security",     "CISO"),
+        "research":    ("research",     "CIRO-Research"),
+        "strategy":    ("strategy",     "CSO-Strategy"),
+        "invest":      ("investments",  "CIO-Investments"),
+        "hire":        ("hr",           "CHRO"),
+        "build":       ("engineering",  "CTO-Engineering"),
+        "data":        ("data",         "CDO-Data"),
+        "finance":     ("finance",      "CFO"),
+        "comms":       ("comms",        "VP-Communications"),
+    }
+    CLUSTER_KEYWORDS = {
+        "security":  ["security", "breach", "incident", "vulnerability", "ciso"],
+        "research":  ["research", "analyze", "competitive", "market", "trends"],
+        "strategy":  ["strategy", "plan", "positioning", "gtm", "launch"],
+        "invest":    ["invest", "portfolio", "stock", "equity", "buy", "sell"],
+        "hire":      ["hire", "recruit", "people", "team", "headcount", "hr"],
+        "build":     ["build", "implement", "code", "deploy", "engineer"],
+        "data":      ["data", "analytics", "dashboard", "metric", "pipeline"],
+        "finance":   ["finance", "budget", "cost", "revenue", "forecast"],
+        "comms":     ["comms", "press", "announce", "messaging", "pr"],
+    }
+    task_lower = task.lower()
+    matched = []
+    for cluster, keywords in CLUSTER_KEYWORDS.items():
+        if any(_kw_match(kw, task_lower) for kw in keywords):
+            dept, agent = DOMAIN_TO_CSUITE[cluster]
+            matched.append({
+                "dept": dept,
+                "agent": agent,
                 "task": task,
                 "depends_on": [],
-                "priority": i + 1,
-            }
-            for i, h in enumerate(hits)
-        ]
-    except Exception:
-        return []
+                "priority": len(matched) + 1,
+            })
+    # Always cap at 3 subtasks + synthesis
+    return matched[:3] if matched else []
 
 
 # ── Chain executor ────────────────────────────────────────────────────────────
@@ -191,6 +230,8 @@ def synthesize(task: str, results: list[dict]) -> str:
     print("\n  [Synthesizing across departments...]\n")
     full = ""
     try:
+        from datetime import datetime, timezone
+        _syn_ts = datetime.now(timezone.utc).isoformat()
         with client.messages.stream(
             model=CLAUDE_MODEL_MAP["sonnet"],
             max_tokens=2048,
@@ -199,6 +240,13 @@ def synthesize(task: str, results: list[dict]) -> str:
             for text in stream.text_stream:
                 print(text, end="", flush=True)
                 full += text
+            _final = stream.get_final_message()
+            if _HAS_RESOURCE_TRACKER:
+                _rt_record(
+                    CLAUDE_MODEL_MAP["sonnet"], "claude",
+                    _final.usage.input_tokens, _final.usage.output_tokens,
+                    _syn_ts, "Lead-Orchestrator-Synthesis",
+                )
     except Exception as e:
         print(f"[chain] Synthesis error: {e}")
     print()
@@ -237,6 +285,19 @@ def run_chain(task: str, dry_run: bool = False) -> str:
         print(f"    {step['priority']}. [{step['dept']}] {step['agent']} — {step['task'][:60]}{deps}")
     print()
 
+    job_id = job_store.create_job(task)
+    job_store.start_job(job_id)
+    # step_ids index must match plan order — do not re-sort plan between here and the execution loop
+    step_ids = {}
+    for _i, _s in enumerate(plan):
+        _sid = job_store.create_step(
+            job_id,
+            _s.get("dept", ""),
+            _s.get("agent", ""),
+            _s.get("task", task),
+        )
+        step_ids[_i] = _sid
+
     if dry_run:
         print("  [dry-run] Plan shown. No agents were called.")
         return ""
@@ -272,12 +333,17 @@ def run_chain(task: str, dry_run: bool = False) -> str:
 
         system_prompt = ""
         if agent_info and agent_info.get("file_path"):
-            system_prompt = _load_agent_prompt(agent_info["file_path"])
+            system_prompt = _get_system_param(agent_info["file_path"])
             actual_agent = agent_info["agent"]
         else:
             actual_agent = agent_name
 
-        output = _run_claude("sonnet", system_prompt, subtask)
+        from datetime import datetime, timezone
+        _chain_ts = datetime.now(timezone.utc).isoformat()
+        output, _chain_in, _chain_out = _run_claude("sonnet", system_prompt, subtask)
+        if _HAS_RESOURCE_TRACKER and (_chain_in + _chain_out) > 0:
+            _rt_record(CLAUDE_MODEL_MAP["sonnet"], "claude",
+                       _chain_in, _chain_out, _chain_ts, actual_agent)
         results.append({
             "agent": actual_agent,
             "dept": dept,

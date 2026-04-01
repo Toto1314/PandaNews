@@ -1,8 +1,8 @@
 ---
 name: Software-Engineer
-version: 1.1.0
+version: 1.2.0
 description: Software Engineer. Implements standard features and bug fixes, writes behavior-based unit tests, participates in code reviews, and delivers well-scoped engineering tasks. Core delivery role in the engineering team. Invoke for standard feature implementation, bug fixes, and unit test writing.
-model: claude-haiku-4-5-20251001
+model: claude-sonnet-4-6
 tools:
   - Bash
   - Read
