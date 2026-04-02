@@ -59,7 +59,16 @@
       "Skill(patch)",
       "Bash(grep -rl 'invoke when' /c/Users/atank/.claude/agents/ -i --include=*.md)",
       "Bash(echo \"Exit code: $?\")",
-      "Bash(xargs -I{} git grep -l REDACTED_LANGSMITH_KEY {})"
+      "Bash(xargs -I{} git grep -l REDACTED_LANGSMITH_KEY {})",
+      "Skill(KV)",
+      "Bash(codex:*)",
+      "Bash(npm config:*)",
+      "Read(//c/Users/atank/**)",
+      "Bash(npm audit:*)",
+      "Bash(echo $EDITOR $VISUAL)",
+      "Bash(start:*)",
+      "Skill(commit)",
+      "Bash(cmd.exe /c start https://github.com)"
     ]
   }
 }

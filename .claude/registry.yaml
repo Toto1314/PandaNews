@@ -1,0 +1,484 @@
+# AI OS Integration Registry
+# Backstage-style catalog of all MCPs, APIs, Skills, and allowed web domains
+# Source of truth — edit this file to add/remove/update integrations
+# Viewer: python ~/.claude/registry.py [--filter type] [--search name]
+#
+# Status values: active | available | inactive | blocked
+# Types: mcp | api | skill | web_domain
+
+meta:
+  version: "1.0.0"
+  updated: "2026-04-02"
+  owner: "Lead Orchestrator / CEO"
+
+# ─────────────────────────────────────────────
+# MCP SERVERS
+# ─────────────────────────────────────────────
+mcps:
+  - name: playwright
+    description: Headless browser automation. Screenshots, web interaction, scraping, vision-based page tasks.
+    status: active
+    config_file: "~/.mcp.json"
+    command: "npx @playwright/mcp@latest --headless"
+    agents_using:
+      - Dir-BrowserOps
+    tools:
+      - browser_navigate
+      - browser_screenshot
+      - browser_click
+      - browser_type
+      - browser_evaluate
+    tags: [browser, automation, scraping, vision]
+
+  - name: filesystem
+    description: Read/write access to C:/Users/atank. Used for file operations within the home directory.
+    status: active
+    config_file: "~/.mcp.json"
+    command: "npx @modelcontextprotocol/server-filesystem C:/Users/atank"
+    agents_using:
+      - CTO-Engineering
+      - builder
+      - scout
+    tools:
+      - read_file
+      - write_file
+      - list_directory
+      - create_directory
+      - move_file
+      - search_files
+    tags: [filesystem, files, local]
+
+  - name: claude.ai Hugging Face
+    description: HuggingFace Hub access — paper search, model/repo search, space search, doc fetch, image generation.
+    status: active
+    config_file: "claude.ai connector"
+    credentials: "HF_TOKEN (optional — anonymous rate limits apply)"
+    agents_using:
+      - CIRO-Research
+      - Dir-TechResearch
+      - Dir-ScientificResearch
+      - Dir-AI-Research
+      - Sr-TechResearcher
+      - Research-Scientist
+      - Principal-Researcher
+      - Innovation-Engineer
+      - Head-InnovationLab
+    tools:
+      - paper_search
+      - hub_repo_search
+      - hub_repo_details
+      - space_search
+      - hf_doc_search
+      - hf_doc_fetch
+      - gr1_z_image_turbo_generate
+      - hf_whoami
+    tags: [ai, research, models, papers, huggingface]
+
+  - name: claude.ai Invideo
+    description: AI video generation from scripts. Produces video content from structured prompts.
+    status: active
+    config_file: "claude.ai connector"
+    agents_using:
+      - Dir-MusicProduction
+    tools:
+      - generate-video-from-script
+    tags: [video, generation, media]
+
+  # ── Available plugins (installed but not activated) ──
+  - name: supabase
+    description: Supabase database operations — query, insert, update Postgres tables directly from Claude.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/supabase/.mcp.json"
+    credentials: "SUPABASE_URL + SUPABASE_ANON_KEY (not yet configured)"
+    agents_using: []
+    tags: [database, postgres, backend, planned]
+
+  - name: github
+    description: GitHub API — repos, PRs, issues, code search, actions.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/github/.mcp.json"
+    credentials: "GITHUB_TOKEN (not yet configured)"
+    agents_using: []
+    tags: [git, code, collaboration]
+
+  - name: slack
+    description: Slack messaging — send messages, read channels, manage workspace.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/slack/.mcp.json"
+    credentials: "SLACK_BOT_TOKEN (not yet configured)"
+    agents_using: []
+    tags: [messaging, communication]
+
+  - name: linear
+    description: Linear project management — issues, projects, cycles, roadmaps.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/linear/.mcp.json"
+    credentials: "LINEAR_API_KEY (not yet configured)"
+    agents_using: []
+    tags: [project-management, issues]
+
+  - name: stripe
+    description: Stripe payments — customers, subscriptions, invoices, payment intents.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/stripe/.mcp.json"
+    credentials: "STRIPE_API_KEY (not yet configured)"
+    agents_using: []
+    tags: [payments, billing]
+
+  - name: firebase
+    description: Firebase/Firestore — real-time database, authentication, storage.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/firebase/.mcp.json"
+    credentials: "FIREBASE_SERVICE_ACCOUNT (not yet configured)"
+    agents_using: []
+    tags: [database, realtime, google]
+
+  - name: context7
+    description: Context7 — up-to-date library docs and code examples fetched at query time.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/context7/.mcp.json"
+    credentials: "none required"
+    agents_using: []
+    tags: [docs, libraries, context]
+
+  - name: asana
+    description: Asana task management — projects, tasks, workflows.
+    status: available
+    config_file: "~/.claude/plugins/marketplaces/claude-plugins-official/external_plugins/asana/.mcp.json"
+    credentials: "ASANA_ACCESS_TOKEN (not yet configured)"
+    agents_using: []
+    tags: [project-management, tasks]
+
+# ─────────────────────────────────────────────
+# EXTERNAL APIs
+# ─────────────────────────────────────────────
+apis:
+  - name: LangSmith
+    description: LLM observability — traces, evals, latency, cost per chain. Receives agent task strings + token metadata.
+    status: active
+    provider: LangChain Inc.
+    credentials:
+      env_var: LANGCHAIN_API_KEY
+      location: "~/.claude/settings.local.json (env block)"
+      note: "Key currently REDACTED — must be re-provided to re-activate"
+    config:
+      LANGCHAIN_TRACING_V2: "true"
+      LANGCHAIN_PROJECT: "ai-os"
+    data_leaves_machine: true
+    data_sent: "Agent task strings, token counts, latency, chain structure"
+    agents_using:
+      - chain.py
+      - run.py
+    tags: [observability, tracing, llm, langchain]
+
+  - name: Telegram (Kiriko Bot)
+    description: Personal Telegram bot for notifications. Used by /notify skill and gaming-update skill to push alerts to phone.
+    status: active
+    provider: Telegram
+    credentials:
+      location: "~/.claude/kiriko.log (bot config)"
+      note: "Token stored in kiriko_bot.py or env"
+    agents_using:
+      - notify skill
+      - gaming-update skill
+      - Dir-Gaming
+    tags: [notifications, messaging, bot, telegram]
+
+  - name: Suno AI
+    description: AI music generation. Receives structured song prompts from /news-song skill. Output is copy-paste to Suno web UI — no direct API integration yet.
+    status: manual
+    provider: Suno AI
+    credentials: "none (web UI only)"
+    data_leaves_machine: false
+    agents_using:
+      - Dir-MusicProduction
+      - Suno-Prompter
+      - news-song skill
+    tags: [music, ai, generation, creative]
+
+  - name: Supabase
+    description: Postgres cloud database for AI OS persistence. Planned replacement for SQLite state files.
+    status: planned
+    provider: Supabase Inc.
+    credentials:
+      env_vars:
+        - SUPABASE_URL
+        - SUPABASE_ANON_KEY
+        - SUPABASE_SERVICE_ROLE_KEY
+      location: "~/.claude/.env (not yet created)"
+    data_leaves_machine: true
+    data_sent: "Agent execution logs, session notes, resource tracking, job history"
+    agents_using: []
+    tags: [database, postgres, persistence, planned]
+
+  - name: Vercel
+    description: Next.js hosting for AI OS dashboard. Planned deployment target for the integration registry UI + agent history dashboard.
+    status: planned
+    provider: Vercel Inc.
+    credentials:
+      env_var: VERCEL_TOKEN
+      location: "not yet configured"
+    agents_using: []
+    tags: [hosting, frontend, dashboard, planned]
+
+  - name: Anthropic API
+    description: Core Claude API powering all agents. Accessed via Claude Code CLI — not direct API calls.
+    status: active
+    provider: Anthropic
+    credentials:
+      location: "Claude Code OAuth (managed by Claude Code)"
+    data_leaves_machine: true
+    data_sent: "All prompts, agent outputs, tool results"
+    agents_using: ["all agents"]
+    tags: [llm, core, claude, anthropic]
+
+  - name: Ollama (local)
+    description: Local LLM inference. 13 models installed. Used by Local-Model-Router for Tier 0 tasks to save API tokens.
+    status: active
+    provider: local
+    credentials: "none (local)"
+    data_leaves_machine: false
+    models:
+      with_tools: [llama3.2:3b, llama3.1:latest, qwen2.5-coder:7b, deepseek-coder-v2:16b]
+      without_tools: [gemma3:1b, gemma3:4b, gemma3:latest, deepseek-r1:latest, mistral:7b, phi3:medium]
+    agents_using:
+      - Local-Model-Router
+    tags: [llm, local, ollama, cost-saving]
+
+# ─────────────────────────────────────────────
+# SKILLS
+# ─────────────────────────────────────────────
+skills:
+  - name: KV
+    description: "Vonnegut-style rewriter. Rewrites any text or topic in Kurt Vonnegut's voice."
+    usage_count: 13
+    trigger: "/KV <text or topic>"
+    tags: [writing, creative, vonnegut]
+
+  - name: ama
+    description: "Ask Me Anything — reads full conversation, identifies gaps, asks all clarifying questions at once."
+    usage_count: 8
+    trigger: "/ama"
+    tags: [clarification, meta, workflow]
+
+  - name: coach
+    description: "Gaming meta coach — tier lists, loadouts, improvement plans anchored to current patch."
+    usage_count: 7
+    trigger: "/coach <game>"
+    tags: [gaming, coaching, meta]
+
+  - name: update-config
+    description: "Configure Claude Code settings.json — hooks, permissions, env vars, automated behaviors."
+    usage_count: 3
+    trigger: "/update-config"
+    tags: [config, settings, devops]
+
+  - name: z
+    description: "Blitzy prompt builder — structured requirements gathering for Blitzy AI prompts."
+    usage_count: 6
+    trigger: "/z"
+    tags: [prompts, blitzy, product]
+
+  - name: deal-memo
+    description: "Investment memo — thesis, financials, bear/bull/base cases for any company or ticker."
+    usage_count: 2
+    trigger: "/deal-memo <company>"
+    tags: [investments, research, finance]
+
+  - name: patch
+    description: "Fetch patch notes for any game. Uses cache if fresh, fetches live if stale."
+    usage_count: 2
+    trigger: "/patch <game>"
+    tags: [gaming, patches, meta]
+
+  - name: skill-tree
+    description: "Renders AI OS agent roster as an inverted Skyrim-style skill tree with activation tracking."
+    usage_count: 2
+    trigger: "/skill-tree"
+    tags: [meta, agents, visualization]
+
+  - name: commit
+    description: "Stage and commit changes with conventional commit messages and branch safety checks."
+    usage_count: 2
+    trigger: "/commit"
+    tags: [git, workflow, dev]
+
+  - name: notify
+    description: "Send a Telegram message to phone via Kiriko bot."
+    usage_count: 1
+    trigger: "/notify <message>"
+    tags: [notifications, telegram, kiriko]
+
+  - name: portfolio-review
+    description: "Full ROTH IRA portfolio review — P&L, beta, alpha, risk, thesis alignment, 12-month projection."
+    usage_count: 1
+    trigger: "/portfolio-review"
+    tags: [investments, portfolio, roth-ira]
+
+  - name: patch-meta
+    description: "Paste patch notes or name a game — get ranked meta breakdown of what actually matters."
+    usage_count: 1
+    trigger: "/patch-meta"
+    tags: [gaming, meta, analysis]
+
+  - name: onboard
+    description: "Generate architecture overview and onboarding guide using tree-sitter codebase mapping."
+    usage_count: 1
+    trigger: "/onboard"
+    tags: [docs, onboarding, architecture]
+
+  - name: readme
+    description: "Create or update README.md following ClearDocs styling principles."
+    usage_count: 1
+    trigger: "/readme"
+    tags: [docs, readme, writing]
+
+  - name: chuck
+    description: "Validate Blitzy prompts via 10-Item Checklist with project-type-adjusted thresholds."
+    usage_count: 1
+    trigger: "/chuck"
+    tags: [prompts, blitzy, validation]
+
+  # ── Never used (0 usage) ──
+  - name: gaming-update
+    description: "Fetch latest patch notes for configured games, generate update cards, push Telegram notifications."
+    usage_count: 0
+    trigger: "/gaming-update"
+    tags: [gaming, patches, telegram, automation]
+
+  - name: news-song
+    description: "News-to-music pipeline — portfolio news → Suno AI song prompt with lyrics, structure, production notes."
+    usage_count: 0
+    trigger: "/news-song"
+    tags: [music, news, investments, creative]
+
+  - name: analyze
+    description: "Deep analyst mode — pattern recognition, assumption testing, ranked drivers for any topic."
+    usage_count: 0
+    trigger: "/analyze <topic>"
+    tags: [analysis, strategy, research]
+
+  - name: decide
+    description: "Structured decision engine — options, probabilities, risks, forced recommendation."
+    usage_count: 0
+    trigger: "/decide <decision>"
+    tags: [decisions, strategy, productivity]
+
+  - name: weekly-review
+    description: "Weekly execution check-in — what moved the needle, calls out drift, sets one priority for next week."
+    usage_count: 0
+    trigger: "/weekly-review"
+    tags: [productivity, review, planning]
+
+  - name: vc-scout
+    description: "Weekly VC scout report — trending startups, funding rounds, HuggingFace releases, agent economy signals."
+    usage_count: 0
+    trigger: "/vc-scout"
+    tags: [investments, research, vc, startups]
+
+  - name: risk-audit
+    description: "Control mapping and risk audit — NIST/CIS/SOC2 control mapping, gap analysis, ranked findings."
+    usage_count: 0
+    trigger: "/risk-audit"
+    tags: [security, compliance, audit]
+
+  - name: lint
+    description: "Review code changes for bugs, security vulnerabilities, performance issues, style drift."
+    usage_count: 0
+    trigger: "/lint"
+    tags: [code, review, security]
+
+  - name: test
+    description: "Generate and run tests for specified files, auto-detecting project test framework."
+    usage_count: 0
+    trigger: "/test"
+    tags: [testing, code, quality]
+
+  - name: tech-spec
+    description: "Parse and review Technical Specification documents for completeness and implementation readiness."
+    usage_count: 0
+    trigger: "/tech-spec"
+    tags: [docs, specs, product]
+
+  - name: dev-doc
+    description: "Clean and standardize Mintlify documentation pages to match Blitzy docs conventions."
+    usage_count: 0
+    trigger: "/dev-doc"
+    tags: [docs, mintlify, blitzy]
+
+  - name: aap
+    description: "Parse and review Agent Action Plan documents for implementation issues and LoC estimation."
+    usage_count: 0
+    trigger: "/aap"
+    tags: [agents, planning, review]
+
+  - name: game
+    description: "Deep game dive — mechanics, lore, esports, upcoming content, pro play."
+    usage_count: 0
+    trigger: "/game <topic>"
+    tags: [gaming, research, lore]
+
+# ─────────────────────────────────────────────
+# WEB ALLOWLIST
+# Domains approved for WebFetch tool calls
+# ─────────────────────────────────────────────
+web_allowlist:
+  - domain: solana.com
+    purpose: Solana blockchain docs and ecosystem research
+    tags: [crypto, blockchain, solana]
+
+  - domain: docs.solana.com
+    purpose: Solana developer documentation
+    tags: [crypto, blockchain, solana, docs]
+
+  - domain: polygon.technology
+    purpose: Polygon L2 network research
+    tags: [crypto, blockchain, l2, polygon]
+
+  - domain: docs.polygon.technology
+    purpose: Polygon developer documentation
+    tags: [crypto, blockchain, l2, docs]
+
+  - domain: docs.arbitrum.io
+    purpose: Arbitrum L2 developer documentation
+    tags: [crypto, blockchain, l2, arbitrum, docs]
+
+  - domain: l2fees.info
+    purpose: L2 transaction fee comparison
+    tags: [crypto, l2, fees]
+
+  - domain: docs.alchemy.com
+    purpose: Alchemy Web3 API documentation
+    tags: [crypto, api, alchemy, docs]
+
+  - domain: www.alchemy.com
+    purpose: Alchemy Web3 infrastructure
+    tags: [crypto, api, alchemy]
+
+  - domain: near.org
+    purpose: NEAR Protocol blockchain research
+    tags: [crypto, blockchain, near]
+
+  - domain: cheqd.io
+    purpose: cheqd decentralized identity network
+    tags: [crypto, identity, did]
+
+  - domain: docs.cheqd.io
+    purpose: cheqd developer documentation
+    tags: [crypto, identity, did, docs]
+
+  - domain: blog.cheqd.io
+    purpose: cheqd blog and research
+    tags: [crypto, identity, did, research]
+
+  - domain: docs.selfid.network
+    purpose: Self ID decentralized identity documentation
+    tags: [identity, did, docs]
+
+  - domain: identity.foundation
+    purpose: Decentralized Identity Foundation standards
+    tags: [identity, did, standards]
+
+  - domain: www.spruceid.com
+    purpose: SpruceID decentralized identity tools
+    tags: [identity, did, tools]
