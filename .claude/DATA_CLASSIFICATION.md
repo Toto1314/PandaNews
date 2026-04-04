@@ -1,5 +1,5 @@
 # AI OS — Data Classification & Handling Policy
-**Version:** 1.0 | **Owner:** CISO + CDO-Data | **Approved By:** CEO
+**Version:** 1.1 | **Owner:** CISO + CDO-Data | **Approved By:** CEO
 **COSO Component:** Control Activities · Information & Communication
 **Frameworks:** NIST CSF · CIS · SOC 2 · COSO
 
@@ -36,6 +36,7 @@ All data handled by agents in this OS must be classified before processing. No a
   - Pass T1 data through WebFetch, WebSearch, or MCP tools
 - **If T1 data is encountered:** Redact immediately. Flag to CISO. Do not proceed without CEO authorization.
 - **At rest:** Never written to any `.claude/` file without encryption (not currently supported — do not store T1 in this system)
+- **Credential lifecycle compensating control:** All T1 credentials used by agents (API keys, tokens, passwords, service account secrets) must be registered in `CREDENTIAL_REGISTRY.md`. Registration is mandatory before first use. Unregistered credentials found in codebase scans are a CISO-level finding. See `CREDENTIAL_REGISTRY.md` for lifecycle rules, rotation schedule, and revocation procedures.
 
 ### CONFIDENTIAL (T2)
 - **Agents MUST NOT:**
@@ -112,8 +113,36 @@ If a data handling violation is detected:
 
 ---
 
+## APPLICATION SECURITY CONTROLS (Non-Negotiable — All External-Facing Systems)
+
+Any agent that documents, audits, or reviews external-facing APIs, authentication systems, or web applications must verify the following three controls are implemented. These are minimum standards — not optional enhancements.
+
+### 1. Rate Limiting
+
+- **All endpoints** must enforce rate limiting appropriate to the endpoint's sensitivity.
+- **Authentication routes** (login, password reset, token refresh, MFA) must enforce a hard limit of **5 attempts per 10–15 minute window** per IP or user identifier.
+- Exceeding the limit must result in a temporary block — not a slowdown. Block duration must be at least as long as the rate limit window.
+- Any auth endpoint lacking rate limiting is a **HIGH severity finding**.
+
+### 2. No Hardcoded Secrets
+
+- API tokens, passwords, database credentials, private keys, and service account secrets are **T1 RESTRICTED** and must never be hardcoded in source code, config files, or committed to version control.
+- All secrets must be stored in environment variables (`.env` files) or a secrets manager. `.env` files must be listed in `.gitignore`.
+- Frontend build artifacts (`dist/`, `build/`, `out/`) must be scanned before deployment to confirm no T1 data is bundled.
+- Any hardcoded secret found in a codebase is a **CRITICAL severity finding**. The secret must be rotated immediately upon discovery — do not defer to a remediation sprint.
+
+### 3. Input Sanitization and Payload Validation
+
+- All user inputs must be sanitized server-side before processing, storage, or transmission. Client-side validation alone is insufficient.
+- Malformed payloads (unexpected content types, malformed JSON/XML, encoding attacks) must be rejected with a `400 Bad Request` before reaching application logic.
+- Oversized payloads must be rejected at the request boundary. Maximum payload sizes must be explicitly configured per endpoint.
+- Any endpoint accepting unbounded input or lacking server-side validation is a **HIGH severity finding**.
+
+---
+
 ## POLICY VERSION HISTORY
 
 | Version | Date | Change |
 |---------|------|--------|
 | 1.0 | 2026-03-19 | Initial data classification policy. T1-T4 tiers. Agent handling rules. MCP tool rules. Memory system rules. Incident response procedure. |
+| 1.1 | 2026-04-02 | Added Application Security Controls section: rate limiting (5-attempt auth limit / 10-15 min window), no hardcoded secrets (T1 — env vars only, rotate on discovery), input sanitization and payload validation (server-side, reject malformed/oversized). |

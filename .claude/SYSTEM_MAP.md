@@ -1,5 +1,5 @@
 # AI OS — System Map & Visual Flowchart
-**Version:** 1.15.0 | **Owner:** Lead Orchestrator | **Auto-Update Required:** YES
+**Version:** 1.18.1 | **Owner:** Lead Orchestrator | **Auto-Update Required:** YES
 **Governed by:** COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS
 
 > **LIVING DOCUMENT.** Every structural change to CLAUDE.md MUST also update this file.
@@ -50,13 +50,16 @@ graph TD
         BLD["builder"]:::tech
         VAL["validator"]:::tech
         BST["boost"]:::tech
+        MP["MasterPlanner\n(plan gate — stops before exec)"]:::tech
         ORC --> SCO --> ARC --> BLD --> VAL
+        MP -.->|CEO confirm required| ORC
     end
     LO --> TP
+    LO --> MP
 
     %% ── CHIEF NOTES OFFICER (passive tap) ────────────────────
-    CNO["📝 Chief Notes Officer\nHaiku · passive · session_notes/"]:::notes
-    LO -.->|note stream| CNO
+    CNO["📝 Chief Notes Officer\nHaiku · session_notes/ + traces/*.jsonl\nsession_id propagated from LO intake"]:::notes
+    LO -.->|note stream + session_id| CNO
 
     %% ── OPERATIONS HUB ───────────────────────────────────────
     COO["🏢 COO\nOperations Hub"]:::coo
@@ -423,6 +426,29 @@ graph TD
     end
     LO --> CNO_H
 
+    %% ── PERSONAL INTELLIGENCE ────────────────────────────
+    classDef personal fill:#1a3a4a,stroke:#67e8f9,color:#fff,font-weight:bold
+    subgraph PI["🧠 Personal Intelligence"]
+        direction TB
+        VPPI["VP-PersonalIntelligence\nDept Head · /journal · /capture\nCISO CP + Council CONDITIONAL"]:::personal
+        DIRJ["Dir-Journal\nDiary · Tags · T1 Redaction\nHaiku-class · audit.log"]:::director
+        DIRWC["Dir-WebCapture\n5 CISO Guardrails · SSRF Block\nAdversarial Content Isolation\nSonnet-class · fetch.log"]:::director
+        DIRAP["Dir-AutoProjects\nProject Idea Detection\nCEO Gate REQUIRED\nSonnet-class"]:::director
+        APQ["⚡ AutoPilot Queue\nautopilot_watcher.py Stop hook\nqueue.jsonl · LO checks each turn\nOne-line gate — yes/no"]:::tech
+        PRA["Personal-Research-Analyst\nCompany Diagnosis\nIntent-Gated · CIRO-Research\nSonnet-class"]:::director
+        VPPI --> DIRJ
+        VPPI --> DIRWC
+        VPPI --> DIRAP
+        VPPI --> PRA
+        DIRAP --> APQ
+        DIRJ -.->|"~/.claude/journal/entries/"| JDB[("journal/")]
+        DIRWC -.->|"captures/ + fetch.log"| JDB
+        DIRAP -.->|"projects/ + CEO gate"| JDB
+        APQ -.->|"autopilot/queue.jsonl"| JDB
+        PRA -.->|"research/"| JDB
+    end
+    LO --> VPPI
+
     %% ── MUSIC PRODUCTION ─────────────────────────────────
     subgraph MUS["🎵 Music Production"]
         direction TB
@@ -707,7 +733,7 @@ flowchart TD
     %% ── BACKGROUND PARALLEL ─────────────────────────────────
     subgraph BG["🔄 Background / Parallel"]
         direction LR
-        CAO["🔍 CAE-Audit\nChief Audit Officer"]:::bg
+        CAO["🔍 CAE-Audit\nChief Audit Officer\n+ Quarterly Behavioral Consistency Review"]:::bg
         CCU["🧹 Custodian\nChief Custodian Officer"]:::bg
         IA["Audit sub-agents ×N"]:::bgworker
         CUA["Custodian sub-agents ×N"]:::bgworker
@@ -719,12 +745,17 @@ flowchart TD
     WORK -.->|prompt hygiene| CCU
 
     %% ── CHIEF NOTES OFFICER ─────────────────────────────────
-    CNO["📝 Chief Notes Officer\nHaiku · passive · always-on"]:::notes
-    LO -.->|notes| CNO
-    SESH -.->|notes| CNO
-    WORK -.->|notes| CNO
-    SUBS -.->|notes| CNO
+    CNO["📝 Chief Notes Officer\nHaiku · passive · always-on\nsession_notes/*.md + traces/*.jsonl"]:::notes
+    LO -.->|notes + session_id| CNO
+    SESH -.->|notes + session_id| CNO
+    WORK -.->|notes + session_id| CNO
+    SUBS -.->|notes + session_id| CNO
     BG -.->|flags| CNO
+
+    %% ── CREDENTIAL REGISTRY (CISO-owned) ────────────────────
+    CREG["🔑 CREDENTIAL_REGISTRY.md\nCISO-owned · T1 lifecycle\nrotation · revocation · expiry alerts"]:::infra
+    CISO_NODE["CISO"]:::csuite
+    CISO_NODE -->|owns + reviews quarterly| CREG
 ```
 
 ---
@@ -822,3 +853,4 @@ flowchart TD
 | 1.13.0 | 2026-03-28 | Chief-Notes-Officer added to Family Tree. New Section 7: SESH Data Flow diagram — Librarian/Library/Compressor/INDEX infra layer, COO↔CPO↔Librarian/Compressor access pattern, SESH instantiation from INDEX, workers/sub-agents, background CAE-Audit+Custodian, CNO note tap. |
 | 1.13.1 | 2026-03-28 | Section 5b: INDEX.md added to Documentation Layer diagram (was missing despite being the primary nav hub); ORG_CHARTS.md added; agent count corrected to 173; navigation edges added. Section 3: MasterPlanner gate added to routing decision tree (multi-file/multi-agent path now shows STOP→plan→CEO confirm loop). New Section 8: Model Selection Decision Tree (Haiku/Sonnet/Opus/Ollama with tier mapping and tool-support branching). New Section 9: Governance Gate Flow (Step 0 full blocking logic as a visual flowchart — COO→AI Council→CISO→GC-Legal→CISO MCP→Five-File Rule). |
 | 1.17.0 | 2026-04-01 | Music Production department added to Family Tree (Dir-MusicProduction → News-Analyst-Music · Music-Producer · Lyricist · Suno-Prompter). Music/news-song routing added to Routing Decision Tree. Agent count: 201. |
+| 1.16.0 | 2026-04-02 | Governance gap remediation: MasterPlanner added to Technical Pipeline subgraph (resolves CA-002). CNO node updated with session_id propagation annotation and traces/*.jsonl path. CAE-Audit BG node updated with Quarterly Behavioral Consistency Review label. CREDENTIAL_REGISTRY.md added as CISO-owned infra node in SESH Data Flow diagram. |

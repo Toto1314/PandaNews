@@ -89,12 +89,12 @@ Verdict: MONITORING NOTE — MasterPlanner propagation 4/5 complete (SYSTEM_MAP.
 ---
 
 ### [2026-03-27] | LOW | CA-002 — MasterPlanner SYSTEM_MAP.md Not Updated
-**Status:** OPEN
+**Status:** RESOLVED (2026-04-02)
 **Framework:** COSO (Control Activities — Five-File Rule)
 **Description:** MasterPlanner v1.0.0 was created without a confirmed SYSTEM_MAP.md update. The Five-File Rule requires SYSTEM_MAP.md to be updated for all structural agent changes. MasterPlanner is a new pipeline agent — the pipeline diagram in SYSTEM_MAP.md should include it.
 **Root Cause:** SYSTEM_MAP.md updates are manual and token-expensive (Mermaid diagrams). The auto-commit hook does not update SYSTEM_MAP.md.
-**Remediation:** Update SYSTEM_MAP.md pipeline diagram to add MasterPlanner node between Step 3 routing and execution.
-**Resolution Entry:** PENDING — deferred to next available session with sufficient token budget.
+**Remediation:** SYSTEM_MAP.md updated 2026-04-02 as part of the 3-gap governance remediation batch. MasterPlanner added to pipeline diagram. session_id provenance layer and CREDENTIAL_REGISTRY.md node also added in the same pass.
+**Resolution Entry:** CHANGELOG 2026-04-02 — v1.17.1 governance gap remediation batch.
 
 ---
 
@@ -259,11 +259,57 @@ Verdict: MONITORING NOTE — MasterPlanner propagation 4/5 complete (SYSTEM_MAP.
 
 ---
 
+---
+
+## OPEN FINDINGS — 2026-04-02
+
+### [2026-04-02] | MEDIUM | MO-002 — Monitoring Cadence Gap (v1.13.0–v1.17.0)
+**Status:** OPEN
+**Framework:** COSO (Monitoring Activities)
+**Description:** No CAE-Audit monitoring notes documented for version cycles v1.13.0 through v1.17.0 (governance expansion, new departments, Music Production dept, /news-song skill). Pattern matches prior MO-001 finding.
+**Root Cause:** Monitoring cadence lapsed after the v1.12.1 backfill pass.
+**Remediation:** Write backfill monitoring notes for v1.13.0–v1.17.0 in the next available session with sufficient token budget. Going forward: one monitoring note entry per minor version minimum.
+**Resolution Entry:** PENDING
+
+---
+
+## STANDING ENGAGEMENT — QUARTERLY BEHAVIORAL CONSISTENCY REVIEW
+
+**Template** (CAE-Audit completes and appends below each quarter):
+
+```
+BEHAVIORAL CONSISTENCY REVIEW
+==============================
+Date:             [YYYY-MM-DD]
+Period Covered:   [date range]
+Agents Sampled:   [list — 6 minimum: 2 Tier 0-1, 2 Tier 2, 1 C-suite, 1 pipeline]
+Session Files:    [count of .jsonl trace files reviewed]
+
+FINDINGS:
+  [AgentName] — PASS | DRIFT DETECTED | CONSTRAINT VIOLATION
+  Notes: [≤2 sentences]
+
+DRIFT FINDINGS (if any):
+  Agent:      [name]
+  Baseline:   [Role in One Sentence or Constraint as written in agent file]
+  Observed:   [what outputs actually reflected]
+  Severity:   CRITICAL | HIGH | MEDIUM | LOW
+  Action:     reset to baseline | update baseline with CEO approval | monitor
+
+OVERALL VERDICT: PASS | CONDITIONAL PASS | FAIL
+NEXT REVIEW DUE: [date]
+```
+
+**Next scheduled review:** 2026-07-02
+
+---
+
 ## MONITORING SCHEDULE
 
 | Frequency | Activity |
 |-----------|---------|
 | Every session (Tier 2+ tasks) | CAE-Audit checkpoint review |
 | Every 5 sessions or monthly | Full CHANGELOG review for PENDING items |
-| Quarterly | Full system audit — all agents sampled, all frameworks assessed |
+| **Quarterly** | **Full system audit + Behavioral Consistency Review (Standing Engagement)** |
+| Quarterly | CREDENTIAL_REGISTRY.md review — CISO runs expiry + rotation check |
 | On CEO request | Ad-hoc audit engagement |

@@ -4,6 +4,191 @@
 
 ---
 
+## 2026-04-04 | AGENT-CREATE + AGENT-UPDATE — chore(ai-os): add integration registry, TODO list, and expand permissions  - Add registry.yaml — Backstage-style catalog
+
+**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
+**Approved By:** CEO [REQUIRED — structural change or batch escalation]
+**Risk Tier:** 2 [BATCH-ESCALATED: ≥10 agents or ≥3 departments — CISO review required]
+**COSO Component:** Control Activities (new agent — control scope change)
+**Agent Count After:** 208
+
+**Summary:** [TODO: describe what changed and why — auto-entry requires human summary for audit completeness]
+
+**Files Modified:**
+- `.claude/agents/baselines/Dir-WebCapture-baseline.md` — created
+- `.claude/agents/baselines/VP-PersonalIntelligence-baseline.md` — created
+- `.claude/agents/c-suite/CAE-Audit.md` — updated
+- `.claude/agents/devops/Dir-MCPHub.md` — updated
+- `.claude/agents/personal-intelligence/Dir-AutoProjects.md` — created
+- `.claude/agents/personal-intelligence/Dir-Journal.md` — created
+- `.claude/agents/personal-intelligence/Dir-WebCapture.md` — created
+- `.claude/agents/personal-intelligence/Personal-Research-Analyst.md` — created
+- `.claude/agents/personal-intelligence/VP-PersonalIntelligence.md` — created
+- `.claude/agents/pipeline/Chief-Notes-Officer.md` — updated
+- `.claude/agents/security/Application-Security-Engineer.md` — updated
+
+**Changes by Department:**
+- **Baselines:**
+  - Created: Dir-WebCapture-baseline, VP-PersonalIntelligence-baseline
+- **C-Suite:**
+  - Updated: CAE-Audit
+- **DevOps / Platform:**
+  - Updated: Dir-MCPHub
+- **Personal-Intelligence:**
+  - Created: Dir-AutoProjects, Dir-Journal, Dir-WebCapture, Personal-Research-Analyst, VP-PersonalIntelligence
+- **Technical Pipeline:**
+  - Updated: Chief-Notes-Officer
+- **Security:**
+  - Updated: Application-Security-Engineer
+
+**Propagation Completed:**
+- [ ] Parent agent updated: [TODO: confirm or N/A]
+- [ ] CLAUDE.md updated: [TODO: confirm or N/A]
+- [x] CHANGELOG.md entry written: YES
+
+**Sensitive Data Impact:** NONE
+**Rollback:** `git revert HEAD` — agent files will be restored to prior state
+
+---
+## 2026-04-03 | ENFORCEMENT — fix(ai-os): v1.18.2 Non-bypassable agent invocation rules
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (direction: "lets do it")
+**Risk Tier:** 1 (policy tightening — no new agents, no external access, no structural change)
+**COSO Component:** Control Activities · Monitoring Activities
+**Governance:** None — internal policy update only
+
+**Summary:** Added "Agent Invocation Rules (Non-Negotiable — No Inline Bypass)" section to CLAUDE.md Operating Rules. This closes the behavioral gap where the Lead Orchestrator was answering domain questions inline instead of routing to the designated C-suite or pipeline agent via the Agent tool. Pipeline agent invocation (scout → architect → builder → validator) and C-suite invocation are now explicitly framed as non-bypassable: Tier 1+ domain tasks must go through the Agent tool. Tier 0 remains inline-eligible. The "test" rule added as a simple self-check before every non-Tier-0 response.
+
+**Modified Files:**
+- `CLAUDE.md` — added Agent Invocation Rules section; version → 1.18.2
+- `CHANGELOG.md` — this entry
+
+**Five-File Rule:** N/A — policy update only (no agent files created or modified; no structural routing change)
+
+---
+
+## 2026-04-03 | ENHANCEMENT — feat(ai-os): v1.18.1 AutoPilot hybrid builder — passive idea queue + low-friction gate
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (confirmed direction: "let's do a hybrid where it will ask. keep it super low friction")
+**Risk Tier:** 1 (enhancement to existing approved Personal Intelligence dept; new Stop hook is same type/scope as approved 20260403-000000-PIV1)
+**COSO Component:** Control Activities · Monitoring Activities
+**Governance:** Covered by existing AI & Automation Council CONDITIONAL (20260403-000000-PIV1) — passive capture + CEO gate already approved. New hook same trust level as approved journal_auto_capture.py hook.
+
+**Summary:** Added hybrid autonomous builder (AutoPilot) to the Personal Intelligence department. Passive: `autopilot_watcher.py` Stop hook detects #idea and #company signals and writes to `queue.jsonl`. Active: Lead Orchestrator checks queue at start of each response and surfaces one-line gate per pending idea. CEO responds yes/no inline — on yes, Dir-AutoProjects + MasterPlanner pipeline fires. Designed per the Governed Agentic Systems framework principles: bounded scope, least-privilege, human handoff, staged autonomy, audit trail.
+
+**New Files:**
+- `skills/journal/scripts/autopilot_watcher.py` — NEW (Stop hook, detects ideas, writes to queue.jsonl)
+- `journal/autopilot/queue.jsonl` — NEW (pending gate queue, JSONL format)
+
+**Modified Files:**
+- `settings.local.json` — added autopilot_watcher.py as second Stop hook
+- `agents/personal-intelligence/Dir-AutoProjects.md` — v1.0.0 → v1.1.0: added AutoPilot Queue Management section (queue schema, status lifecycle, update pattern)
+- `agents/personal-intelligence/VP-PersonalIntelligence.md` — v1.0.0 → v1.1.0: updated description and dept chain to include AutoPilot Queue node
+- `CLAUDE.md` — added AutoPilot Queue Check rule under Operating Rules; version → 1.18.1
+- `CHANGELOG.md` — this entry
+- `SYSTEM_MAP.md` — AutoPilot queue node added to Personal Intelligence subgraph
+
+**Five-File Rule:** COMPLETE
+1. Agent file: Dir-AutoProjects.md ✅
+2. Parent agent: VP-PersonalIntelligence.md ✅
+3. CLAUDE.md ✅
+4. CHANGELOG.md ✅
+5. SYSTEM_MAP.md ✅
+
+---
+
+## 2026-04-03 | DEPT-CREATE — feat(ai-os): v1.18.0 Personal Intelligence department + /lean token compression skill
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (confirmed execution after MasterPlanner gate)
+**Risk Tier:** 2 (new dept, new MCP tool grants, AI agents with write access to filesystem)
+**COSO Component:** Control Activities · Information & Communication · Monitoring Activities
+**Agent Count After:** +5 new agents (VP-PersonalIntelligence, Dir-Journal, Dir-WebCapture, Dir-AutoProjects, Personal-Research-Analyst)
+**Governance:** CISO CONDITIONAL PASS (20260403-000000-WC01) · AI & Automation Council CONDITIONAL (20260403-000000-PIV1)
+
+**Summary:** Created the Personal Intelligence department — a full agent chain (VP + 4 directors) for personal journaling, web capture, autonomous project scaffolding, and company research. All AI & Automation Council conditions (7) and CISO guardrails (5) are baked into agent files. Simultaneously created the /lean token compression skill (SKILL.md + LEAN_DICT.md + compress.py) with bidirectional dictionary for 15–40% token savings.
+
+**New Files — Personal Intelligence Department:**
+- `agents/personal-intelligence/VP-PersonalIntelligence.md` — NEW (department head, C-suite equivalent)
+- `agents/personal-intelligence/Dir-Journal.md` — NEW (diary capture, T1 redaction, audit logging)
+- `agents/personal-intelligence/Dir-WebCapture.md` — NEW (URL ingestion, SSRF guard, adversarial content guardrail)
+- `agents/personal-intelligence/Dir-AutoProjects.md` — NEW (project idea detection, hard CEO gate)
+- `agents/personal-intelligence/Personal-Research-Analyst.md` — NEW (company research, intent-gated triggers)
+
+**New Files — Storage:**
+- `journal/audit.log` — NEW (AI & Automation Council Condition 4: write audit trail)
+- `journal/captures/fetch.log` — NEW (CISO Guardrail 4: fetch audit trail)
+- `journal/index.md` — NEW (master index for all journal content)
+- `journal/templates/entry.md` — NEW
+- `journal/templates/capture.md` — NEW
+- `journal/templates/project.md` — NEW
+- `journal/templates/research.md` — NEW
+
+**New Files — Skills:**
+- `skills/journal/SKILL.md` — NEW (/journal skill)
+- `skills/capture/SKILL.md` — NEW (/capture skill)
+- `skills/lean/SKILL.md` — NEW (/lean token compression skill)
+- `skills/lean/LEAN_DICT.md` — NEW (compression dictionary, 5 categories)
+- `skills/lean/compress.py` — NEW (bidirectional Python compressor)
+
+**Modified Files:**
+- `CLAUDE.md` — agent table: VP-PersonalIntelligence added; routing: PERSONAL/JOURNAL domain added; keyword table updated; version → 1.18.0
+- `CHANGELOG.md` — this entry
+- `SYSTEM_MAP.md` — Personal Intelligence department node added
+
+**Governance Record:**
+- CISO Verdict: CONDITIONAL PASS — 5 guardrails (SSRF, adversarial content, WebSearch query, fetch log, no crawling) — all present in Dir-WebCapture.md
+- AI & Automation Council Verdict: CONDITIONAL — 7 conditions — all baked into agent files
+- Five-File Rule: COMPLETE (agent files + CLAUDE.md + CHANGELOG.md + SYSTEM_MAP.md + VP-PersonalIntelligence as parent)
+- Post-activation CAE-Audit engagement: required within 30 days of first use (per council verdict)
+
+**Sensitive Data Impact:** All journal storage classified T3 INTERNAL. T1 data detection + redaction in Dir-Journal and Dir-WebCapture. fetch.log and audit.log never transmitted externally.
+**Rollback:** `git revert HEAD` — restores all modified files. New agent files and journal/ directory require manual deletion.
+
+---
+
+## 2026-04-02 | GOVERNANCE-REMEDIATION — fix: 3 governance gaps from Governed Agentic Systems scorecard (v1.17.1)
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (confirmed execution after MasterPlanner gate — session 2026-04-02)
+**Risk Tier:** 2 (batch escalation: 10 files modified; structural AI OS governance changes)
+**COSO Component:** Control Activities · Monitoring Activities · Information & Communication
+**Agent Count After:** unchanged (no new agents created)
+
+**Summary:** Remediated 3 governance gaps identified in AI OS scorecard against the Governed Agentic Systems framework (Rakesh Gohel). Gap 1: Provenance tracking — session_id convention added to intake, agent output format, and CNO trace output. Gap 2: Auth token lifecycle — CREDENTIAL_REGISTRY.md created; DATA_CLASSIFICATION.md and Dir-MCPHub.md updated. Gap 3: Anomaly + goal drift — CAE-Audit quarterly behavioral consistency engagement added; AGENT_STANDARDS.md memory baseline snapshot requirement added. CA-002 (MasterPlanner SYSTEM_MAP.md gap) resolved in same pass.
+
+**Files Modified:**
+- `CLAUDE.md` — Intake Protocol: session_id assignment + propagation rule added → v1.17.1
+- `AGENT_STANDARDS.md` — Output Format: SESSION_ID + PARENT_AGENT required fields; memory baseline snapshot section; external-facing system section → v2.2.0
+- `agents/pipeline/Chief-Notes-Officer.md` — JSON trace output (JSONL), session_id/parent_agent fields, traces/ storage path → v1.1.0
+- `CREDENTIAL_REGISTRY.md` — NEW FILE — CISO-owned credential registry; 3 known credentials registered; lifecycle rules; quarterly review checklist
+- `DATA_CLASSIFICATION.md` — T1 RESTRICTED section: CREDENTIAL_REGISTRY.md referenced as compensating control → v1.1 (already bumped this session)
+- `agents/devops/Dir-MCPHub.md` — Core Responsibility 4: CREDENTIAL_REGISTRY.md registration, 14-day expiry alerting, revocation log → v1.1.0
+- `agents/c-suite/CAE-Audit.md` — Standing Quarterly Behavioral Consistency Engagement section added → v1.3.0
+- `AUDIT_FINDINGS.md` — CA-002 resolved; MO-002 opened; standing engagement template added; monitoring schedule updated
+- `CHANGELOG.md` — this entry
+- `SYSTEM_MAP.md` — MasterPlanner added to pipeline diagram (resolves CA-002); session_id provenance annotation; CREDENTIAL_REGISTRY node
+
+**Changes by Domain:**
+- **Governance / Policy:** CLAUDE.md, AGENT_STANDARDS.md, DATA_CLASSIFICATION.md, CREDENTIAL_REGISTRY.md (new), AUDIT_FINDINGS.md
+- **Pipeline Agents:** Chief-Notes-Officer.md
+- **Security Agents:** Dir-MCPHub.md
+- **Audit:** CAE-Audit.md
+
+**Propagation Completed:**
+- [x] Agent files updated: Chief-Notes-Officer.md, CAE-Audit.md, Dir-MCPHub.md
+- [x] CLAUDE.md updated: session_id in Intake Protocol, version → 1.17.1
+- [x] CHANGELOG.md entry written: this entry
+- [x] SYSTEM_MAP.md updated: MasterPlanner, session_id layer, CREDENTIAL_REGISTRY node
+- [x] Parent agents: Chief-Notes-Officer reports to LO (no parent .md to update); CAE-Audit reports to LO (no parent .md); Dir-MCPHub reports to VP-Platform-Engineering (scope change is additive — no parent chain break)
+
+**Sensitive Data Impact:** NONE (CREDENTIAL_REGISTRY.md stores metadata only — no credential values)
+**Rollback:** `git revert HEAD` — all 10 files will be restored to prior state. CREDENTIAL_REGISTRY.md will need manual deletion as it is a new file.
+
+---
+
 ## 2026-04-01 | AGENT-CREATE — chore(security): redact LangSmith API key from settings files  Token replaced with REDACTED_LANGSMITH_KEY placeholder fo
 
 **Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)

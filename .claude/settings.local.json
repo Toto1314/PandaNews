@@ -4,6 +4,23 @@
     "LANGCHAIN_PROJECT": "ai-os",
     "LANGCHAIN_API_KEY": "REDACTED_LANGSMITH_KEY"
   },
+  "hooks": {
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python C:/Users/atank/.claude/skills/journal/scripts/journal_auto_capture.py"
+          },
+          {
+            "type": "command",
+            "command": "python C:/Users/atank/.claude/skills/journal/scripts/autopilot_watcher.py"
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(python:*)",
@@ -68,7 +85,13 @@
       "Bash(echo $EDITOR $VISUAL)",
       "Bash(start:*)",
       "Skill(commit)",
-      "Bash(cmd.exe /c start https://github.com)"
+      "Bash(cmd.exe /c start https://github.com)",
+      "Bash(find /c/Users/atank/next-template/src -name *.ts -path */api/*)",
+      "Bash(find /c/Users/atank -maxdepth 1 -name *.py -o -name *.json -o -name *.yml -o -name *.yaml)",
+      "Bash(find /c/Users/atank/.claude -name *.db -o -name *.sqlite)",
+      "Bash(cat /c/Users/atank/.openclaw/*.json)",
+      "Bash(/dev/null ls:*)",
+      "Bash(dir \"C:\\\\Users\\\\atank\\\\.claude\\\\skills\\\\lean\")"
     ]
   }
 }
