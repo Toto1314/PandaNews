@@ -183,6 +183,49 @@ Characters / 6  ≈  tokens (very common short words)
 
 ---
 
+## Category 6 — Telegraph Mode (Word Dropping)
+
+Different from substitution — these words are **removed entirely**, not replaced.
+Run with `compress.py --telegraph` or `compress.py --telegraph --copulas`.
+
+### Always-dropped: Articles
+| Dropped | Example Before | Example After |
+|---------|---------------|---------------|
+| `the` | "reload the gun" | "reload gun" |
+| `a` | "find a cover spot" | "find cover spot" |
+| `an` | "wait an extra second" | "wait extra second" |
+
+### Sentence-start filler (dropped at line/bullet start)
+| Pattern dropped | Example Before | Example After |
+|----------------|---------------|---------------|
+| `It is` / `It's` | "It is worth noting..." | "worth noting..." |
+| `There is` / `There are` | "There are two options" | "two options" |
+| `This is` | "This is the rule" | "rule" |
+| `They are` | "They are fast" | "fast" |
+
+### Copula transforms (with `--copulas` flag)
+| Transform | Example Before | Example After |
+|-----------|---------------|---------------|
+| ` is ` → `: ` | "reload is faster" | "reload: faster" |
+| ` are ` → `: ` | "options are limited" | "options: limited" |
+| ` was ` → `: ` | "result was correct" | "result: correct" |
+
+### Combined usage
+```bash
+# Telegraph only (drop articles + filler)
+python compress.py --telegraph "The reload is faster than the heal"
+# → "reload is faster than heal"
+
+# Telegraph + copulas (most aggressive)
+python compress.py --telegraph --copulas "The reload is faster than the heal"
+# → "reload: faster than heal"
+
+# Telegraph + substitution (chain manually)
+python compress.py "text" | python compress.py --telegraph
+```
+
+---
+
 ## Bidirectional Use
 
 **Outbound (Claude → CEO):**

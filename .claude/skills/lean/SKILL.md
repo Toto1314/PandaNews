@@ -169,3 +169,43 @@ Original:   [N] chars (~[N/4] tokens est.)
 Compressed: [N] chars (~[N/4] tokens est.)
 Savings:    ~[X]% tokens
 ```
+
+## ON text input (telegraph mode)
+
+If `$ARGUMENTS` starts with `--telegraph` or `-t`, run:
+```bash
+python ~/.claude/skills/lean/compress.py --telegraph "$ARGUMENTS_WITHOUT_FLAG"
+# or with copula transforms:
+python ~/.claude/skills/lean/compress.py --telegraph --copulas "$ARGUMENTS_WITHOUT_FLAG"
+```
+
+Telegraph mode **drops** filler words instead of substituting them:
+- Drops: `a`, `an`, `the` (articles — everywhere)
+- Drops: `It is`, `There is/are`, `This is`, `They are` (sentence-start filler)
+- `--copulas`: also transforms ` is/are/was/were ` → `: `
+
+Example:
+```
+Input:  "The reload is faster than the heal in most cases"
+-t:     "reload is faster than heal in most cases"
+-t -c:  "reload: faster than heal in most cases"
+```
+
+Use `--telegraph` for prose/chat. Use `--telegraph --copulas` for max compression on structured content.
+
+---
+
+## SUB-AGENT PROPAGATION (when lean mode is active)
+
+When lean mode is ON, the Lead Orchestrator MUST inject the following block into every Agent tool prompt:
+
+---LEAN MODE ACTIVE---
+Respond in compressed form:
+- Use short forms: impl/cfg/auth/infra/docs/repo/env/dev/prod/app/param/fn/var/db/dir/svc/proc/msg/resp/comp/iface/arch/spec/perf/async/integ/dep/notif/opt
+- Bullets over paragraphs. Sentences <15 words.
+- No preamble. No trailing fluff. Lead with substance.
+- Phrases: "in order to"→"to", "due to the fact that"→"bc", "as well as"→"&", "in addition to"→"also"
+- Length caps: simple answers ≤3 bullets, standard ≤200 words, complex ≤400 words
+----------------------
+
+This block is appended AFTER the task prompt. Sub-agent output is compressed. Lead Orchestrator reads compressed output natively (lean dict is loaded).

@@ -64,6 +64,7 @@
 | 🌐 Browser / web automation / MCP | `Dir-BrowserOps` / `Dir-MCPHub` | Read-only default |
 | 🏢 Multi-dept directive | **`COO` first** | COO decomposes → routes |
 | 📝 Simple / Tier 0 | `Local-Model-Router` | Saves Claude API tokens |
+| 💬 Compress tokens / reduce output | `/lean` | `compress.py` for text; `/lean on` for session-wide compression (15–40% savings) |
 | 🔧 Multi-file code task | `orchestrator` pipeline | scout → architect → builder → validator |
 | 💬 Improve CEO's prompt | `User-Prompt-Optimizer` | Then route result |
 

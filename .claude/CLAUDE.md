@@ -1,5 +1,5 @@
 # 🧠 AI Operating System — Master Orchestrator Prompt
-**Version:** 1.18.2 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
+**Version:** 1.18.3 | **Living Document** | **Governed by: COSO · SOC 2 · NIST CSF · SOX · COBIT · CIS**
 
 > **Need a fast lookup?** → `INDEX.md` — routing quick reference, document map, agent reference, all in one place.
 > This file is the master policy register (full rules, chains, routing logic). Version history → CHANGELOG.md. INDEX.md is the navigation hub.
@@ -251,6 +251,7 @@ Before invoking any agent, the Lead Orchestrator MUST select the appropriate mod
    - General Tier 1–2 → `llama3.1:latest`
 6. **Local models that support tool calling:** `llama3.2:3b`, `llama3.1:latest`, `qwen2.5-coder:7b`, `deepseek-coder-v2:16b`
 7. **Local models WITHOUT tool support (text only):** `gemma3:1b`, `gemma3:4b`, `deepseek-r1`, `mistral:7b`, `phi3:medium`
+8. **Lean mode is the default for all Tier 1+ sessions.** If `/lean on` has not been invoked this session, the Lead Orchestrator MUST activate it before the first non-Tier-0 agent response. Use `compress.py` (`~/.claude/skills/lean/compress.py`) for one-off text compression outside session mode. Lean mode propagates to all sub-agents per the Sub-Agent Propagation rule in `skills/lean/SKILL.md`.
 
 ### Programmatic Routing (when running Python agents)
 
@@ -617,6 +618,11 @@ These rules close the gap between "the rules say invoke X" and "I actually invok
 - Exception: Tier 0 (trivial, formatting, no domain ownership) → inline answer is fine.
 
 **The test:** Before answering any non-Tier-0 question, ask: "Does CLAUDE.md say 'invoke X' for this type of task?" If yes — invoke X. Full stop.
+
+**Lean mode propagation:**
+- If lean mode is active (`/lean on` was invoked this session), append the lean injection block (defined in `~/.claude/skills/lean/SKILL.md` → Sub-Agent Propagation section) to EVERY Agent tool prompt.
+- This applies to all agents: pipeline agents (scout, architect, builder, validator) AND C-suite agents.
+- Sub-agent output will be compressed. Read it as-is — do not expand before passing to CEO.
 
 ---
 

@@ -4,50 +4,50 @@
 
 ---
 
-## 2026-04-04 | AGENT-CREATE + AGENT-UPDATE — chore(ai-os): add integration registry, TODO list, and expand permissions  - Add registry.yaml — Backstage-style catalog
+## 2026-04-04 | ENHANCEMENT — feat(lean): v1.18.3 Lean mode sub-agent propagation + output compression
 
-**Changed By:** Lead Orchestrator (auto-logged by pre-commit hook)
-**Approved By:** CEO [REQUIRED — structural change or batch escalation]
-**Risk Tier:** 2 [BATCH-ESCALATED: ≥10 agents or ≥3 departments — CISO review required]
-**COSO Component:** Control Activities (new agent — control scope change)
-**Agent Count After:** 208
+**Changed By:** Lead Orchestrator  
+**Approved By:** CEO ("lets do it. also i want the outputs to be compressed as well.")  
+**Risk Tier:** 1 (internal session behavior — no external access, no agent files, reversible)  
+**COSO Component:** Control Activities  
+**Governance:** None — session-level feature, no new agents or permissions  
 
-**Summary:** [TODO: describe what changed and why — auto-entry requires human summary for audit completeness]
+**Summary:** Extended /lean skill to propagate compression to all sub-agents. When lean mode is active, Lead Orchestrator injects a compact lean instruction block (~80 tokens) into every Agent tool prompt. Sub-agents respond in compressed form. LO reads compressed output natively. Both directions (LO→subagent prompt AND subagent→LO output) are now compressed when lean is on. Net effect: 15–40% token savings extend across the full agent chain, not just the top-level conversation.
+
+**Modified Files:**
+- `skills/lean/SKILL.md` — added Sub-Agent Propagation section with injection block template
+- `CLAUDE.md` — added lean propagation rule to Agent Invocation Rules; version → 1.18.3
+- `CHANGELOG.md` — this entry
+
+**Five-File Rule:** N/A — no agent files created or modified; policy + skill update only
+
+## 2026-04-02 | ENHANCEMENT — chore(ai-os): add integration registry, TODO list, and expand permissions
+
+**Changed By:** Lead Orchestrator
+**Approved By:** CEO (session direction — committed 2026-04-02)
+**Risk Tier:** 1 (internal tooling additions + permission expansion — no production impact, reversible)
+**COSO Component:** Control Activities · Information & Communication
+
+**Summary:** Added a Backstage-style integration registry (`registry.yaml` + `registry.py` CLI viewer) cataloging all MCPs, APIs, skills, and web domains active in the AI OS. Added `TODO.md` as a structured backlog for integrations and platform improvements (Logseq, security fixes, platform items). Expanded `settings.local.json` permissions to include KV skill, npm audit, codex, and start commands. Updated `blocklist.json` for consistency.
+
+**Note (audit correction):** The original pre-commit hook auto-generated an incorrect CHANGELOG entry for this commit, mistakenly listing 11 Personal Intelligence agent files that were not part of this commit (those belonged to the v1.18.0 commit). Risk tier was also incorrectly auto-escalated to Tier 2 batch. This entry corrects the record — no agent files were created or modified in this commit.
 
 **Files Modified:**
-- `.claude/agents/baselines/Dir-WebCapture-baseline.md` — created
-- `.claude/agents/baselines/VP-PersonalIntelligence-baseline.md` — created
-- `.claude/agents/c-suite/CAE-Audit.md` — updated
-- `.claude/agents/devops/Dir-MCPHub.md` — updated
-- `.claude/agents/personal-intelligence/Dir-AutoProjects.md` — created
-- `.claude/agents/personal-intelligence/Dir-Journal.md` — created
-- `.claude/agents/personal-intelligence/Dir-WebCapture.md` — created
-- `.claude/agents/personal-intelligence/Personal-Research-Analyst.md` — created
-- `.claude/agents/personal-intelligence/VP-PersonalIntelligence.md` — created
-- `.claude/agents/pipeline/Chief-Notes-Officer.md` — updated
-- `.claude/agents/security/Application-Security-Engineer.md` — updated
+- `.claude/registry.yaml` — created (Backstage-style integration catalog)
+- `.claude/registry.py` — created (CLI viewer for registry)
+- `.claude/TODO.md` — created (integration + platform backlog)
+- `.claude/settings.local.json` — updated (permissions expanded)
+- `.claude/plugins/blocklist.json` — updated (minor adjustment)
 
-**Changes by Department:**
-- **Baselines:**
-  - Created: Dir-WebCapture-baseline, VP-PersonalIntelligence-baseline
-- **C-Suite:**
-  - Updated: CAE-Audit
-- **DevOps / Platform:**
-  - Updated: Dir-MCPHub
-- **Personal-Intelligence:**
-  - Created: Dir-AutoProjects, Dir-Journal, Dir-WebCapture, Personal-Research-Analyst, VP-PersonalIntelligence
-- **Technical Pipeline:**
-  - Updated: Chief-Notes-Officer
-- **Security:**
-  - Updated: Application-Security-Engineer
+**Five-File Rule:** N/A — no agent files created or modified; no structural routing change
 
 **Propagation Completed:**
-- [ ] Parent agent updated: [TODO: confirm or N/A]
-- [ ] CLAUDE.md updated: [TODO: confirm or N/A]
-- [x] CHANGELOG.md entry written: YES
+- [x] Parent agent updated: N/A — no agent files changed
+- [x] CLAUDE.md updated: N/A — no routing or org chart change
+- [x] CHANGELOG.md entry written: YES (corrected from auto-generated draft)
 
 **Sensitive Data Impact:** NONE
-**Rollback:** `git revert HEAD` — agent files will be restored to prior state
+**Rollback:** `git revert aa1f610` — restores registry files and reverts permission changes
 
 ---
 ## 2026-04-03 | ENFORCEMENT — fix(ai-os): v1.18.2 Non-bypassable agent invocation rules

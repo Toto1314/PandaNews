@@ -208,6 +208,94 @@ def compress(text: str, verbose: bool = False) -> tuple[str, dict]:
     return result, stats
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# TELEGRAPH MODE
+# Drops filler words entirely instead of substituting them.
+# Articles (a/an/the), sentence-start fillers, and optional copula transforms.
+# ─────────────────────────────────────────────────────────────────────────────
+
+# Always-safe drops: articles
+TELEGRAPH_ARTICLES = ["the", "a", "an"]
+
+# Sentence/line-start filler patterns to drop
+TELEGRAPH_START_DROPS = [
+    r'^(it is|it\'s)\s+',
+    r'^(there is|there are|there\'s)\s+',
+    r'^(this is|this was)\s+',
+    r'^(they are|they\'re)\s+',
+]
+
+# Copula transforms: " is " / " are " → ": "
+TELEGRAPH_COPULAS = [
+    (r'\s+is\s+', ': '),
+    (r'\s+are\s+', ': '),
+    (r'\s+was\s+', ': '),
+    (r'\s+were\s+', ': '),
+]
+
+
+def telegraph(text: str, copulas: bool = False) -> tuple[str, dict]:
+    """
+    Telegraph-style compression: drops filler words entirely.
+    Runs per-line so sentence-start patterns apply to each line/bullet.
+    Args:
+        text: input text
+        copulas: if True, also transform is/are/was/were → ':'
+    Returns: (compressed_text, stats_dict)
+    """
+    original = text
+    lines = text.split('\n')
+    processed = []
+    drop_count = 0
+
+    for line in lines:
+        result = line
+
+        # 1. Sentence-start filler drops (per line)
+        for pattern in TELEGRAPH_START_DROPS:
+            new = re.sub(pattern, '', result, flags=re.IGNORECASE)
+            if new != result:
+                drop_count += 1
+                result = new
+
+        # 2. Article drops (whole word, anywhere in line)
+        for word in TELEGRAPH_ARTICLES:
+            pattern = r'\b' + re.escape(word) + r'\b\s*'
+            new = re.sub(pattern, ' ', result, flags=re.IGNORECASE)
+            if new != result:
+                drop_count += len(re.findall(pattern, result, flags=re.IGNORECASE))
+                result = new
+
+        # 3. Optional copula transforms
+        if copulas:
+            for pattern, replacement in TELEGRAPH_COPULAS:
+                result = re.sub(pattern, replacement, result, flags=re.IGNORECASE)
+
+        # 4. Clean up: collapse multiple spaces, strip leading/trailing
+        result = re.sub(r'  +', ' ', result).strip()
+        # Fix ": :" artifacts
+        result = re.sub(r':\s*:', ':', result)
+
+        processed.append(result)
+
+    compressed = '\n'.join(processed)
+
+    orig_tokens = estimate_tokens(original)
+    comp_tokens = estimate_tokens(compressed)
+    savings_pct = round((1 - comp_tokens / orig_tokens) * 100, 1) if orig_tokens > 0 else 0
+
+    stats = {
+        "original_chars": len(original),
+        "compressed_chars": len(compressed),
+        "original_tokens_est": orig_tokens,
+        "compressed_tokens_est": comp_tokens,
+        "savings_pct": savings_pct,
+        "drops": drop_count,
+    }
+
+    return compressed, stats
+
+
 def decompress(text: str) -> str:
     """
     Expand compressed form back to full words.
@@ -227,9 +315,9 @@ def print_stats(original: str, compressed: str, stats: dict) -> None:
     bar_len = 30
     savings = stats["savings_pct"]
     filled = round(savings / 100 * bar_len)
-    bar = "█" * filled + "░" * (bar_len - filled)
+    bar = "#" * filled + "-" * (bar_len - filled)
 
-    print(f"\n{'─'*50}")
+    print(f"\n{'-'*50}")
     print(f"ORIGINAL ({stats['original_chars']} chars | ~{stats['original_tokens_est']} tokens):")
     print(f"  {original[:200]}{'...' if len(original) > 200 else ''}")
     print()
@@ -237,9 +325,12 @@ def print_stats(original: str, compressed: str, stats: dict) -> None:
     print(f"  {compressed[:200]}{'...' if len(compressed) > 200 else ''}")
     print()
     print(f"SAVINGS: {savings}%  [{bar}]")
-    print(f"  Phrase substitutions: {stats['phrase_hits']}")
-    print(f"  Word substitutions:   {stats['word_hits']}")
-    print(f"{'─'*50}\n")
+    if 'drops' in stats:
+        print(f"  Word drops: {stats['drops']}")
+    else:
+        print(f"  Phrase substitutions: {stats['phrase_hits']}")
+        print(f"  Word substitutions:   {stats['word_hits']}")
+    print(f"{'-'*50}\n")
 
 
 def main():
@@ -251,6 +342,10 @@ def main():
                         help="Show stats without printing compressed text")
     parser.add_argument("--quiet", "-q", action="store_true",
                         help="Output only compressed text, no stats")
+    parser.add_argument("--telegraph", "-t", action="store_true",
+                        help="Telegraph mode: drop articles & filler words instead of substituting")
+    parser.add_argument("--copulas", "-c", action="store_true",
+                        help="With --telegraph: also transform is/are/was/were → ':'")
     args = parser.parse_args()
 
     # Get input text
@@ -267,13 +362,19 @@ def main():
         print(result)
         return
 
-    compressed, stats = compress(text)
+    if args.telegraph:
+        compressed, stats = telegraph(text, copulas=args.copulas)
+        label = "TELEGRAPH"
+    else:
+        compressed, stats = compress(text)
+        label = "COMPRESSED"
 
     if args.quiet:
         print(compressed)
     elif args.stats_only:
         print_stats(text, compressed, stats)
     else:
+        print(f"[{label}]")
         print(compressed)
         if not args.quiet:
             print_stats(text, compressed, stats)
