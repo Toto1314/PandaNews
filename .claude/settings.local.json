@@ -4,34 +4,6 @@
     "LANGCHAIN_PROJECT": "ai-os",
     "LANGCHAIN_API_KEY": "REDACTED_LANGSMITH_KEY"
   },
-  "hooks": {
-    "SessionStart": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python -c \"import json; print(json.dumps({'hookSpecificOutput': {'hookEventName': 'SessionStart', 'additionalContext': 'LEAN MODE ACTIVE (auto): Respond compressed every reply. Use short forms: impl/cfg/auth/infra/docs/repo/env/dev/prod/app/param/fn/var/db/dir/svc/proc/msg/resp/comp/iface/arch/spec/perf/async/integ/dep/notif/opt. Bullets over paragraphs. Sentences under 15 words. No preamble (skip Great/Sure/Let me/Happy to). No trailing fluff. Phrases: in order to->to, due to the fact that->bc, as well as->& . Length caps: simple<=3 bullets, standard<=200w, complex<=400w. CEO asks for detail = no cap.'}}))\"",
-            "statusMessage": "Activating lean mode..."
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python C:/Users/atank/.claude/skills/journal/scripts/journal_auto_capture.py"
-          },
-          {
-            "type": "command",
-            "command": "python C:/Users/atank/.claude/skills/journal/scripts/autopilot_watcher.py"
-          }
-        ]
-      }
-    ]
-  },
   "permissions": {
     "allow": [
       "Bash(python:*)",
@@ -102,7 +74,38 @@
       "Bash(find /c/Users/atank/.claude -name *.db -o -name *.sqlite)",
       "Bash(cat /c/Users/atank/.openclaw/*.json)",
       "Bash(/dev/null ls:*)",
-      "Bash(dir \"C:\\\\Users\\\\atank\\\\.claude\\\\skills\\\\lean\")"
+      "Bash(dir \"C:\\\\Users\\\\atank\\\\.claude\\\\skills\\\\lean\")",
+      "Bash(cargo new:*)",
+      "Bash(cargo init:*)",
+      "Bash(cargo build:*)"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python -c \"import json; print(json.dumps({'hookSpecificOutput': {'hookEventName': 'SessionStart', 'additionalContext': 'LEAN MODE ACTIVE (auto): Respond compressed every reply. Use short forms: impl/cfg/auth/infra/docs/repo/env/dev/prod/app/param/fn/var/db/dir/svc/proc/msg/resp/comp/iface/arch/spec/perf/async/integ/dep/notif/opt. Bullets over paragraphs. Sentences under 15 words. No preamble (skip Great/Sure/Let me/Happy to). No trailing fluff. Phrases: in order to->to, due to the fact that->bc, as well as->& . Length caps: simple<=3 bullets, standard<=200w, complex<=400w. CEO asks for detail = no cap.'}}))\"",
+            "statusMessage": "Activating lean mode..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python C:/Users/atank/.claude/skills/journal/scripts/journal_auto_capture.py"
+          },
+          {
+            "type": "command",
+            "command": "python C:/Users/atank/.claude/skills/journal/scripts/autopilot_watcher.py"
+          }
+        ]
+      }
     ]
   }
 }

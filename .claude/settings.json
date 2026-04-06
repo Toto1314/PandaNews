@@ -1,5 +1,4 @@
 {
-  "voiceEnabled": true,
   "env": {
     "LANGCHAIN_API_KEY": "REDACTED_LANGSMITH_KEY",
     "LANGCHAIN_TRACING_V2": "true",
@@ -16,9 +15,7 @@
       "Bash(python3:*)",
       "Bash(ollama:*)",
       "Bash(git:*)",
-      "Bash(pip:*)",
-      "WebFetch(http://localhost:*)",
-      "WebFetch(http://127.0.0.1:*)"
+      "Bash(pip:*)"
     ]
   },
   "hooks": {
@@ -34,8 +31,8 @@
             "type": "command",
             "command": "python ~/.claude/warmup.py --silent 2>/dev/null || true",
             "timeout": 90,
-            "async": true,
-            "statusMessage": "Warming up local models..."
+            "statusMessage": "Warming up local models...",
+            "async": true
           }
         ]
       }
@@ -63,5 +60,9 @@
         ]
       }
     ]
+  },
+  "voiceEnabled": true,
+  "enabledPlugins": {
+    "rust-analyzer-lsp@claude-plugins-official": true
   }
 }
